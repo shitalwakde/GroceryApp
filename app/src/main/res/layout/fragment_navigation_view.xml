@@ -1,0 +1,99 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorWhite">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/li_login"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/toolbar_blur_background">
+
+            <TextView
+                android:id="@+id/tv_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:text="Login"
+                android:layout_gravity="bottom"
+                android:gravity="center"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/roboto_medium"
+                android:textSize="@dimen/head"
+                android:background="@drawable/rounded_red_border"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/tv_supplier_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_gravity="bottom"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:text="Sign Up"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/rounded_red_border"
+                android:textSize="@dimen/head"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/li_user_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome,"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/head"
+                android:fontFamily="serif" />
+
+            <TextView
+                android:id="@+id/tv_user_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:text="9900000000"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/head" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fnd_elv_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="3dp"
+            android:paddingTop="10dp"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:descendantFocusability="blocksDescendants"
+            android:layout_marginBottom="10dp"
+            android:background="@color/colorWhite">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Full Name *"
+                    android:inputType="text"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/roboto_light">
+                </com.google.android.material.textfield.TextInputEditText>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mobile Number *"
+                    android:inputType="number"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/roboto_light">
+                </com.google.android.material.textfield.TextInputEditText>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email Address *"
+                    android:inputType="textEmailAddress"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/roboto_light">
+                </com.google.android.material.textfield.TextInputEditText>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/greyExtratrans"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address Details"
+                android:fontFamily="@font/roboto_light"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                app:cardCornerRadius="3dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Use my current location"
+                    android:padding="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_location"
+                    android:drawablePadding="10dp"/>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tap to auto fill the address fields."
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:textSize="11sp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/greyExtratrans"
+                android:layout_marginTop="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pincode *"
+                    android:inputType="number"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/roboto_light">
+
+                </com.google.android.material.textfield.TextInputEditText>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="House No., Buliding Name *"
+                    android:inputType="text"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/roboto_light">
+
+                </com.google.android.material.textfield.TextInputEditText>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Road Name, Area, Colony *"
+                    android:inputType="text"
+                    android:drawableRight="@drawable/ic_search"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/roboto_light">
+
+                </com.google.android.material.textfield.TextInputEditText>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="City *"
+                        android:inputType="text"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_weight="1"
+                        android:drawableRight="@drawable/ic_search">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="State *"
+                        android:inputType="text"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_weight="1">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+                </LinearLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Landmark(Optional)"
+                    android:textSize="13sp"
+                    android:inputType="text"
+                    android:fontFamily="@font/roboto_light">
+
+                </com.google.android.material.textfield.TextInputEditText>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/greyExtratrans"
+                android:layout_marginTop="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Address Type"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_marginTop="10dp"/>
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Home Address"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_marginTop="10dp"/>
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Office Address"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_marginTop="10dp"/>
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/tv_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:background="@drawable/add_button"
+                    android:textColor="@color/colorWhite"
+                    android:fontFamily="@font/roboto"
+                    android:text="SAVE"
+                    android:padding="15dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>
