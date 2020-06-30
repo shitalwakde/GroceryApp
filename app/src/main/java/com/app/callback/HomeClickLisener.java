@@ -8,4 +8,6 @@ public interface HomeClickLisener {
 
     void productClickLisener(Category category);
 
+    void orderClickLisener(Category category);
+
 }

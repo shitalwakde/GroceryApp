@@ -9,21 +9,20 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.callback.HomeClickLisener;
-import com.app.features.checkout.CheckOutFragment;
+import com.app.features.address.AddressFragment;
 import com.app.features.home.Category;
-import com.app.features.product.ProductAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.app.features.cart.CartActivity.cartContainer;
+import static com.app.features.cart.CartActivity.tv_toolbar_cart;
 
 public class CartFragment extends Fragment {
 
@@ -59,6 +58,8 @@ public class CartFragment extends Fragment {
     }
 
     private void click(){
+
+        tv_toolbar_cart.setText("My Cart");
 
         Category cate = new Category();
         cate.setIv_best(R.drawable.grapes);

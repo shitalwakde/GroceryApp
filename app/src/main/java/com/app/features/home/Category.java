@@ -1,8 +1,10 @@
 package com.app.features.home;
 
 public class Category {
+    public int Qty;
     private int iv_category, iv_best, iv_brand;
-    private String product_type, tv_category_name, tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price;
+    private String product_type, tv_category_name, tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_orderId, tv_orderDate, tv_deliveryDate,
+            tv_orderStatus,tv_payment_status, tv_orderAmount,subCat;
 
     public String getProduct_type() {
         return product_type;
@@ -75,4 +77,62 @@ public class Category {
     public void setIv_brand(int iv_brand) {
         this.iv_brand = iv_brand;
     }
+
+    public String getTv_orderId() {
+        return tv_orderId;
+    }
+
+    public void setTv_orderId(String tv_orderId) {
+        this.tv_orderId = tv_orderId;
+    }
+
+    public String getTv_orderDate() {
+        return tv_orderDate;
+    }
+
+    public void setTv_orderDate(String tv_orderDate) {
+        this.tv_orderDate = tv_orderDate;
+    }
+
+    public String getTv_deliveryDate() {
+        return tv_deliveryDate;
+    }
+
+    public void setTv_deliveryDate(String tv_deliveryDate) {
+        this.tv_deliveryDate = tv_deliveryDate;
+    }
+
+    public String getTv_orderStatus() {
+        return tv_orderStatus;
+    }
+
+    public void setTv_orderStatus(String tv_orderStatus) {
+        this.tv_orderStatus = tv_orderStatus;
+    }
+
+    public String getSubCat() {
+        return subCat;
+    }
+
+    public void setSubCat(String subCat) {
+        this.subCat = subCat;
+    }
+
+    public String getTv_payment_status() {
+        return tv_payment_status;
+    }
+
+    public void setTv_payment_status(String tv_payment_status) {
+        this.tv_payment_status = tv_payment_status;
+    }
+
+    public String getTv_orderAmount() {
+        return tv_orderAmount;
+    }
+
+    public void setTv_orderAmount(String tv_orderAmount) {
+        this.tv_orderAmount = tv_orderAmount;
+    }
+
+
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.app.R;
 import com.app.callback.HomeClickLisener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -19,11 +20,16 @@ import androidx.recyclerview.widget.RecyclerView;
 public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.MyViewHolder> {
     List<Category> mdata;
     HomeClickLisener lisener;
+    public static final int ADD=1;
+    public static final int REMOVE=2;
+    public static final int RESET=3;
 
-    public BeseSellingAdapter(HomeClickLisener lisener, List<Category> mdata) {
+    public BeseSellingAdapter(HomeClickLisener lisener,final List<Category> mdata) {
         this.lisener = lisener;
-        this.mdata = mdata;
+        this.mdata = new ArrayList<>();
+        this.mdata.addAll(mdata);
     }
+
 
     @NonNull
     @Override
@@ -40,6 +46,16 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
         holder.tv_pr_sub_name.setText(category.getTv_pr_sub_name());
         holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
                 | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        if(category.Qty <= 0){
+            holder.tv_add.setVisibility(View.VISIBLE);
+            holder.ll_quantity.setVisibility(View.GONE);
+        }else {
+            holder.ll_quantity.setVisibility(View.VISIBLE);
+            holder.tv_add.setVisibility(View.GONE);
+        }
+        holder.tv_quantity.setText(String.valueOf(category.Qty));
+
     }
 
     @Override
@@ -50,7 +66,7 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView iv_best;
-        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add;
+        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_minus, tv_quantity, tv_plus;
         LinearLayout ll_quantity;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -61,23 +77,52 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
             tv_price = (TextView)itemView.findViewById(R.id.tv_price);
             tv_discount_price = (TextView)itemView.findViewById(R.id.tv_discount_price);
             tv_add = (TextView)itemView.findViewById(R.id.tv_add);
+            tv_minus = (TextView)itemView.findViewById(R.id.tv_minus);
+            tv_quantity = (TextView)itemView.findViewById(R.id.tv_quantity);
+            tv_plus = (TextView)itemView.findViewById(R.id.tv_plus);
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    lisener.productClickLisener(mdata.get(getAdapterPosition()));
-                }
-            });
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    lisener.productClickLisener(mdata.get(getAdapterPosition()));
+//                }
+//            });
 
             tv_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ll_quantity.setVisibility(View.VISIBLE);
-                    tv_add.setVisibility(View.GONE);
+                   changeQty(getAdapterPosition(),ADD);
                 }
             });
+
+            tv_plus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeQty(getAdapterPosition(),ADD);
+                }
+            });
+
+            tv_minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeQty(getAdapterPosition(),REMOVE);
+                }
+            });
+
+        }
+
+        private void changeQty(int adapterPosition,int type) {
+            int qty=mdata.get(adapterPosition).Qty;
+            if(type==ADD)
+                qty=qty +1;
+            else if(type ==REMOVE)
+                qty=qty-1;
+            else
+                qty=0;
+            mdata.get(adapterPosition).Qty=qty;
+            notifyItemChanged(adapterPosition);
         }
     }
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.app.R;
 import com.app.callback.HomeClickLisener;
@@ -18,6 +19,7 @@ public class CartActivity extends AppCompatActivity implements HomeClickLisener 
 
     FragmentManager fragmentManager;
     public static int cartContainer;
+    public static TextView tv_toolbar_cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class CartActivity extends AppCompatActivity implements HomeClickLisener 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        tv_toolbar_cart = (TextView)findViewById(R.id.tv_toolbar_cart);
         cartContainer = R.id.cart_container;
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(cartContainer, new CartFragment()).commit();
@@ -54,5 +57,10 @@ public class CartActivity extends AppCompatActivity implements HomeClickLisener 
     public void productClickLisener(Category category) {
         Intent intent = new Intent(CartActivity.this, ProductDetailActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void orderClickLisener(Category category) {
+
     }
 }

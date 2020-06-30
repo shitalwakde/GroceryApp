@@ -7,7 +7,22 @@
     android:layout_marginBottom="1dp"
     android:padding="5dp"
     android:background="@drawable/bg_arrival"
-    android:layout_height="150dp">
+    android:layout_height="155dp">
+
+    <RelativeLayout
+        android:id="@+id/rl_wish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/iv_unwish"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_heart_red" />
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:id="@+id/rl_image"
@@ -22,13 +37,13 @@
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:padding="20dp"
-            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:src="@drawable/background_login"/>
 
         <RelativeLayout
             android:id="@+id/rl_discount"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/circle_red">
 
@@ -65,7 +80,6 @@
                 android:paddingLeft="10dp" />
         </RelativeLayout>
 
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -88,11 +102,11 @@
             android:id="@+id/tv_pr_sub_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:textSize="11sp"
             android:layout_below="@+id/tv_pr_name"
+            android:layout_marginTop="-5dp"
             android:fontFamily="@font/roboto"
-            android:text="HazeInut Spread with Cocoa"/>
+            android:text="HazeInut Spread with Cocoa"
+            android:textSize="11sp" />
 
         <RelativeLayout
             android:id="@+id/rl_rating"
@@ -200,6 +214,7 @@
             android:layout_below="@+id/rl_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:paddingRight="10dp">
             <RelativeLayout
                 android:id="@+id/rl_quantity"
@@ -208,16 +223,13 @@
                 <TextView
                     android:id="@+id/tv_add"
                     android:layout_width="80dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_weight="1"
-                    android:layout_marginTop="10dp"
                     android:layout_marginRight="5dp"
                     android:gravity="center"
                     android:background="@drawable/add_button"
                     android:textColor="@color/colorWhite"
                     android:fontFamily="@font/roboto"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="6dp"
                     android:text="Add To Cart"
                     android:textSize="10dp"
                     android:visibility="visible"/>
@@ -270,13 +282,13 @@
                 android:layout_weight="1"
                 android:layout_toRightOf="@+id/rl_quantity"
                 android:visibility="gone"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="5dp"
-                android:gravity="center"
                 android:background="@drawable/bg_border"
                 android:fontFamily="@font/roboto"
-                android:paddingTop="5dp"
-                android:paddingBottom="6dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="7.7dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="7.7dp"
                 android:text="Remove"
                 android:textSize="10dp"/>
         </RelativeLayout>

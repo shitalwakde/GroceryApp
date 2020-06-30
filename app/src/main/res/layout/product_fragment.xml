@@ -5,10 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg">
 
-    <!--<include
-        android:id="@+id/toolbar_layout"
-        layout="@layout/toolbaar"/>-->
-
     <RelativeLayout
         android:id="@+id/rl_noDataFound"
         android:layout_width="match_parent"
@@ -21,10 +17,15 @@
             android:layout_centerInParent="true"
             android:visibility="visible"/>
     </RelativeLayout>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_subCat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     <LinearLayout
         android:id="@+id/ll_sort_filter"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/rv_subCat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

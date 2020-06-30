@@ -26,11 +26,12 @@ import static com.app.activities.MainActivity.ll_search;
 public class ProductFragment extends Fragment {
 
     View rootView;
-    LinearLayout ll_sort_filter;
-    RecyclerView rv_product, rv_product2, rv_product3;
+    LinearLayout ll_sort_filter, ll_sort_data, ll_filter;
+    RecyclerView rv_product, rv_product2, rv_product3, rv_subCat;
     List<Category> productList;
     List<Category> brandList;
     List<Category> categoryList;
+    List<Category> subCatList;
     HomeClickLisener lisener;
     String viewAllType="";
 
@@ -49,9 +50,31 @@ public class ProductFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.product_fragment, container, false);
         init(rootView);
+        click();
 
         ll_search.setVisibility(View.GONE);
         //getActivity().setTitle("Products List");
+
+        return rootView;
+    }
+
+
+    private void init(View rootView){
+        productList = new ArrayList<>();
+        brandList = new ArrayList<>();
+        categoryList = new ArrayList<>();
+        subCatList = new ArrayList<>();
+        rv_product = (RecyclerView)rootView.findViewById(R.id.rv_product);
+        rv_product2 = (RecyclerView)rootView.findViewById(R.id.rv_product2);
+        rv_product3 = (RecyclerView)rootView.findViewById(R.id.rv_product3);
+        rv_subCat = (RecyclerView)rootView.findViewById(R.id.rv_subCat);
+        ll_sort_filter = (LinearLayout) rootView.findViewById(R.id.ll_sort_filter);
+        ll_sort_data = (LinearLayout) rootView.findViewById(R.id.ll_sort_data);
+        ll_filter = (LinearLayout) rootView.findViewById(R.id.ll_filter);
+    }
+
+
+    private void click(){
 
         if(viewAllType.equals("category")){
             ll_sort_filter.setVisibility(View.GONE);
@@ -74,6 +97,7 @@ public class ProductFragment extends Fragment {
 
             CategoryAdapter adapter = new CategoryAdapter(lisener,categoryList);
             rv_product2.setAdapter(adapter);
+
         }else if(viewAllType.equals("brand")){
             ll_sort_filter.setVisibility(View.GONE);
             rv_product3.setVisibility(View.VISIBLE);
@@ -106,20 +130,48 @@ public class ProductFragment extends Fragment {
 
             ProductAdapter adapter1 = new ProductAdapter(lisener, productList);
             rv_product.setAdapter(adapter1);
+
+            //============subcategory===============
+
+            Category subcat = new Category();
+            subcat.setSubCat("Fruits");
+
+            Category subcat1 = new Category();
+            subcat1.setSubCat("Vegetables");
+
+            subCatList.add(subcat);
+            subCatList.add(subcat);
+            subCatList.add(subcat);
+            subCatList.add(subcat);
+            subCatList.add(subcat);
+            subCatList.add(subcat);
+
+            SubCatAdapter adapter2 = new SubCatAdapter(lisener, subCatList);
+            rv_subCat.setAdapter(adapter2);
+
+            //============BottomSheetFragment============
+
+            ll_sort_data.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showBottomSheetFragment("sort");
+                }
+            });
+
+            ll_filter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showBottomSheetFragment("filter");
+                }
+            });
         }
 
-        return rootView;
     }
 
 
-    private void init(View rootView){
-        productList = new ArrayList<>();
-        brandList = new ArrayList<>();
-        categoryList = new ArrayList<>();
-        rv_product = (RecyclerView)rootView.findViewById(R.id.rv_product);
-        rv_product2 = (RecyclerView)rootView.findViewById(R.id.rv_product2);
-        rv_product3 = (RecyclerView)rootView.findViewById(R.id.rv_product3);
-        ll_sort_filter = (LinearLayout) rootView.findViewById(R.id.ll_sort_filter);
+    private void showBottomSheetFragment(String filterType){
+        BottomSheetFragment bottomSheetFragment = new BottomSheetFragment(filterType);
+        bottomSheetFragment.show(getActivity().getSupportFragmentManager(), bottomSheetFragment.getTag());
     }
 
     @Override

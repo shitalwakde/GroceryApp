@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:theme="@style/ToolbarTheme"
+        android:background="@drawable/toolbar_blur_background"
+        app:popupTheme="@style/AppTheme">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp">
+            <TextView
+                android:id="@+id/tv_toolbar_offer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:fontFamily="serif"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/iv_lock"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_lock_black_24dp"/>
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/sc_view"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="2dp"
+        android:visibility="visible"
+        android:layout_marginLeft="2dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/rl_top"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/bg">
+
+                <RelativeLayout
+                    android:id="@+id/rl_image"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_profile"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/profile"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp" />
+
+
+                    <ImageView
+                        android:id="@+id/iv_edit_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/img_profile"
+                        android:layout_marginBottom="20dp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_edit"/>
+
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/rl_image"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="John Doe"
+                        android:fontFamily="@font/roboto_light"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/tv_mobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+91 9999988888"
+                        android:textColor="@color/colorBlack"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_marginTop="5dp"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/tv_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="john@gmail.com"
+                        android:textColor="@color/colorBlack"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_marginTop="5dp"
+                        android:textSize="13dp" />
+
+                </LinearLayout>
+            </RelativeLayout>
+            <View
+                android:id="@+id/view_profile"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/rl_top"
+                android:background="@color/grey" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_profile"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Full Name"
+                        android:inputType="text"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/roboto_light"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Mobile Number"
+                        android:inputType="number"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/roboto_light"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email Address"
+                        android:inputType="textEmailAddress"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/roboto_light"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <LinearLayout
+                    android:id="@+id/lbl_Address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="Address"
+                        android:fontFamily="@font/roboto_light"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12dp" />
+
+                    <EditText
+                        android:id="@+id/et_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_border"
+                        android:gravity="top"
+                        android:hint="Address..."
+                        android:fontFamily="@font/roboto_light"
+                        android:lines="5"
+                        android:textSize="12dp"
+                        android:padding="9dp" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:background="@drawable/add_button"
+                    android:textColor="@color/colorWhite"
+                    android:fontFamily="@font/roboto"
+                    android:text="SUMBIT"
+                    android:padding="15dp"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

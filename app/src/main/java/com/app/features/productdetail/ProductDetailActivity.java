@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.R;
@@ -37,12 +39,16 @@ import static com.app.activities.MainActivity.appBarContainer;
 
 public class ProductDetailActivity extends BaseActivity implements HomeClickLisener {
 
-    ImageView iv_product;
-    TextView tv_price, tv_rate_product;
+    ImageView iv_product, iv_unwish;
+    TextView tv_price, tv_rate_product, tv_add;
+    RelativeLayout rl_like;
+    LinearLayout ll_quantity;
     FragmentManager fragmentManager;
     public static TextView tv;
     RecyclerView rv_related_img, rv_related_img1;
     List<Category> bestSellingList;
+    public static int productContainer;
+    boolean flag = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,16 +61,22 @@ public class ProductDetailActivity extends BaseActivity implements HomeClickLise
 
         init();
         click();
+
+        productContainer = R.id.productContainer;
     }
 
     private void init() {
         fragmentManager = getSupportFragmentManager();
         bestSellingList = new ArrayList<>();
         iv_product = (ImageView) findViewById(R.id.iv_product);
+        iv_unwish = (ImageView) findViewById(R.id.iv_unwish);
         tv_price = (TextView) findViewById(R.id.tv_price);
         tv_rate_product = (TextView) findViewById(R.id.tv_rate_product);
+        tv_add = (TextView) findViewById(R.id.tv_add);
         rv_related_img = (RecyclerView)findViewById(R.id.rv_related_img);
         rv_related_img1 = (RecyclerView)findViewById(R.id.rv_related_img1);
+        rl_like = (RelativeLayout)findViewById(R.id.rl_like);
+        ll_quantity = (LinearLayout)findViewById(R.id.ll_quantity);
     }
 
     private void click() {
@@ -95,6 +107,27 @@ public class ProductDetailActivity extends BaseActivity implements HomeClickLise
             @Override
             public void onClick(View v) {
                 showRatingDialog();
+            }
+        });
+
+        rl_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(flag==false){
+                    flag=true;
+                    iv_unwish.setImageResource(R.drawable.ic_heart_red);
+                }else{
+                    flag=false;
+                    iv_unwish.setImageResource(R.drawable.ic_heart);
+                }
+            }
+        });
+
+        tv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ll_quantity.setVisibility(View.VISIBLE);
+                tv_add.setVisibility(View.GONE);
             }
         });
     }
@@ -148,5 +181,10 @@ public class ProductDetailActivity extends BaseActivity implements HomeClickLise
     public void productClickLisener(Category category) {
         Intent intent = new Intent(this, ProductDetailActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void orderClickLisener(Category category) {
+
     }
 }

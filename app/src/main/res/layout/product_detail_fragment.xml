@@ -4,8 +4,31 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:theme="@style/ToolbarTheme"
+        android:background="@drawable/toolbar_blur_background"
+        app:popupTheme="@style/AppTheme">
+        <TextView
+            android:id="@+id/tv_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Product Detail"
+            android:layout_marginRight="20dp"
+            android:fontFamily="serif"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
+    </androidx.appcompat.widget.Toolbar>
+    <FrameLayout
+        android:id="@+id/productContainer"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <androidx.core.widget.NestedScrollView
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -13,15 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants"
-        android:orientation="vertical"
-        android:layout_marginBottom="50dp">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:theme="@style/ToolbarTheme"
-            android:background="@drawable/toolbar_blur_background"
-            app:popupTheme="@style/AppTheme"/>
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -49,6 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <RelativeLayout
+                        android:id="@+id/rl_like"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp">
@@ -58,8 +74,9 @@
                             android:src="@drawable/ic_brightness"
                             android:layout_centerInParent="true"/>
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:id="@+id/iv_unwish"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:src="@drawable/ic_heart"
                             android:layout_centerInParent="true"/>
                     </RelativeLayout>
@@ -171,6 +188,71 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl_addCart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/rl_rating">
+                    <TextView
+                        android:id="@+id/tv_add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/add_button"
+                        android:textColor="@color/colorWhite"
+                        android:fontFamily="@font/roboto"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingRight="12dp"
+                        android:paddingLeft="12dp"
+                        android:text="ADD TO CART"
+                        android:textSize="13dp"
+                        android:visibility="visible"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/add_button"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+                        <TextView
+                            android:id="@+id/tv_minus"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/add_button"
+                            android:gravity="center"
+                            android:text="-"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/tv_quantity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/add_button"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:text="1"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/tv_plus"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/add_button"
+                            android:gravity="center"
+                            android:text="+"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/rl_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -183,7 +265,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
                         android:textColor="@color/colorBlack"
-                        android:text="Rs 550"/>
+                        android:text="\u20B9 550"/>
 
                     <TextView
                         android:id="@+id/tv_price"
@@ -269,7 +351,8 @@
                     android:textSize="13sp"
                     android:background="@color/colorPrimaryDark"
                     android:textColor="@color/colorWhite"
-                    android:fontFamily="@font/roboto"/>
+                    android:fontFamily="@font/roboto"
+                    android:visibility="gone"/>
                 <RelativeLayout
                     android:id="@+id/rl_rating_head"
                     android:layout_below="@+id/tv_rate"
@@ -504,7 +587,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_add_cart"

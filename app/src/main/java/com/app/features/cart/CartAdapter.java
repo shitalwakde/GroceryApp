@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.R;
@@ -50,7 +51,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView iv_best;
-        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_remove;
+        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_remove;
+        LinearLayout ll_quantity;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,8 +62,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             tv_pr_sub_name = (TextView)itemView.findViewById(R.id.tv_pr_sub_name);
             tv_price = (TextView)itemView.findViewById(R.id.tv_price);
             tv_discount_price = (TextView)itemView.findViewById(R.id.tv_discount_price);
+            tv_add = (TextView)itemView.findViewById(R.id.tv_add);
+            ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
 
             tv_remove.setVisibility(View.VISIBLE);
+            ll_quantity.setVisibility(View.VISIBLE);
+            tv_add.setVisibility(View.GONE);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -11,7 +11,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:descendantFocusability="blocksDescendants"
-            android:background="@color/colorWhite">
+            android:background="@color/colorWhite"
+            android:layout_marginBottom="50dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -23,28 +24,29 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Albert Jhon"
-                android:fontFamily="@font/roboto"/>
+                android:text="ALBERT JHON"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/roboto_light"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="1, Indira Nagar"
-                android:fontFamily="@font/roboto"
-                android:layout_marginTop="5dp"/>
+                android:fontFamily="@font/roboto_light" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nagpur 440022"
-                android:fontFamily="@font/roboto"/>
+                android:fontFamily="@font/roboto_light"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="9900000000"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/roboto_light"
                 android:layout_marginTop="5dp"/>
 
             <TextView
-                android:id="@+id/tv_save"
+                android:id="@+id/tv_change"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -60,23 +62,12 @@
                 android:layout_height="1dp"
                 android:background="@color/greyExtratrans"
                 android:layout_marginTop="10dp"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/greyExtratrans"
-                android:layout_marginTop="10dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Price Details"
-                android:fontFamily="@font/roboto_light"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/colorBlack"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"/>
             <View
@@ -148,12 +139,13 @@
                     android:layout_height="wrap_content"
                     android:text="Amount Payable"
                     android:fontFamily="@font/roboto"
+                    android:textColor="@color/colorBlack"
                     android:layout_weight="1"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="\u20B9 5,764"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorBlack"
                     android:gravity="end"
                     android:fontFamily="@font/roboto"
                     android:layout_weight="1"/>
@@ -164,6 +156,83 @@
                 android:layout_height="1dp"
                 android:background="@color/greyExtratrans"
                 android:layout_marginTop="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Payments"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/greyExtratrans"
+                android:layout_marginTop="10dp"/>
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="UPI (PhonePe/ Google Pay/ BHIM)"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_marginTop="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/greyExtratrans"
+                    android:layout_marginTop="10dp"/>
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Credit/ Debit/ ATM Card"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_marginTop="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/greyExtratrans"
+                    android:layout_marginTop="10dp"/>
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Net Banking"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_marginTop="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/greyExtratrans"
+                    android:layout_marginTop="10dp"/>
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="EMI (Easy Installments)"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_marginTop="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/greyExtratrans"
+                    android:layout_marginTop="10dp"/>
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cash on Delivery"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/greyExtratrans"
+                    android:layout_marginTop="10dp"/>
+            </RadioGroup>
 
         </LinearLayout>
 
@@ -186,10 +255,10 @@
             android:gravity="center_vertical"
             android:padding="10dp"
             android:background="@color/colorWhite"
-            android:text="Price : \u20B9 5,764"/>
+            android:text="PRICE : \u20B9 5,764"/>
 
         <TextView
-            android:id="@+id/tv_checkout"
+            android:id="@+id/tv_continue"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="0.5"
@@ -198,7 +267,20 @@
             android:padding="12dp"
             android:gravity="center"
             android:background="@color/submit"
-            android:text="CHECKOUT"/>
+            android:text="CONTINUE"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_order"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.5"
+            android:textColor="@color/colorWhite"
+            android:fontFamily="@font/roboto"
+            android:padding="12dp"
+            android:gravity="center"
+            android:background="@color/submit"
+            android:text="PLACE ORDER"/>
 
     </LinearLayout>
 

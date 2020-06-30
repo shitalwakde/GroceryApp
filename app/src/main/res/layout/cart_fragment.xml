@@ -9,6 +9,7 @@
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     <LinearLayout
         android:id="@+id/bottom_button"
@@ -27,7 +28,7 @@
             android:gravity="center_vertical"
             android:padding="10dp"
             android:background="@color/colorWhite"
-            android:text="Price : \u20B9 5,764"/>
+            android:text="PRICE : \u20B9 5,764"/>
 
         <TextView
             android:id="@+id/tv_checkout"

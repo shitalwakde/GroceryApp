@@ -1,6 +1,7 @@
 package com.app.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +12,23 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.callback.DrawerItemClickLisener;
+import com.app.features.navmenu.OfferActivity;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.app.activities.MainActivity.drawerLayout;
+
 public class NavMenuAdapter extends RecyclerView.Adapter<NavMenuAdapter.MyViewHolder> {
+    Context mcontext;
     private final DrawerItemClickLisener lisener;
     ArrayList<NavMenu> navMenus;
 
-    public NavMenuAdapter(DrawerItemClickLisener lisener, ArrayList<NavMenu> navMenus) {
+    public NavMenuAdapter(Context mcontext, DrawerItemClickLisener lisener, ArrayList<NavMenu> navMenus) {
+        this.mcontext = mcontext;
         this.lisener = lisener;
         this.navMenus = navMenus;
     }
@@ -34,7 +41,7 @@ public class NavMenuAdapter extends RecyclerView.Adapter<NavMenuAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         final NavMenu menu = navMenus.get(position);
 
         holder.nma_tv_menu.setText(menu.getTitle());
@@ -47,6 +54,36 @@ public class NavMenuAdapter extends RecyclerView.Adapter<NavMenuAdapter.MyViewHo
         }else {
             holder.iv_forword_arrow.setVisibility(View.GONE);
         }
+
+        holder.tvDiscountProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    holder.llBelowMenu.setVisibility(View.GONE);
+                    holder.iv_down_arrow.setVisibility(View.GONE);
+                    holder.iv_forword_arrow.setVisibility(View.VISIBLE);
+                }
+                Intent intent=new Intent(mcontext, OfferActivity.class);
+                intent.putExtra("product","discount");
+                mcontext.startActivity(intent);
+            }
+        });
+
+        holder.tvspecialoffers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    holder.llBelowMenu.setVisibility(View.GONE);
+                    holder.iv_down_arrow.setVisibility(View.GONE);
+                    holder.iv_forword_arrow.setVisibility(View.VISIBLE);
+                }
+                Intent intent=new Intent(mcontext,OfferActivity.class);
+                intent.putExtra("product","offer");
+                mcontext.startActivity(intent);
+            }
+        });
 
     }
 

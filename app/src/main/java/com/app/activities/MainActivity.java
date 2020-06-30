@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
@@ -16,11 +17,20 @@ import com.app.R;
 import com.app.callback.HomeClickLisener;
 import com.app.callback.DrawerItemClickLisener;
 import com.app.databinding.ActivityMainBinding;
+import com.app.features.navmenu.OrderActivity;
+import com.app.features.navmenu.OrderDetailFragment;
+import com.app.features.navmenu.OrderFragment;
+import com.app.features.navmenu.WishListActivity;
+import com.app.features.navmenu.WishListFragment;
 import com.app.features.productdetail.ProductDetailActivity;
 import com.app.features.home.Category;
 import com.app.features.home.HomeFragment;
 import com.app.features.product.ProductFragment;
+import com.app.features.profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import static com.app.features.cart.CartActivity.cartContainer;
+import static com.app.features.productdetail.ProductDetailActivity.productContainer;
 
 public class MainActivity extends BaseActivity implements DrawerItemClickLisener, HomeClickLisener {
     public static TextView tv;
@@ -28,6 +38,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
     FragmentManager fragmentManager;
     public static int containNav, appBarContainer;
     public static LinearLayout ll_search;
+    public static DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +51,8 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
         containNav = R.id.container_nav;
         appBarContainer = R.id.app_bar_container;
         ll_search = (LinearLayout)findViewById(R.id.ll_search);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
         mView.included.bottomNav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mView.drawer, mView.included.toolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -66,8 +79,18 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
             case Offers:
                 break;
             case MyOrders:
+                if (mView.drawer.isDrawerOpen(GravityCompat.START)) {
+                    mView.drawer.closeDrawer(GravityCompat.START);
+                }
+                Intent intent = new Intent(MainActivity.this, OrderActivity.class);
+                startActivity(intent);
                 break;
             case MyWishlist:
+                if (mView.drawer.isDrawerOpen(GravityCompat.START)) {
+                    mView.drawer.closeDrawer(GravityCompat.START);
+                }
+                Intent intent1 = new Intent(MainActivity.this, WishListActivity.class);
+                startActivity(intent1);
                 break;
             case MyNotifications:
                 break;
@@ -86,8 +109,16 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
                 case R.id.bn_home:
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.bbn_search:
+                    Intent intent1 = new Intent(MainActivity.this, OrderActivity.class);
+                    startActivity(intent1);
                     break;
                 case R.id.bn_profile:
+                    Intent intent2 = new Intent(MainActivity.this, ProfileActivity.class);
+                    startActivity(intent2);
                     break;
             }
             return false;
@@ -134,6 +165,11 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
         /*fragmentManager.beginTransaction().replace(R.id.app_bar_container , new ProductDetailFragment())
                 .addToBackStack(null)
                 .commit();*/
+    }
+
+    @Override
+    public void orderClickLisener(Category category) {
+
     }
 
 }
