@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.app.R;
@@ -17,7 +18,9 @@ import com.app.constant.AppConstant;
 import com.app.features.login.mvvm.LoginPresenter;
 import com.app.features.login.mvvm.LoginPresenterImp;
 import com.app.features.login.mvvm.LoginView;
+import com.app.util.AppUtils;
 import com.app.util.PrefUtil;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.annotation.NonNull;
@@ -31,6 +34,7 @@ public class LoginFragment extends Fragment implements LoginView {
     EditText et_username, et_password;
     TextInputLayout tv_username, tv_password;
     LoginPresenter presenter;
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class LoginFragment extends Fragment implements LoginView {
         tv_login = (TextView)rootView.findViewById(R.id.tv_login);
         tv_singup = (TextView)rootView.findViewById(R.id.tv_singup);
         tv_forgot_password = (TextView)rootView.findViewById(R.id.tv_forgot_password);
+        progressBar = rootView.findViewById(R.id.progress);
     }
 
     private void click(){
@@ -71,6 +76,7 @@ public class LoginFragment extends Fragment implements LoginView {
         tv_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 presenter.onLoginClicked(et_username.getText().toString(),et_password.getText().toString());
             }
         });
@@ -121,30 +127,36 @@ public class LoginFragment extends Fragment implements LoginView {
 
     @Override
     public void onUsernameInvalid() {
+        progressBar.setVisibility(View.GONE);
         tv_username.setError("Username is not valid");
     }
 
     @Override
     public void onPasswordInvalid() {
-        tv_password.setError("Password is not valid");
+        progressBar.setVisibility(View.GONE);
+        tv_password.setError("Please Enter Password");
     }
 
     @Override
-    public void onLoginSuccess(int userId, String name) {
-        PrefUtil.getInstance(getContext()).putData(AppConstant.PREF_USER_ID,userId);
-        PrefUtil.getInstance(getContext()).putData(AppConstant.PREF_USER_NAME,name);
+    public void onLoginSuccess(ModLogin loginModel) {
+        progressBar.setVisibility(View.GONE);
+        PrefUtil.getInstance(getContext()).putData(AppConstant.PREF_USER_ID,loginModel.getLoginId());
+        AppUtils.setUserDetails(getContext(),loginModel);
         (getActivity()).finish();
         getActivity().startActivity(new Intent(getContext(),MainActivity.class));
+        //AppUtils.getUserDetails(getContext()).getLoginId();
     }
 
     @Override
     public void onLoginFail(String message) {
-
+        progressBar.setVisibility(View.GONE);
+        Snackbar.make(progressBar,message,Snackbar.LENGTH_SHORT);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        progressBar.setVisibility(View.GONE);
         presenter.onViewDestroy();
     }
 }

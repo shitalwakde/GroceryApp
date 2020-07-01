@@ -1,10 +1,10 @@
 package com.app.features.home;
 
 public class Category {
-    public int Qty;
+    public int qty;
     private int iv_category, iv_best, iv_brand;
     private String product_type, tv_category_name, tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_orderId, tv_orderDate, tv_deliveryDate,
-            tv_orderStatus,tv_payment_status, tv_orderAmount,subCat;
+            tv_orderStatus,tv_payment_status, tv_orderAmount,subCat, tv_title, tv_subTitle;
 
     public String getProduct_type() {
         return product_type;
@@ -134,5 +134,19 @@ public class Category {
         this.tv_orderAmount = tv_orderAmount;
     }
 
+    public String getTv_title() {
+        return tv_title;
+    }
 
+    public void setTv_title(String tv_title) {
+        this.tv_title = tv_title;
+    }
+
+    public String getTv_subTitle() {
+        return tv_subTitle;
+    }
+
+    public void setTv_subTitle(String tv_subTitle) {
+        this.tv_subTitle = tv_subTitle;
+    }
 }

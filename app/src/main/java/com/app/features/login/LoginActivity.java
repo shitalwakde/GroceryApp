@@ -6,8 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 
 import com.app.R;
-import com.app.features.login.LoginFragment;
-import com.app.features.login.SignupFragment;
+import com.app.features.signup.SignupFragment;
 
 public class LoginActivity extends AppCompatActivity {
 

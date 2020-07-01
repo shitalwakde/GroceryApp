@@ -23,6 +23,8 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
             android:text="Don't worry, we will notify you as soon as there are some activity "
             android:fontFamily="@font/roboto_light" />
     </LinearLayout>

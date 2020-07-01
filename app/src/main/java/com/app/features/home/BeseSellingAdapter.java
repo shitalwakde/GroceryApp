@@ -28,8 +28,9 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
 
     public BeseSellingAdapter(HomeClickLisener lisener,final List<Category> mdata) {
         this.lisener = lisener;
-        this.mdata = new ArrayList<>();
-        this.mdata.addAll(mdata);
+        this.mdata = mdata;
+        // this.mdata = new ArrayList<>();
+        //this.mdata.addAll(mdata);
     }
 
 
@@ -49,14 +50,14 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
         holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
                 | Paint.STRIKE_THRU_TEXT_FLAG);
 
-        if(category.Qty <= 0){
+        if(category.qty <= 0){
             holder.tv_add.setVisibility(View.VISIBLE);
             holder.ll_quantity.setVisibility(View.GONE);
         }else {
             holder.ll_quantity.setVisibility(View.VISIBLE);
             holder.tv_add.setVisibility(View.GONE);
         }
-        holder.tv_quantity.setText(String.valueOf(category.Qty));
+        holder.tv_quantity.setText(String.valueOf(category.qty));
 
     }
 
@@ -132,14 +133,14 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
         }
 
         private void changeQty(int adapterPosition,int type) {
-            int qty=mdata.get(adapterPosition).Qty;
+            int qty=mdata.get(adapterPosition).qty;
             if(type==ADD)
                 qty=qty +1;
             else if(type ==REMOVE)
                 qty=qty-1;
             else
                 qty=0;
-            mdata.get(adapterPosition).Qty=qty;
+            mdata.get(adapterPosition).qty=qty;
             notifyItemChanged(adapterPosition);
         }
     }

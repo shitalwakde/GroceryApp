@@ -17,17 +17,20 @@ import com.app.R;
 import com.app.callback.HomeClickLisener;
 import com.app.callback.DrawerItemClickLisener;
 import com.app.databinding.ActivityMainBinding;
+import com.app.features.login.LoginActivity;
 import com.app.features.navmenu.OrderActivity;
 import com.app.features.navmenu.OrderDetailFragment;
 import com.app.features.navmenu.OrderFragment;
 import com.app.features.navmenu.WishListActivity;
 import com.app.features.navmenu.WishListFragment;
+import com.app.features.notification.NotificationActivity;
 import com.app.features.productdetail.ProductDetailActivity;
 import com.app.features.home.Category;
 import com.app.features.home.HomeFragment;
 import com.app.features.product.ProductFragment;
 import com.app.features.profile.ProfileActivity;
 import com.app.features.wallet.WalletActivity;
+import com.app.util.AppUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static com.app.features.cart.CartActivity.cartContainer;
@@ -94,6 +97,8 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                 startActivity(intent1);
                 break;
             case MyNotifications:
+                Intent intent3 = new Intent(MainActivity.this, NotificationActivity.class);
+                startActivity(intent3);
                 break;
             case FAQs:
                 break;
@@ -102,6 +107,8 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                 startActivity(intent2);
                 break;
             case Logout:
+                AppUtils.setUserDetails(this, null);
+                invalidateOptionsMenu();
                 break;
         }
     }

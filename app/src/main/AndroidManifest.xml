@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".features.wallet.WalletActivity"></activity>
+        <activity android:name=".features.notification.NotificationActivity"></activity>
+        <activity android:name=".features.wallet.WalletActivity" />
         <activity
             android:name=".features.profile.ProfileActivity"
             android:windowSoftInputMode="stateHidden" />

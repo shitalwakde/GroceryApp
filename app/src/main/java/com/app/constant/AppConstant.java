@@ -11,6 +11,7 @@ public class AppConstant {
     public static final String PREF_USER_ID="userid";
     public static final String PREF_IS_LOGGED_IN="isLoggedIn";
     public static final String PREF_USER_NAME = "userfullname";
+    public static final String PREF_USER_DATA = "user_detail";
 
     public static ArrayList<NavMenu> getNavMenuItems(){
         ArrayList<NavMenu> navMenus= new ArrayList<>();

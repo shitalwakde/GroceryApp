@@ -44,9 +44,24 @@
                 android:orientation="vertical"
                 android:padding="20dp">
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tv_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Full Name"
+                        android:inputType="text"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/roboto_light"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tv_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/et_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Email"
@@ -55,9 +70,11 @@
                         android:fontFamily="@font/roboto_light"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tv_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/et_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Mobile"
@@ -66,11 +83,13 @@
                         android:fontFamily="@font/roboto_light"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tv_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:passwordToggleEnabled="true"
                     app:passwordToggleTint="@color/grey">
                     <EditText
+                        android:id="@+id/et_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Password"
@@ -79,11 +98,13 @@
                         android:fontFamily="@font/roboto_light"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tv_comfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:passwordToggleEnabled="true"
                     app:passwordToggleTint="@color/grey">
                     <EditText
+                        android:id="@+id/et_confirm_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Confirm Password"
@@ -92,7 +113,7 @@
                         android:fontFamily="@font/roboto_light"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <TextView
-                    android:id="@+id/tv_login"
+                    android:id="@+id/tv_signup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"

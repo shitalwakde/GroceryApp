@@ -1,5 +1,6 @@
 package com.app.features.login.mvvm;
 
+import com.app.features.login.ModLogin;
 import com.app.util.AppUtils;
 
 public class LoginPresenterImp implements LoginPresenter {
@@ -32,9 +33,9 @@ public class LoginPresenterImp implements LoginPresenter {
     }
 
     @Override
-    public void onLoginSucess(int userid, String username) {
+    public void onLoginSucess(ModLogin loginModel) {
         if(loginView!=null){
-            loginView.onLoginSuccess(userid,username);
+            loginView.onLoginSuccess(loginModel);
         }
     }
 

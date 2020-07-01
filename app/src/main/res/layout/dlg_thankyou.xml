@@ -7,45 +7,28 @@
     android:layout_gravity="center"
     android:background="@color/colorWhite">
 
-    <RelativeLayout
-        android:id="@+id/rl_delivery_detail"
+    <TextView
+        android:id="@+id/tv_forgot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
-
-        <TextView
-            android:id="@+id/tv_forgot"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Thank you for your order !!!"
-            android:textColor="@color/colorBlack"
-            android:fontFamily="@font/roboto"
-            android:gravity="center" />
-
-        <ImageView
-            android:id="@+id/iv_cross"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_close"
-            android:padding="5dp"
-            android:layout_marginLeft="10dp"/>
-
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/greyExtratrans"/>
-
+        android:text="Thank you !!!"
+        android:textSize="18sp"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:padding="20dp"/>
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/right"
+        android:layout_gravity="center"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your order No. is #0001 &amp; Your order will be delivered within 2-3 days"
         android:textSize="13sp"
         android:fontFamily="@font/roboto"
-        android:textColor="@color/colorBlack"
-        android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:paddingTop="20dp"
         android:paddingLeft="20dp" />
 
@@ -60,7 +43,7 @@
         android:padding="10dp"
         android:gravity="center"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/bg_login"
         android:layout_gravity="center"/>
 

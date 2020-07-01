@@ -1,6 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/iv_wallet"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/addwallet"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"/>
+
+    <TextView
+        android:id="@+id/tv_amount"
+        android:layout_below="@+id/iv_wallet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter amount to add to your wallet"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/roboto_light"
+        android:textSize="13sp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_amount"
+        android:layout_below="@+id/tv_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/rupee"
+            android:layout_marginRight="10dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Amount"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:background="@color/colorWhite" />
+    </LinearLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_below="@+id/ll_amount"
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:background="@color/grey"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"/>
+
+    <TextView
+        android:id="@+id/tv_add_money"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/bg_pending"
+        android:textColor="@color/colorWhite"
+        android:fontFamily="@font/roboto"
+        android:text="ADD MONEY"
+        android:padding="10dp"/>
+
+</LinearLayout>

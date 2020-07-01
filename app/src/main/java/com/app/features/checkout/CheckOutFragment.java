@@ -78,7 +78,6 @@ public class CheckOutFragment extends Fragment {
         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog1.setCancelable(true);
         dialog1.setContentView(R.layout.dlg_thankyou);
-        ImageView iv_cross = (ImageView)dialog1.findViewById(R.id.iv_cross);
         TextView tv_submit = (TextView)dialog1.findViewById(R.id.tv_submit);
 
         tv_submit.setOnClickListener(new View.OnClickListener() {
@@ -90,12 +89,6 @@ public class CheckOutFragment extends Fragment {
             }
         });
 
-        iv_cross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog1.dismiss();
-            }
-        });
         dialog1.show();
     }
 }

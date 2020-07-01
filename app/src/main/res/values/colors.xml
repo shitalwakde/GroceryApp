@@ -18,4 +18,5 @@
     <color name="orangetrans">#5FE76108</color>
     <color name="darkorange">#F8A204</color>
     <color name="blue">#2196F3</color>
+    <color name="transparent">#00f1f1f1</color>
 </resources>
