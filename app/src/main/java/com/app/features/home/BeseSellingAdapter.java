@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.R;
@@ -23,6 +24,7 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
     public static final int ADD=1;
     public static final int REMOVE=2;
     public static final int RESET=3;
+    boolean flag = false;
 
     public BeseSellingAdapter(HomeClickLisener lisener,final List<Category> mdata) {
         this.lisener = lisener;
@@ -65,13 +67,15 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView iv_best;
+        ImageView iv_best, iv_unwish;
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_minus, tv_quantity, tv_plus;
         LinearLayout ll_quantity;
+        RelativeLayout rl_like;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             iv_best = (ImageView)itemView.findViewById(R.id.iv_best);
+            iv_unwish = (ImageView)itemView.findViewById(R.id.iv_unwish);
             tv_pr_name = (TextView)itemView.findViewById(R.id.tv_pr_name);
             tv_pr_sub_name = (TextView)itemView.findViewById(R.id.tv_pr_sub_name);
             tv_price = (TextView)itemView.findViewById(R.id.tv_price);
@@ -81,14 +85,28 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
             tv_quantity = (TextView)itemView.findViewById(R.id.tv_quantity);
             tv_plus = (TextView)itemView.findViewById(R.id.tv_plus);
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
+            rl_like = (RelativeLayout)itemView.findViewById(R.id.rl_like);
 
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    lisener.productClickLisener(mdata.get(getAdapterPosition()));
-//                }
-//            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    lisener.productClickLisener(mdata.get(getAdapterPosition()));
+                }
+            });
+
+            rl_like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(flag==false){
+                        flag=true;
+                        iv_unwish.setImageResource(R.drawable.ic_heart_red);
+                    }else{
+                        flag=false;
+                        iv_unwish.setImageResource(R.drawable.ic_heart);
+                    }
+                }
+            });
 
             tv_add.setOnClickListener(new View.OnClickListener() {
                 @Override

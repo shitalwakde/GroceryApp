@@ -9,8 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".features.profile.ProfileActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".features.wallet.WalletActivity"></activity>
+        <activity
+            android:name=".features.profile.ProfileActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".features.navmenu.OfferActivity" />
         <activity android:name=".features.login.LoginActivity" />
         <activity android:name=".features.navmenu.WishListActivity" />

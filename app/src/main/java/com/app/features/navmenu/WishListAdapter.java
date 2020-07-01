@@ -52,7 +52,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView iv_best, iv_wish, iv_unwish;
+        ImageView iv_best, iv_unwish;
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add;
         LinearLayout ll_quantity;
         RelativeLayout rl_wish;

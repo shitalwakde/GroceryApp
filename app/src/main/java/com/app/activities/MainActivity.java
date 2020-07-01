@@ -27,6 +27,7 @@ import com.app.features.home.Category;
 import com.app.features.home.HomeFragment;
 import com.app.features.product.ProductFragment;
 import com.app.features.profile.ProfileActivity;
+import com.app.features.wallet.WalletActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static com.app.features.cart.CartActivity.cartContainer;
@@ -97,6 +98,8 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
             case FAQs:
                 break;
             case HelpCenter:
+                Intent intent2 = new Intent(MainActivity.this, WalletActivity.class);
+                startActivity(intent2);
                 break;
             case Logout:
                 break;

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.R;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHolder> {
     List<Category> mdata;
     HomeClickLisener lisener;
+    boolean flag = false;
 
     public ProductAdapter(HomeClickLisener lisener, List<Category> mdata) {
         this.lisener = lisener;
@@ -50,20 +52,39 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView iv_best;
+        ImageView iv_best, iv_unwish;
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add;
         LinearLayout ll_quantity;
+        RelativeLayout rl_wish;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             iv_best = (ImageView)itemView.findViewById(R.id.iv_best);
+            iv_unwish = (ImageView)itemView.findViewById(R.id.iv_unwish);
             tv_pr_name = (TextView)itemView.findViewById(R.id.tv_pr_name);
             tv_pr_sub_name = (TextView)itemView.findViewById(R.id.tv_pr_sub_name);
             tv_price = (TextView)itemView.findViewById(R.id.tv_price);
             tv_discount_price = (TextView)itemView.findViewById(R.id.tv_discount_price);
             tv_add = (TextView)itemView.findViewById(R.id.tv_add);
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
+            rl_wish = (RelativeLayout)itemView.findViewById(R.id.rl_wish);
+
+
+            rl_wish.setVisibility(View.VISIBLE);
+            iv_unwish.setImageResource(R.drawable.ic_heart);
+            iv_unwish.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(flag==false){
+                        flag=true;
+                        iv_unwish.setImageResource(R.drawable.ic_heart_red);
+                    }else{
+                        flag=false;
+                        iv_unwish.setImageResource(R.drawable.ic_heart);
+                    }
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

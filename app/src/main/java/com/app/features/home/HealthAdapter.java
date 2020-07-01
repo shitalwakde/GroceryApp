@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHolder> {
     List<Category> mdata;
     HomeClickLisener lisener;
+    boolean flag = false;
 
     public HealthAdapter(HomeClickLisener lisener, List<Category> mdata) {
         this.lisener = lisener;
@@ -53,24 +54,40 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView iv_best;
+        ImageView iv_best, iv_unwish;
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add;
         LinearLayout ll_quantity;
+        RelativeLayout rl_like;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             iv_best = (ImageView)itemView.findViewById(R.id.iv_best);
+            iv_unwish = (ImageView)itemView.findViewById(R.id.iv_unwish);
             tv_pr_name = (TextView)itemView.findViewById(R.id.tv_pr_name);
             tv_pr_sub_name = (TextView)itemView.findViewById(R.id.tv_pr_sub_name);
             tv_price = (TextView)itemView.findViewById(R.id.tv_price);
             tv_discount_price = (TextView)itemView.findViewById(R.id.tv_discount_price);
             tv_add = (TextView)itemView.findViewById(R.id.tv_add);
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
+            rl_like = (RelativeLayout)itemView.findViewById(R.id.rl_like);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     lisener.productClickLisener(mdata.get(getAdapterPosition()));
+                }
+            });
+
+            rl_like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(flag==false){
+                        flag=true;
+                        iv_unwish.setImageResource(R.drawable.ic_heart_red);
+                    }else{
+                        flag=false;
+                        iv_unwish.setImageResource(R.drawable.ic_heart);
+                    }
                 }
             });
 
