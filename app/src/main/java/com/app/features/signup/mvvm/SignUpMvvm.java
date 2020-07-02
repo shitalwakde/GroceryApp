@@ -20,11 +20,10 @@ public class SignUpMvvm {
         void onSignUpClicked(Context context, String name, String email, String mobile, String password, String confirmPassword);
         void onSignUpSuccess(ModLogin loginModel);
         void onSignUpFail(String message);
-
         void onViewDestroy();
     }
 
     public interface SignUpInteractor{
-        void callApiForSignUp(String name, String email, String mobile, String password, SignUpPresenter listener);
+        void callApiForSignUp(String name, String email, String mobile, String password, SignUpPresenter presenter);
     }
 }

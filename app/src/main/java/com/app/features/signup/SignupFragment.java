@@ -7,19 +7,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.R;
 import com.app.activities.MainActivity;
+import com.app.constant.AppConstant;
+import com.app.features.login.LoginActivity;
 import com.app.features.login.ModLogin;
+import com.app.features.otp.OtpFragment;
 import com.app.features.signup.mvvm.SignUpMvvm;
 import com.app.features.signup.mvvm.SignUpPresenterImp;
+import com.app.util.AppUtils;
+import com.app.util.PrefUtil;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static android.view.View.GONE;
 
 public class SignupFragment extends Fragment implements SignUpMvvm.SignUpView {
     View rootView;
@@ -49,6 +61,8 @@ public class SignupFragment extends Fragment implements SignUpMvvm.SignUpView {
     TextInputLayout tvComfirmPassword;
 
     SignUpMvvm.SignUpPresenter presenter;
+    ProgressBar progressBar;
+    FragmentManager fragmentManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +74,7 @@ public class SignupFragment extends Fragment implements SignUpMvvm.SignUpView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.signup_fragment, container, false);
+        ButterKnife.bind(this, rootView);
         init(rootView);
         click();
         presenter = new SignUpPresenterImp(this);
@@ -68,9 +83,8 @@ public class SignupFragment extends Fragment implements SignUpMvvm.SignUpView {
     }
 
     private void init(View rootView) {
-        ivBack = (ImageView) rootView.findViewById(R.id.iv_back);
-        tvSignup = (TextView) rootView.findViewById(R.id.tv_login);
-
+        fragmentManager = getActivity().getSupportFragmentManager();
+        progressBar = (ProgressBar)rootView.findViewById(R.id.progress);
     }
 
     private void click() {
@@ -84,45 +98,64 @@ public class SignupFragment extends Fragment implements SignUpMvvm.SignUpView {
         tvSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                progressBar.setVisibility(View.VISIBLE);
+                presenter.onSignUpClicked(getActivity(), etName.getText().toString(), etEmail.getText().toString(), etMobile.getText().toString(),
+                        etPassword.getText() .toString(), etConfirmPassword.getText().toString());
             }
         });
     }
 
     @Override
     public void onNameInvalid(String message) {
+        progressBar.setVisibility(GONE);
         tvName.setError(message);
     }
 
     @Override
     public void onEmailInvalid(String message) {
+        progressBar.setVisibility(GONE);
         tvEmail.setError(message);
     }
 
     @Override
     public void onMobileInvalid(String message) {
+        progressBar.setVisibility(GONE);
         tvMobile.setError(message);
     }
 
     @Override
     public void onPasswordInvalid(String message) {
+        progressBar.setVisibility(GONE);
         tvPassword.setError(message);
     }
 
     @Override
     public void onConfirmPasswordInvalid(String message) {
+        progressBar.setVisibility(GONE);
         tvComfirmPassword.setError(message);
     }
 
     @Override
     public void onSignUpSuccess(ModLogin loginModel) {
-
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
+        progressBar.setVisibility(GONE);
+        //PrefUtil.getInstance(getContext()).putData(AppConstant.PREF_USER_ID, loginModel.getLoginId());
+        AppUtils.setUserDetails(getContext(),loginModel);
+        fragmentManager.beginTransaction().replace(R.id.login_container, new OtpFragment()).addToBackStack(null).commit();
+        //(getActivity()).finish();
     }
 
     @Override
     public void onSignUpFail(String message) {
+        progressBar.setVisibility(GONE);
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        //Snackbar.make(progressBar, message, Snackbar.LENGTH_SHORT);
+    }
 
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        progressBar.setVisibility(GONE);
+        presenter.onViewDestroy();
     }
 }

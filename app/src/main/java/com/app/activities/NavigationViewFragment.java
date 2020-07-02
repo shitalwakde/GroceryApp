@@ -17,8 +17,11 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static com.app.activities.MainActivity.drawerLayout;
 
 public class NavigationViewFragment extends Fragment {
 
@@ -59,6 +62,9 @@ public class NavigationViewFragment extends Fragment {
         tv_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.putExtra("type", "login");
                 startActivity(intent);
@@ -68,6 +74,9 @@ public class NavigationViewFragment extends Fragment {
         tv_singup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.putExtra("type", "singup");
                 startActivity(intent);

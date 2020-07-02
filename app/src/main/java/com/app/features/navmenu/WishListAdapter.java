@@ -22,6 +22,9 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
     List<Category> mdata;
     HomeClickLisener lisener;
     boolean flag = false;
+    public static final int ADD=1;
+    public static final int REMOVE=2;
+    public static final int RESET=3;
 
     public WishListAdapter(HomeClickLisener lisener, List<Category> mdata) {
         this.lisener = lisener;
@@ -43,6 +46,15 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
         holder.tv_pr_sub_name.setText(category.getTv_pr_sub_name());
         holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
                 | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        if(category.qty <= 0){
+            holder.tv_add.setVisibility(View.VISIBLE);
+            holder.ll_quantity.setVisibility(View.GONE);
+        }else {
+            holder.ll_quantity.setVisibility(View.VISIBLE);
+            holder.tv_add.setVisibility(View.GONE);
+        }
+        holder.tv_quantity.setText(String.valueOf(category.qty));
     }
 
     @Override
@@ -53,7 +65,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView iv_best, iv_unwish;
-        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add;
+        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_remove, tv_minus, tv_quantity, tv_plus;
         LinearLayout ll_quantity;
         RelativeLayout rl_wish;
 
@@ -67,11 +79,16 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             tv_price = (TextView)itemView.findViewById(R.id.tv_price);
             tv_discount_price = (TextView)itemView.findViewById(R.id.tv_discount_price);
             tv_add = (TextView)itemView.findViewById(R.id.tv_add);
+            tv_remove = (TextView)itemView.findViewById(R.id.tv_remove);
+            tv_minus = (TextView)itemView.findViewById(R.id.tv_minus);
+            tv_quantity = (TextView)itemView.findViewById(R.id.tv_quantity);
+            tv_plus = (TextView)itemView.findViewById(R.id.tv_plus);
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
             rl_wish = (RelativeLayout)itemView.findViewById(R.id.rl_wish);
 
 
-            rl_wish.setVisibility(View.VISIBLE);
+            tv_remove.setVisibility(View.VISIBLE);
+            rl_wish.setVisibility(View.GONE);
             ll_quantity.setVisibility(View.VISIBLE);
             tv_add.setVisibility(View.GONE);
             iv_unwish.setOnClickListener(new View.OnClickListener() {
@@ -98,10 +115,35 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             tv_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ll_quantity.setVisibility(View.VISIBLE);
-                    tv_add.setVisibility(View.GONE);
+                    changeQty(getAdapterPosition(),ADD);
                 }
             });
+
+            tv_plus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeQty(getAdapterPosition(),ADD);
+                }
+            });
+
+            tv_minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeQty(getAdapterPosition(),REMOVE);
+                }
+            });
+        }
+
+        private void changeQty(int adapterPosition,int type) {
+            int qty=mdata.get(adapterPosition).qty;
+            if(type==ADD)
+                qty=qty +1;
+            else if(type ==REMOVE)
+                qty=qty-1;
+            else
+                qty=0;
+            mdata.get(adapterPosition).qty=qty;
+            notifyItemChanged(adapterPosition);
         }
     }
 }

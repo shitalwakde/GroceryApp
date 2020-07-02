@@ -11,4 +11,10 @@ public interface ApiInterface {
 
     @POST("/Api/Login")
     void getLogin(@Body JsonObject jsonObject, Callback<ModLogin> signUpModelCallback);
+
+    @POST("/Api/signUp")
+    void getSignUp(@Body JsonObject jsonObject, Callback<ModLogin> signUpModelCallback);
+
+    @POST("/Api/verifyOtp")
+    void getVerifyOtp(@Body JsonObject jsonObject, Callback<ModLogin> signUpModelCallback);
 }

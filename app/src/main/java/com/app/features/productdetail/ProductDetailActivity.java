@@ -40,7 +40,7 @@ import static com.app.activities.MainActivity.appBarContainer;
 public class ProductDetailActivity extends BaseActivity implements HomeClickLisener {
 
     ImageView iv_product, iv_unwish;
-    TextView tv_price, tv_rate_product, tv_add;
+    TextView tv_price, tv_rate_product, tv_add, tv_minus, tv_quantity, tv_plus;
     RelativeLayout rl_like;
     LinearLayout ll_quantity;
     FragmentManager fragmentManager;
@@ -49,6 +49,10 @@ public class ProductDetailActivity extends BaseActivity implements HomeClickLise
     List<Category> bestSellingList;
     public static int productContainer;
     boolean flag = false;
+    Category category;
+    public static final int ADD=1;
+    public static final int REMOVE=2;
+    public static final int RESET=3;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +70,7 @@ public class ProductDetailActivity extends BaseActivity implements HomeClickLise
     }
 
     private void init() {
+        category = new Category();
         fragmentManager = getSupportFragmentManager();
         bestSellingList = new ArrayList<>();
         iv_product = (ImageView) findViewById(R.id.iv_product);
@@ -73,6 +78,9 @@ public class ProductDetailActivity extends BaseActivity implements HomeClickLise
         tv_price = (TextView) findViewById(R.id.tv_price);
         tv_rate_product = (TextView) findViewById(R.id.tv_rate_product);
         tv_add = (TextView) findViewById(R.id.tv_add);
+        tv_minus = (TextView)findViewById(R.id.tv_minus);
+        tv_quantity = (TextView)findViewById(R.id.tv_quantity);
+        tv_plus = (TextView)findViewById(R.id.tv_plus);
         rv_related_img = (RecyclerView)findViewById(R.id.rv_related_img);
         rv_related_img1 = (RecyclerView)findViewById(R.id.rv_related_img1);
         rl_like = (RelativeLayout)findViewById(R.id.rl_like);
@@ -123,15 +131,48 @@ public class ProductDetailActivity extends BaseActivity implements HomeClickLise
             }
         });
 
-        tv_add.setOnClickListener(new View.OnClickListener() {
+        if(category.qty <= 0){
+            tv_add.setVisibility(View.VISIBLE);
+            ll_quantity.setVisibility(View.GONE);
+        }else {
+            ll_quantity.setVisibility(View.VISIBLE);
+            tv_add.setVisibility(View.GONE);
+        }
+        tv_quantity.setText(String.valueOf(category.qty));
+
+        /*tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ll_quantity.setVisibility(View.VISIBLE);
-                tv_add.setVisibility(View.GONE);
+                changeQty(getAdapterPosition(),ADD);
             }
         });
+
+        tv_plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeQty(getAdapterPosition(),ADD);
+            }
+        });
+
+        tv_minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeQty(getAdapterPosition(),REMOVE);
+            }
+        });*/
     }
 
+    /*private void changeQty(int adapterPosition,int type) {
+        int qty=mdata.get(adapterPosition).qty;
+        if(type==ADD)
+            qty=qty +1;
+        else if(type ==REMOVE)
+            qty=qty-1;
+        else
+            qty=0;
+        mdata.get(adapterPosition).qty=qty;
+        notifyItemChanged(adapterPosition);
+    }*/
 
     public void showRatingDialog(){
         final Dialog dialog1 = new Dialog(ProductDetailActivity.this);

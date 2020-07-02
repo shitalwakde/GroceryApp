@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.R;
 import com.app.activities.MainActivity;
@@ -142,15 +143,16 @@ public class LoginFragment extends Fragment implements LoginView {
         progressBar.setVisibility(View.GONE);
         PrefUtil.getInstance(getContext()).putData(AppConstant.PREF_USER_ID,loginModel.getLoginId());
         AppUtils.setUserDetails(getContext(),loginModel);
-        (getActivity()).finish();
         getActivity().startActivity(new Intent(getContext(),MainActivity.class));
+        (getActivity()).finish();
         //AppUtils.getUserDetails(getContext()).getLoginId();
     }
 
     @Override
     public void onLoginFail(String message) {
         progressBar.setVisibility(View.GONE);
-        Snackbar.make(progressBar,message,Snackbar.LENGTH_SHORT);
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+       // Snackbar.make(progressBar,message,Snackbar.LENGTH_SHORT);
     }
 
     @Override

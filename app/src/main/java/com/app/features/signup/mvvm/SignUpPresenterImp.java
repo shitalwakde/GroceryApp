@@ -52,7 +52,7 @@ public class SignUpPresenterImp implements SignUpMvvm.SignUpPresenter {
              isAllValid=false;
          }
 
-         if(!AppUtils.isNullOrEmpty(password) && !AppUtils.isNullOrEmpty(confirmPassword) && password != confirmPassword){
+         if(!AppUtils.isNullOrEmpty(password) && !AppUtils.isNullOrEmpty(confirmPassword) && !password.equals(confirmPassword)){
              signUpView.onPasswordInvalid("Password does not match");
              isAllValid=false;
          }
