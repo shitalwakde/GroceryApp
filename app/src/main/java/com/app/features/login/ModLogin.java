@@ -1,7 +1,11 @@
 package com.app.features.login;
 
+import com.app.features.home.Category;
+
+import java.util.ArrayList;
+
 public class ModLogin {
-    private String loginId, name, email, mobile, success, msg ;
+    private String loginId, name, email, mobile, success, msg, message ;
 
     public String getLoginId() {
         return loginId;
@@ -49,5 +53,13 @@ public class ModLogin {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

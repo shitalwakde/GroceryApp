@@ -1,7 +1,50 @@
 package com.app.features.home;
 
-public class Category {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Category implements Serializable
+{
+    private String categoryId;
+    private String categoryName;
+    private String image;
+    ArrayList<SubCategory> subcategory;
+
     public int qty;
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public ArrayList<SubCategory> getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(ArrayList<SubCategory> subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    //=========================================================================================================================
     private int iv_category, iv_best, iv_brand;
     private String product_type, tv_category_name, tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_orderId, tv_orderDate, tv_deliveryDate,
             tv_orderStatus,tv_payment_status, tv_orderAmount,subCat, tv_title, tv_subTitle;

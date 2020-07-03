@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.R;
+import com.app.callback.CategoryListener;
 import com.app.callback.HomeClickLisener;
 
 import java.util.List;
@@ -16,9 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
     List<Category> mdata;
-    private final HomeClickLisener lisener;
+    private final CategoryListener lisener;
 
-    public CategoryAdapter(HomeClickLisener lisener, List<Category> mdata) {
+    public CategoryAdapter(CategoryListener lisener, List<Category> mdata) {
         this.lisener = lisener;
         this.mdata = mdata;
     }

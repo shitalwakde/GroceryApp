@@ -8,11 +8,11 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.app.R;
 import com.app.callback.HomeClickLisener;
 import com.app.features.home.Category;
+import com.app.features.home.SubCategory;
 import com.app.features.productdetail.ProductDetailActivity;
 
 public class WishListActivity extends AppCompatActivity implements HomeClickLisener {
@@ -44,11 +44,6 @@ public class WishListActivity extends AppCompatActivity implements HomeClickLise
     }
 
     @Override
-    public void categoryClickLisener(Category category) {
-
-    }
-
-    @Override
     public void productClickLisener(Category category) {
         Intent intent = new Intent(this, ProductDetailActivity.class);
         startActivity(intent);
@@ -58,4 +53,5 @@ public class WishListActivity extends AppCompatActivity implements HomeClickLise
     public void orderClickLisener(Category category) {
 
     }
+
 }

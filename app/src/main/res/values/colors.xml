@@ -11,6 +11,7 @@
     <color name="border">#f47443</color>
     <color name="submit">#E72408</color>
     <color name="bg">#97F0EDED</color>
+    <color name="bgtrans">#65F0EDED</color>
     <color name="colorPrimarytrans">#D678B825</color>
     <color name="greentrans">#6578B825</color>
     <color name="bg_trans">#2234BFA3</color>

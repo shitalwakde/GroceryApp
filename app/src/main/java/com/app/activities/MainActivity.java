@@ -2,11 +2,14 @@ package com.app.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,15 +17,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.R;
+import com.app.callback.CategoryListener;
 import com.app.callback.HomeClickLisener;
 import com.app.callback.DrawerItemClickLisener;
+import com.app.constant.AppConstant;
 import com.app.databinding.ActivityMainBinding;
+import com.app.features.home.SubCategory;
 import com.app.features.login.LoginActivity;
+import com.app.features.login.ModLogin;
 import com.app.features.navmenu.OrderActivity;
-import com.app.features.navmenu.OrderDetailFragment;
-import com.app.features.navmenu.OrderFragment;
 import com.app.features.navmenu.WishListActivity;
-import com.app.features.navmenu.WishListFragment;
 import com.app.features.notification.NotificationActivity;
 import com.app.features.productdetail.ProductDetailActivity;
 import com.app.features.home.Category;
@@ -31,18 +35,20 @@ import com.app.features.product.ProductFragment;
 import com.app.features.profile.ProfileActivity;
 import com.app.features.wallet.WalletActivity;
 import com.app.util.AppUtils;
+import com.app.util.PrefUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import static com.app.features.cart.CartActivity.cartContainer;
-import static com.app.features.productdetail.ProductDetailActivity.productContainer;
+import java.io.Serializable;
 
-public class MainActivity extends BaseActivity implements DrawerItemClickLisener, HomeClickLisener {
+public class MainActivity extends BaseActivity implements DrawerItemClickLisener, HomeClickLisener , CategoryListener {
+    private static final String TAG_DRAWER_FRAGMENT = "drawerFragment";
     public static TextView tv;
     private ActivityMainBinding mView;
     FragmentManager fragmentManager;
     public static int containNav, appBarContainer;
     public static LinearLayout ll_search;
     public static DrawerLayout drawerLayout;
+    ModLogin loginModel = new ModLogin();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +71,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
 
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(appBarContainer, new HomeFragment()).commit();
-        fragmentManager.beginTransaction().replace(containNav , new NavigationViewFragment()).commit();
+        fragmentManager.beginTransaction().replace(containNav , new NavigationViewFragment(),TAG_DRAWER_FRAGMENT).commit();
     }
 
     @Override
@@ -107,9 +113,33 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                 startActivity(intent2);
                 break;
             case Logout:
-                AppUtils.setUserDetails(this, null);
-                invalidateOptionsMenu();
+                AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure want to Logout ?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PrefUtil.getInstance(MainActivity.this).removeKeyData(AppConstant.PREF_USER_ID);
+                        PrefUtil.getInstance(MainActivity.this).removeKeyData(AppConstant.PREF_USER_DATA);
+                        changeDrawerItems();
+                        drawerLayout.closeDrawers();
+                        invalidateOptionsMenu();
+                        dialog.cancel();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
                 break;
+        }
+    }
+
+    private void changeDrawerItems() {
+        Fragment fragment=fragmentManager.findFragmentByTag(TAG_DRAWER_FRAGMENT);
+        if(fragment instanceof NavigationViewFragment){
+            NavigationViewFragment navigationViewFragment= (NavigationViewFragment) fragment;
+            navigationViewFragment.changeMenus();
         }
     }
 
@@ -162,7 +192,11 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
 
     @Override
     public void categoryClickLisener(Category category) {
-        fragmentManager.beginTransaction().replace(appBarContainer , new ProductFragment(""))
+        Fragment fragment=new ProductFragment("", "", "", "");
+        Bundle bundle=new Bundle();
+        bundle.putSerializable(AppConstant.EXTRA_PROD_CATEGORY, (Serializable) category);
+        fragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(appBarContainer , fragment)
                 .addToBackStack(null)
                 .commit();
 
@@ -180,6 +214,17 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
     @Override
     public void orderClickLisener(Category category) {
 
+    }
+
+    @Override
+    public void subcategoryClickLisener(Category category,SubCategory subCategories) {
+        Fragment fragment=new ProductFragment("", subCategories.getCategoryId(), subCategories.getSubCategoryId(), subCategories.getName());
+        Bundle bundle=new Bundle();
+        bundle.putSerializable(AppConstant.EXTRA_PROD_CATEGORY, (Serializable) category);
+        fragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(appBarContainer ,fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 }

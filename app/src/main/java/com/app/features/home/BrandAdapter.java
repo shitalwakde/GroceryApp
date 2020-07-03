@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.app.R;
+import com.app.callback.CategoryListener;
 import com.app.callback.HomeClickLisener;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.MyViewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    lisener.categoryClickLisener(mdata.get(getAdapterPosition()));
+                    //lisener.categoryClickLisener(mdata.get(getAdapterPosition()));
                 }
             });
         }

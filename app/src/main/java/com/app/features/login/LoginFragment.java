@@ -36,6 +36,7 @@ public class LoginFragment extends Fragment implements LoginView {
     TextInputLayout tv_username, tv_password;
     LoginPresenter presenter;
     ProgressBar progressBar;
+    AppConstant appConstant;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,6 +131,11 @@ public class LoginFragment extends Fragment implements LoginView {
     public void onUsernameInvalid() {
         progressBar.setVisibility(View.GONE);
         tv_username.setError("Username is not valid");
+    }
+
+    private void resetError(){
+        tv_username.setError(null);
+        tv_password.setError(null);
     }
 
     @Override

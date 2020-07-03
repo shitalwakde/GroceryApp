@@ -19,7 +19,11 @@ public class OtpInteractorImp implements OtpMvvm.OtpInteractor {
     @Override
     public void callApiForOtp(Context context, String otp, OtpMvvm.OtpPresenter presenter) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("mobileEmail", AppUtils.getUserDetails(context).getEmail());
+        if(AppUtils.getUserDetails(context).getEmail() == null){
+            jsonObject.addProperty("mobileEmail", AppUtils.getUserDetails(context).getMobile());
+        }else {
+            jsonObject.addProperty("mobileEmail", AppUtils.getUserDetails(context).getEmail());
+        }
         jsonObject.addProperty("otp", otp);
 
         Log.w("TAG", "mobileEmail : "+ AppUtils.getUserDetails(context).getEmail());

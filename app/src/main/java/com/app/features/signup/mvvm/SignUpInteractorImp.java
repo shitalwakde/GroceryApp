@@ -21,6 +21,10 @@ public class SignUpInteractorImp implements SignUpMvvm.SignUpInteractor {
             @Override
             public void success(ModLogin loginModel, Response response) {
                 if(loginModel.getSuccess().equals("1")){
+                    loginModel=new ModLogin();
+                    loginModel.setEmail(email);
+                    loginModel.setName(name);
+                    loginModel.setMobile(mobile);
                     presenter.onSignUpSuccess(loginModel);
                 }else{
                     presenter.onSignUpFail(loginModel.getMsg());

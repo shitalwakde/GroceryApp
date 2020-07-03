@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.app.R;
+import com.app.callback.CategoryListener;
 import com.app.callback.HomeClickLisener;
+import com.app.constant.AppConstant;
 import com.app.features.home.BrandAdapter;
 import com.app.features.home.Category;
 import com.app.features.home.CategoryAdapter;
+import com.app.features.home.SubCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,17 +34,26 @@ public class ProductFragment extends Fragment {
     List<Category> productList;
     List<Category> brandList;
     List<Category> categoryList;
-    List<Category> subCatList;
-    HomeClickLisener lisener;
-    String viewAllType="";
+    List<SubCategory> subCatList;
+    CategoryListener lisener;
+    String viewAllType="", categoryId="", subCategoryId="", subCategoryName="";
+    private Category category;
 
-    public ProductFragment(String viewAllType) {
+    public ProductFragment(String viewAllType, String categoryId, String subCategoryId, String subCategoryName) {
         this.viewAllType = viewAllType;
+        this.categoryId = categoryId;
+        this.subCategoryId = subCategoryId;
+        this.subCategoryName = subCategoryName;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getArguments()!=null) {
+            category = (Category) getArguments().getSerializable(AppConstant.EXTRA_PROD_CATEGORY);
+            if (category != null)
+                subCatList=category.getSubcategory();
+        }
     }
 
     @Nullable
@@ -63,7 +75,6 @@ public class ProductFragment extends Fragment {
         productList = new ArrayList<>();
         brandList = new ArrayList<>();
         categoryList = new ArrayList<>();
-        subCatList = new ArrayList<>();
         rv_product = (RecyclerView)rootView.findViewById(R.id.rv_product);
         rv_product2 = (RecyclerView)rootView.findViewById(R.id.rv_product2);
         rv_product3 = (RecyclerView)rootView.findViewById(R.id.rv_product3);
@@ -132,21 +143,10 @@ public class ProductFragment extends Fragment {
             rv_product.setAdapter(adapter1);
 
             //============subcategory===============
+            if(subCatList==null)
+                throw new IllegalStateException("Sub category list is null, please check bundle from onCreate");
 
-            Category subcat = new Category();
-            subcat.setSubCat("Fruits");
-
-            Category subcat1 = new Category();
-            subcat1.setSubCat("Vegetables");
-
-            subCatList.add(subcat);
-            subCatList.add(subcat);
-            subCatList.add(subcat);
-            subCatList.add(subcat);
-            subCatList.add(subcat);
-            subCatList.add(subcat);
-
-            SubCatAdapter adapter2 = new SubCatAdapter(lisener, subCatList);
+            SubCatAdapter adapter2 = new SubCatAdapter(lisener,category, subCatList, subCategoryName);
             rv_subCat.setAdapter(adapter2);
 
             //============BottomSheetFragment============
@@ -177,6 +177,6 @@ public class ProductFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        lisener = (HomeClickLisener) context;
+        lisener = (CategoryListener) context;
     }
 }

@@ -19,10 +19,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         fragmentManager = getSupportFragmentManager();
-        if(getIntent().getStringExtra("type").equals("login")){
-            fragmentManager.beginTransaction().replace(R.id.login_container, new LoginFragment()).commit();
-        }else if(getIntent().getStringExtra("type").equals("singup")){
-            fragmentManager.beginTransaction().replace(R.id.login_container, new SignupFragment()).commit();
+        if(getIntent().hasExtra("type")) {
+            if (getIntent().getStringExtra("type").equals("login")) {
+                fragmentManager.beginTransaction().replace(R.id.login_container, new LoginFragment()).commit();
+            } else if (getIntent().getStringExtra("type").equals("singup")) {
+                fragmentManager.beginTransaction().replace(R.id.login_container, new SignupFragment()).commit();
+            }
         }
     }
 }

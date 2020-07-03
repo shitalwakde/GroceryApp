@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.app.R;
 import com.app.callback.HomeClickLisener;
 import com.app.features.home.Category;
+import com.app.features.home.SubCategory;
 import com.app.features.productdetail.ProductDetailActivity;
 
 public class CartActivity extends AppCompatActivity implements HomeClickLisener {
@@ -48,10 +49,7 @@ public class CartActivity extends AppCompatActivity implements HomeClickLisener 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void categoryClickLisener(Category category) {
 
-    }
 
     @Override
     public void productClickLisener(Category category) {
@@ -63,4 +61,5 @@ public class CartActivity extends AppCompatActivity implements HomeClickLisener 
     public void orderClickLisener(Category category) {
 
     }
+
 }

@@ -25,9 +25,7 @@ public class SignUpPresenterImp implements SignUpMvvm.SignUpPresenter {
          if(AppUtils.isNullOrEmpty(email)) {
              signUpView.onEmailInvalid("Please Enter Email Address");
              isAllValid=false;
-         }
-
-         if(!AppUtils.isValidEmail(context, email)){
+         }else if(!AppUtils.isValidEmail(context, email)){
              signUpView.onEmailInvalid("Please Enter Valid Email Address");
              isAllValid=false;
          }
@@ -35,9 +33,7 @@ public class SignUpPresenterImp implements SignUpMvvm.SignUpPresenter {
          if(AppUtils.isNullOrEmpty(mobile)){
              signUpView.onMobileInvalid("Please Enter Mobile Number");
              isAllValid=false;
-         }
-
-         if(!AppUtils.isValidMobile(context,mobile)){
+         }else if(!AppUtils.isValidMobile(context,mobile)){
              signUpView.onMobileInvalid("Please Enter Valid Mobile Number");
              isAllValid=false;
          }

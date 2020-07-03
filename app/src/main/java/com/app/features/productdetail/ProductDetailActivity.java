@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -17,25 +16,18 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.activities.BaseActivity;
-import com.app.activities.MainActivity;
 import com.app.callback.HomeClickLisener;
 import com.app.features.home.Category;
 import com.app.features.home.HealthAdapter;
-import com.app.features.product.ProductFragment;
+import com.app.features.home.SubCategory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import static com.app.activities.MainActivity.appBarContainer;
 
 public class ProductDetailActivity extends BaseActivity implements HomeClickLisener {
 
@@ -131,6 +123,36 @@ public class ProductDetailActivity extends BaseActivity implements HomeClickLise
             }
         });
 
+        setQty();
+
+        tv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeQty(0,ADD);
+                setQty();;
+                //changeQty(getAdapterPosition(),ADD);
+            }
+        });
+
+        tv_plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeQty(0,ADD);
+                setQty();;
+                //changeQty(getAdapterPosition(),ADD);
+            }
+        });
+
+        tv_minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeQty(0,REMOVE);
+                setQty();
+            }
+        });
+    }
+
+    private void setQty() {
         if(category.qty <= 0){
             tv_add.setVisibility(View.VISIBLE);
             ll_quantity.setVisibility(View.GONE);
@@ -139,40 +161,18 @@ public class ProductDetailActivity extends BaseActivity implements HomeClickLise
             tv_add.setVisibility(View.GONE);
         }
         tv_quantity.setText(String.valueOf(category.qty));
-
-        /*tv_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeQty(getAdapterPosition(),ADD);
-            }
-        });
-
-        tv_plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeQty(getAdapterPosition(),ADD);
-            }
-        });
-
-        tv_minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeQty(getAdapterPosition(),REMOVE);
-            }
-        });*/
     }
 
-    /*private void changeQty(int adapterPosition,int type) {
-        int qty=mdata.get(adapterPosition).qty;
+    private void changeQty(int adapterPosition,int type) {
+        int qty=category.qty;
         if(type==ADD)
             qty=qty +1;
         else if(type ==REMOVE)
             qty=qty-1;
         else
             qty=0;
-        mdata.get(adapterPosition).qty=qty;
-        notifyItemChanged(adapterPosition);
-    }*/
+        category.qty=qty;
+    }
 
     public void showRatingDialog(){
         final Dialog dialog1 = new Dialog(ProductDetailActivity.this);
@@ -212,12 +212,6 @@ public class ProductDetailActivity extends BaseActivity implements HomeClickLise
         return super.onOptionsItemSelected(item);
     }
 
-
-    @Override
-    public void categoryClickLisener(Category category) {
-
-    }
-
     @Override
     public void productClickLisener(Category category) {
         Intent intent = new Intent(this, ProductDetailActivity.class);
@@ -228,4 +222,5 @@ public class ProductDetailActivity extends BaseActivity implements HomeClickLise
     public void orderClickLisener(Category category) {
 
     }
+
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.activities.MainActivity;
+import com.app.callback.CategoryListener;
 import com.app.callback.HomeClickLisener;
 import com.app.features.product.ProductFragment;
 import com.asura.library.views.PosterSlider;
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment {
     SliderLayout imageSlider;
     TextView tv_view_recently_product, tv_view_best, tv_view_category, tv_view_brand;
     RecyclerView rv_category, rv_top_details, rv_health, rv_brand;
+    CategoryListener catLisener;
     HomeClickLisener lisener;
     FragmentManager fragmentManager;
 
@@ -91,7 +93,7 @@ public class HomeFragment extends Fragment {
         categoryList.add(cat);
         categoryList.add(cat1);
 
-        CategoryAdapter adapter = new CategoryAdapter(lisener,categoryList);
+        CategoryAdapter adapter = new CategoryAdapter(catLisener,categoryList);
         rv_category.setAdapter(adapter);
 
         Category cate = new Category();
@@ -159,28 +161,28 @@ public class HomeFragment extends Fragment {
         tv_view_recently_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("recently_product")).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("", "", "", "")).addToBackStack(null).commit();
             }
         });
 
         tv_view_best.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("best_product")).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("", "", "", "")).addToBackStack(null).commit();
             }
         });
 
         tv_view_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("category")).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("", "", "", "")).addToBackStack(null).commit();
             }
         });
 
         tv_view_brand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("brand")).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("", "", "", "")).addToBackStack(null).commit();
             }
         });
     }
@@ -190,6 +192,7 @@ public class HomeFragment extends Fragment {
         super.onAttach(context);
         if(context instanceof MainActivity){
             lisener = (HomeClickLisener) context;
+            catLisener = (CategoryListener) context;
         }
     }
 

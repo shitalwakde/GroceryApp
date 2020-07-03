@@ -11,13 +11,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.app.R;
-import com.app.activities.MainActivity;
 import com.app.callback.HomeClickLisener;
 import com.app.features.home.Category;
+import com.app.features.home.SubCategory;
 import com.app.features.product.ProductFragment;
 import com.app.features.productdetail.ProductDetailActivity;
-
-import java.util.ArrayList;
 
 public class OfferActivity extends AppCompatActivity implements HomeClickLisener {
 
@@ -37,9 +35,9 @@ public class OfferActivity extends AppCompatActivity implements HomeClickLisener
         tv_toolbar_offer = (TextView)findViewById(R.id.tv_toolbar_offer);
 
         if(getIntent().getStringExtra("product").equals("discount")){
-            fragmentManager.beginTransaction().replace(R.id.offer_container, new ProductFragment("")).commit();
+            fragmentManager.beginTransaction().replace(R.id.offer_container, new ProductFragment("", "", "", "")).commit();
         }else {
-            fragmentManager.beginTransaction().replace(R.id.offer_container, new ProductFragment("")).commit();
+            fragmentManager.beginTransaction().replace(R.id.offer_container, new ProductFragment("", "", "", "")).commit();
         }
     }
 
@@ -54,10 +52,6 @@ public class OfferActivity extends AppCompatActivity implements HomeClickLisener
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void categoryClickLisener(Category category) {
-
-    }
 
     @Override
     public void productClickLisener(Category category) {

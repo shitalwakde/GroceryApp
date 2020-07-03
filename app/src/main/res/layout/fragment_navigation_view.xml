@@ -14,6 +14,7 @@
             android:id="@+id/li_login"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:gravity="center_vertical"
             android:background="@drawable/toolbar_blur_background">
 
             <TextView
@@ -55,16 +56,18 @@
         <LinearLayout
             android:id="@+id/li_user_details"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:gravity="bottom"
+            android:background="@drawable/toolbar_blur_background"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/tv_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome,"
-                android:textColor="@color/colorBlack"
+                android:text="admin@gmail.com"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/head"
                 android:fontFamily="serif" />
 
@@ -75,7 +78,7 @@
                 android:gravity="center"
                 android:layout_marginTop="8dp"
                 android:text="9900000000"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/head" />
 
         </LinearLayout>

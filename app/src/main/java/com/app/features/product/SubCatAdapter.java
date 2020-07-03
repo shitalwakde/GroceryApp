@@ -6,8 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.app.R;
+import com.app.callback.CategoryListener;
 import com.app.callback.HomeClickLisener;
 import com.app.features.home.Category;
+import com.app.features.home.SubCategory;
 
 import java.util.List;
 
@@ -15,12 +17,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SubCatAdapter extends RecyclerView.Adapter<SubCatAdapter.MyViewHolder> {
-    List<Category> mdata;
-    HomeClickLisener lisener;
+    private Category category;
+    List<SubCategory> mdata;
+    CategoryListener lisener;
+    String subCategoryName="";
 
-    public SubCatAdapter(HomeClickLisener lisener, List<Category> mdata) {
+    public SubCatAdapter(CategoryListener lisener,Category category, List<SubCategory> mdata, String subCategoryName) {
         this.lisener = lisener;
+        this.category = category;
         this.mdata = mdata;
+        this.subCategoryName = subCategoryName;
     }
 
     @NonNull
@@ -32,8 +38,8 @@ public class SubCatAdapter extends RecyclerView.Adapter<SubCatAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Category category = mdata.get(position);
-        holder.subCat.setText(category.getSubCat());
+        SubCategory subCategory = mdata.get(position);
+        holder.subCat.setText(subCategory.getName());
     }
 
     @Override
@@ -51,7 +57,7 @@ public class SubCatAdapter extends RecyclerView.Adapter<SubCatAdapter.MyViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    lisener.categoryClickLisener(mdata.get(getAdapterPosition()));
+                    lisener.subcategoryClickLisener(category,mdata.get(getAdapterPosition()));
                 }
             });
         }

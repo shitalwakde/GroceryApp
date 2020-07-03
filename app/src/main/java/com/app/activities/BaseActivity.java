@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +47,20 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        /*Intent sendIntent = new Intent("android.intent.action.MAIN");
+        sendIntent.setComponent(new ComponentName("com.whatsapp","com.whatsapp.Conversation"));
+        // sendIntent.putExtra("jid",     PhoneNumberUtils.stripSeparators(getIntent().getStringExtra("mobile"))+"@s.whatsapp.net");//phone number without "+" prefix
+        //  sendIntent.putExtra("jid",     PhoneNumberUtils.stripSeparators("91"+"8962370822")+"@s.whatsapp.net");//phone number without "+" prefix
+        sendIntent.putExtra("jid",     PhoneNumberUtils.stripSeparators("91"+"9999999999")+"@s.whatsapp.net");//phone number without "+" prefix
+
+        try {
+            startActivity(sendIntent);
+        } catch (android.content.ActivityNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "com.whatsapp")));
+        }*/
 
         return true;
     }

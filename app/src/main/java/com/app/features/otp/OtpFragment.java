@@ -21,12 +21,17 @@ import com.app.features.otp.mvvm.OtpMvvm;
 import com.app.features.otp.mvvm.OtpPresenterImp;
 import com.app.util.AppUtils;
 import com.app.util.PrefUtil;
+import com.app.util.RestClient;
+import com.google.gson.JsonObject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class OtpFragment extends Fragment implements OtpMvvm.OtpView {
     View rootView;
@@ -82,13 +87,21 @@ public class OtpFragment extends Fragment implements OtpMvvm.OtpView {
                 presenter.onVerifyClicked(getActivity(), etOtp.getText().toString());
             }
         });
+
+        tvResendOtp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                callApiForResendOtp();
+            }
+        });
     }
 
     @Override
     public void onOtpInvalid(String message) {
         progressBar.setVisibility(View.GONE);
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        etOtp.setError(message);
+        //etOtp.setError(message);
     }
 
     @Override
@@ -112,5 +125,34 @@ public class OtpFragment extends Fragment implements OtpMvvm.OtpView {
         super.onDestroyView();
         progressBar.setVisibility(View.GONE);
         presenter.onViewDestroy();
+    }
+
+
+    private void callApiForResendOtp(){
+        JsonObject jsonObject = new JsonObject();
+        if(AppUtils.getUserDetails(getActivity()).getEmail() == null){
+            jsonObject.addProperty("mobileEmail", AppUtils.getUserDetails(getActivity()).getMobile());
+        }else {
+            jsonObject.addProperty("mobileEmail", AppUtils.getUserDetails(getActivity()).getEmail());
+        }
+
+        new RestClient().getApiService().getResendOtp(jsonObject, new Callback<ModLogin>() {
+            @Override
+            public void success(ModLogin loginModel, Response response) {
+                progressBar.setVisibility(View.GONE);
+                if(loginModel.getSuccess().equals("1")){
+                    Toast.makeText(getActivity(), "Otp send successfully", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getActivity(), loginModel.getMsg(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

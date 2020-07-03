@@ -133,14 +133,15 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
         }
 
         private void changeQty(int adapterPosition,int type) {
-            int qty=mdata.get(adapterPosition).qty;
+            Category category=mdata.get(adapterPosition);
+            int qty=category.qty;
             if(type==ADD)
                 qty=qty +1;
             else if(type ==REMOVE)
                 qty=qty-1;
             else
                 qty=0;
-            mdata.get(adapterPosition).qty=qty;
+            category.qty=qty;
             notifyItemChanged(adapterPosition);
         }
     }
