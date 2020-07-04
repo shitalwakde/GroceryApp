@@ -152,6 +152,19 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/tvPiece"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/grey"
+            android:fontFamily="@font/roboto"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/rl_rating"
+            android:textSize="11sp"
+            android:text="7 Rating"
+            android:visibility="gone"/>
+
         <RelativeLayout
             android:id="@+id/rl_weight"
             android:layout_width="wrap_content"

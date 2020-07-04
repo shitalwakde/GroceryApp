@@ -1,6 +1,7 @@
 package com.app.util;
 
 import com.app.activities.ModCategory;
+import com.app.features.home.model.HomeModel;
 import com.app.features.login.ModLogin;
 import com.google.gson.JsonObject;
 
@@ -25,4 +26,8 @@ public interface ApiInterface {
 
     @POST("/Api/getCategories")
     void getCategories(@Body JsonObject jsonObject, Callback<ModCategory> signUpModelCallback);
+
+
+    @POST("/Api/home")
+    void home(@Body JsonObject jsonObject, Callback<HomeModel> signUpModelCallback);
 }

@@ -17,9 +17,8 @@ import android.widget.TextView;
 import com.app.R;
 import com.app.activities.BaseActivity;
 import com.app.callback.HomeClickLisener;
-import com.app.features.home.Category;
-import com.app.features.home.HealthAdapter;
-import com.app.features.home.SubCategory;
+import com.app.features.home.model.Category;
+import com.app.features.home.adapter.HealthAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

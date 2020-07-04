@@ -9,8 +9,7 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.activities.MainActivity;
-import com.app.features.home.Category;
-import com.app.features.product.ProductAdapter;
+import com.app.features.home.model.Category;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.app.R;
-import com.app.features.home.Category;
+import com.app.features.home.model.Category;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.app.features.home;
+package com.app.features.home.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,8 +6,10 @@ import java.util.ArrayList;
 public class Category implements Serializable
 {
     private String categoryId;
+    private String status;
     private String categoryName;
     private String image;
+
     ArrayList<SubCategory> subcategory;
 
     public int qty;
@@ -34,6 +36,14 @@ public class Category implements Serializable
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public ArrayList<SubCategory> getSubcategory() {

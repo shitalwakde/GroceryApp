@@ -1,13 +1,17 @@
-package com.app.features.home;
+package com.app.features.home.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.app.R;
-import com.app.callback.CategoryListener;
-import com.app.callback.HomeClickLisener;
+import com.app.callback.BrandLisener;
+import com.app.features.home.model.Brand;
+import com.app.features.home.model.Category;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -15,10 +19,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.MyViewHolder> {
-    List<Category> mdata;
-    HomeClickLisener lisener;
+    Context context;
+    List<Brand> mdata;
+    BrandLisener lisener;
 
-    public BrandAdapter(HomeClickLisener lisener, List<Category> mdata) {
+    public BrandAdapter(Context context, BrandLisener lisener, List<Brand> mdata) {
+        this.context = context;
         this.lisener = lisener;
         this.mdata = mdata;
     }
@@ -26,14 +32,15 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.MyViewHolder
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brand_adapter, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_adapter, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Category category = mdata.get(position);
-        holder.iv_brand.setImageResource(category.getIv_brand());
+        Brand category = mdata.get(position);
+        Picasso.with(context).load(category.getImage()).into(holder.iv_category);
+        holder.tv_category_name.setText(category.getBrandName());
     }
 
     @Override
@@ -44,16 +51,18 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView iv_brand;
+        ImageView iv_category;
+        TextView tv_category_name;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            iv_brand = (ImageView)itemView.findViewById(R.id.iv_brand);
+            iv_category = (ImageView)itemView.findViewById(R.id.iv_category);
+            tv_category_name = (TextView) itemView.findViewById(R.id.tv_category_name);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //lisener.categoryClickLisener(mdata.get(getAdapterPosition()));
+                    lisener.brandLisener(mdata.get(getAdapterPosition()));
                 }
             });
         }

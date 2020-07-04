@@ -1,4 +1,4 @@
-package com.app.features.home;
+package com.app.features.home.adapter;
 
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -11,33 +11,30 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.callback.HomeClickLisener;
+import com.app.features.home.model.Category;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.MyViewHolder> {
+public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHolder> {
     List<Category> mdata;
     HomeClickLisener lisener;
+    boolean flag = false;
     public static final int ADD=1;
     public static final int REMOVE=2;
     public static final int RESET=3;
-    boolean flag = false;
 
-    public BeseSellingAdapter(HomeClickLisener lisener,final List<Category> mdata) {
+    public HealthAdapter(HomeClickLisener lisener, List<Category> mdata) {
         this.lisener = lisener;
         this.mdata = mdata;
-        // this.mdata = new ArrayList<>();
-        //this.mdata.addAll(mdata);
     }
-
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.best_selling_adapter, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.health_adapter, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -88,7 +85,6 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
             rl_like = (RelativeLayout)itemView.findViewById(R.id.rl_like);
 
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -112,7 +108,7 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
             tv_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   changeQty(getAdapterPosition(),ADD);
+                    changeQty(getAdapterPosition(),ADD);
                 }
             });
 
@@ -133,15 +129,14 @@ public class BeseSellingAdapter extends RecyclerView.Adapter<BeseSellingAdapter.
         }
 
         private void changeQty(int adapterPosition,int type) {
-            Category category=mdata.get(adapterPosition);
-            int qty=category.qty;
+            int qty=mdata.get(adapterPosition).qty;
             if(type==ADD)
                 qty=qty +1;
             else if(type ==REMOVE)
                 qty=qty-1;
             else
                 qty=0;
-            category.qty=qty;
+            mdata.get(adapterPosition).qty=qty;
             notifyItemChanged(adapterPosition);
         }
     }

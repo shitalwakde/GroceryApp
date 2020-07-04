@@ -11,8 +11,7 @@ import android.view.MenuItem;
 
 import com.app.R;
 import com.app.callback.HomeClickLisener;
-import com.app.features.home.Category;
-import com.app.features.home.SubCategory;
+import com.app.features.home.model.Category;
 import com.app.features.productdetail.ProductDetailActivity;
 
 public class WishListActivity extends AppCompatActivity implements HomeClickLisener {

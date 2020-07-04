@@ -25,7 +25,7 @@
             app:imageSlideInterval="5000"
             app:loopSlides="true"
             android:background="@drawable/background_login"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
         <com.daimajia.slider.library.Indicators.PagerIndicator
             android:id="@+id/custom_indicator2"
             style="@style/AndroidImageSlider_Corner_Oval_Orange"
@@ -40,7 +40,7 @@
             custom:auto_cycle="true"
             custom:pager_animation="Accordion"
             custom:pager_animation_span="1100"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/ll_categories"
@@ -281,7 +281,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:fastScrollEnabled="false"
-                    app:spanCount="3"
+                    app:spanCount="2"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_below="@+id/tv_brand"

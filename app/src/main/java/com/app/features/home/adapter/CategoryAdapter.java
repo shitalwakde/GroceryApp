@@ -1,5 +1,7 @@
-package com.app.features.home;
+package com.app.features.home.adapter;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +10,9 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.callback.CategoryListener;
-import com.app.callback.HomeClickLisener;
+import com.app.constant.AppConstant;
+import com.app.features.home.model.Category;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -16,12 +20,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
+    private static final String TAG = "CategoryAdapter";
+    Context context;
     List<Category> mdata;
+    private int source;
     private final CategoryListener lisener;
 
-    public CategoryAdapter(CategoryListener lisener, List<Category> mdata) {
+    public CategoryAdapter(Context context,CategoryListener lisener, List<Category> mdata,int source) {
+        this.context = context;
         this.lisener = lisener;
         this.mdata = mdata;
+        this.source = source;
     }
 
     @NonNull
@@ -34,13 +43,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Category category = mdata.get(position);
-        holder.iv_category.setImageResource(category.getIv_category());
-        holder.tv_category_name.setText(category.getTv_category_name());
+        Log.d(TAG, "onBindViewHolder: "+category.getImage());
+        Picasso.with(context).load(category.getImage()).into(holder.iv_category);
+        if(category!=null) {
+            holder.tv_category_name.setText(category.getCategoryName());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mdata.size();
+        if(source== AppConstant.FROM_HOME_CATEGORY_PRODUCT)
+                return  6;
+        else
+            return mdata.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

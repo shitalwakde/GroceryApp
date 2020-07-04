@@ -65,4 +65,13 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+
+    public void setCartCount(int count){
+        if(count==0){
+            tv.setVisibility(View.GONE);
+        }else{
+            tv.setVisibility(View.VISIBLE);
+            tv.setText(String.valueOf(count));
+        }
+    }
 }

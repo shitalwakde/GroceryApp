@@ -1,4 +1,4 @@
-package com.app.features.home;
+package com.app.features.home.model;
 
 import java.io.Serializable;
 

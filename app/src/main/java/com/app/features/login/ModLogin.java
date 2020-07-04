@@ -1,9 +1,5 @@
 package com.app.features.login;
 
-import com.app.features.home.Category;
-
-import java.util.ArrayList;
-
 public class ModLogin {
     private String loginId, name, email, mobile, success, msg, message ;
 

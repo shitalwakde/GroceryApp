@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.callback.HomeClickLisener;
-import com.app.features.home.Category;
+import com.app.features.home.model.Category;
 
 import java.util.List;
 

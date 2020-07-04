@@ -17,30 +17,32 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.R;
+import com.app.callback.BrandLisener;
 import com.app.callback.CategoryListener;
 import com.app.callback.HomeClickLisener;
 import com.app.callback.DrawerItemClickLisener;
+import com.app.callback.HomePageListener;
 import com.app.constant.AppConstant;
 import com.app.databinding.ActivityMainBinding;
-import com.app.features.home.SubCategory;
-import com.app.features.login.LoginActivity;
-import com.app.features.login.ModLogin;
+import com.app.features.home.model.Brand;
+import com.app.features.home.model.Product;
+import com.app.features.home.model.SubCategory;
 import com.app.features.navmenu.OrderActivity;
 import com.app.features.navmenu.WishListActivity;
 import com.app.features.notification.NotificationActivity;
 import com.app.features.productdetail.ProductDetailActivity;
-import com.app.features.home.Category;
+import com.app.features.home.model.Category;
 import com.app.features.home.HomeFragment;
 import com.app.features.product.ProductFragment;
 import com.app.features.profile.ProfileActivity;
 import com.app.features.wallet.WalletActivity;
-import com.app.util.AppUtils;
 import com.app.util.PrefUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public class MainActivity extends BaseActivity implements DrawerItemClickLisener, HomeClickLisener , CategoryListener {
+public class MainActivity extends BaseActivity implements DrawerItemClickLisener, HomePageListener {
     private static final String TAG_DRAWER_FRAGMENT = "drawerFragment";
     public static TextView tv;
     private ActivityMainBinding mView;
@@ -48,7 +50,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
     public static int containNav, appBarContainer;
     public static LinearLayout ll_search;
     public static DrawerLayout drawerLayout;
-    ModLogin loginModel = new ModLogin();
+    ArrayList<Category> category = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +83,14 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                 if (mView.drawer.isDrawerOpen(GravityCompat.START)) {
                     mView.drawer.closeDrawer(GravityCompat.START);
                 }
-                fragmentManager.beginTransaction().replace(appBarContainer, new HomeFragment()).commit();
+                category = NavCategoryFragment.categories;
+                Fragment fragment=new HomeFragment();
+                Bundle bundle=new Bundle();
+                bundle.putSerializable(AppConstant.EXTRA_PROD_CATEGORY, (Serializable) category);
+                fragment.setArguments(bundle);
+                fragmentManager.beginTransaction().replace(appBarContainer , fragment)
+                        .commit();
+                //fragmentManager.beginTransaction().replace(appBarContainer, new HomeFragment()).commit();
                 break;
             case ShopByCategory:
                 fragmentManager.beginTransaction().replace(containNav , new NavCategoryFragment()).addToBackStack(null).commit();
@@ -199,7 +208,6 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
         fragmentManager.beginTransaction().replace(appBarContainer , fragment)
                 .addToBackStack(null)
                 .commit();
-
     }
 
     @Override
@@ -227,4 +235,13 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                 .commit();
     }
 
+    @Override
+    public void brandLisener(Brand brand) {
+
+    }
+
+    @Override
+    public void productClickLisener(Product product) {
+
+    }
 }

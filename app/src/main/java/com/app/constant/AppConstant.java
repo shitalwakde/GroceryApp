@@ -13,6 +13,8 @@ import java.util.List;
 public class AppConstant {
 
     public static final String EXTRA_PROD_CATEGORY = "extra_category";
+
+
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     int PRIVATE_MODE = 0;

@@ -12,8 +12,7 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.callback.HomeClickLisener;
-import com.app.features.home.Category;
-import com.app.features.home.SubCategory;
+import com.app.features.home.model.Category;
 import com.app.features.product.ProductFragment;
 import com.app.features.productdetail.ProductDetailActivity;
 

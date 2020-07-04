@@ -9,12 +9,11 @@ import android.widget.LinearLayout;
 
 import com.app.R;
 import com.app.callback.CategoryListener;
-import com.app.callback.HomeClickLisener;
 import com.app.constant.AppConstant;
-import com.app.features.home.BrandAdapter;
-import com.app.features.home.Category;
-import com.app.features.home.CategoryAdapter;
-import com.app.features.home.SubCategory;
+import com.app.features.home.adapter.BrandAdapter;
+import com.app.features.home.model.Category;
+import com.app.features.home.adapter.CategoryAdapter;
+import com.app.features.home.model.SubCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,29 +87,17 @@ public class ProductFragment extends Fragment {
     private void click(){
 
         if(viewAllType.equals("category")){
-            ll_sort_filter.setVisibility(View.GONE);
-            rv_product2.setVisibility(View.VISIBLE);
-            rv_product.setVisibility(View.GONE);
-            Category cat = new Category();
-            cat.setIv_category(R.drawable.grapes);
-            cat.setTv_category_name("Fruits & Vegetables");
-
-            Category cat1 = new Category();
-            cat1.setIv_category(R.drawable.flower);
-            cat1.setTv_category_name("Fruits & Vegetables");
-
-            categoryList.add(cat);
-            categoryList.add(cat1);
-            categoryList.add(cat1);
-            categoryList.add(cat);
-            categoryList.add(cat);
-            categoryList.add(cat1);
-
-            CategoryAdapter adapter = new CategoryAdapter(lisener,categoryList);
-            rv_product2.setAdapter(adapter);
+//            ll_sort_filter.setVisibility(View.GONE);
+//            rv_product2.setVisibility(View.VISIBLE);
+//            rv_product.setVisibility(View.GONE);
+//
+//            categoryList.add(category);
+//
+//            CategoryAdapter adapter = new CategoryAdapter(getActivity(),lisener,categoryList,AppConstant.FROM_CATEGORY_PRODUCT);
+ //           rv_product2.setAdapter(adapter);
 
         }else if(viewAllType.equals("brand")){
-            ll_sort_filter.setVisibility(View.GONE);
+            /*ll_sort_filter.setVisibility(View.GONE);
             rv_product3.setVisibility(View.VISIBLE);
             rv_product.setVisibility(View.GONE);
             Category catBrand = new Category();
@@ -127,7 +114,7 @@ public class ProductFragment extends Fragment {
             brandList.add(catBrand1);
 
             BrandAdapter adapter3 = new BrandAdapter(lisener, brandList);
-            rv_product3.setAdapter(adapter3);
+            rv_product3.setAdapter(adapter3);*/
         }else {
             Category cate = new Category();
             cate.setIv_best(R.drawable.grapes);
@@ -142,12 +129,13 @@ public class ProductFragment extends Fragment {
             ProductAdapter adapter1 = new ProductAdapter(lisener, productList);
             rv_product.setAdapter(adapter1);
 
-            //============subcategory===============
-            if(subCatList==null)
+            //============subcategory====================
+            if(subCatList==null) {
                 throw new IllegalStateException("Sub category list is null, please check bundle from onCreate");
-
-            SubCatAdapter adapter2 = new SubCatAdapter(lisener,category, subCatList, subCategoryName);
-            rv_subCat.setAdapter(adapter2);
+            }else{
+                SubCatAdapter adapter2 = new SubCatAdapter(lisener,category, subCatList, subCategoryName);
+                rv_subCat.setAdapter(adapter2);
+            }
 
             //============BottomSheetFragment============
 

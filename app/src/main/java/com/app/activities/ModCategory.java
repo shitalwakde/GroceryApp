@@ -1,6 +1,9 @@
 package com.app.activities;
 
-import com.app.features.home.Category;
+import com.app.features.home.adapter.Banner;
+import com.app.features.home.model.Brand;
+import com.app.features.home.model.Category;
+import com.app.features.home.model.Product;
 
 import java.util.ArrayList;
 

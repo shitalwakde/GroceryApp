@@ -6,16 +6,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.R;
 import com.app.activities.MainActivity;
+import com.app.activities.ModCategory;
+import com.app.activities.NavCategoryFragment;
+import com.app.activities.SplashScreenActivity;
+import com.app.callback.BrandLisener;
 import com.app.callback.CategoryListener;
 import com.app.callback.HomeClickLisener;
+import com.app.callback.ProductListener;
+import com.app.constant.AppConstant;
+import com.app.features.home.adapter.Banner;
+import com.app.features.home.adapter.BeseSellingAdapter;
+import com.app.features.home.adapter.BrandAdapter;
+import com.app.features.home.adapter.CategoryAdapter;
+import com.app.features.home.model.Brand;
+import com.app.features.home.model.Category;
+import com.app.features.home.model.HomeModel;
+import com.app.features.home.model.Product;
+import com.app.features.home.model.SubCategory;
 import com.app.features.product.ProductFragment;
+import com.app.util.RestClient;
+import com.asura.library.posters.Poster;
+import com.asura.library.posters.RemoteImage;
 import com.asura.library.views.PosterSlider;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +45,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 import static com.app.activities.MainActivity.appBarContainer;
 import static com.app.activities.MainActivity.ll_search;
@@ -33,22 +56,26 @@ public class HomeFragment extends Fragment {
 
     View rootView;
     PosterSlider poster_slider;
-    List<Integer> bannerList;
+    List<Banner> bannerList;
     List<Category> categoryList;
-    List<Category> bestSellingList;
-    List<Category> brandList;
+    List<Product> bestSellingList;
+    List<Brand> brandList;
     String immm="", viewAllType="";
     DefaultSliderView textSliderView;
     SliderLayout imageSlider;
     TextView tv_view_recently_product, tv_view_best, tv_view_category, tv_view_brand;
     RecyclerView rv_category, rv_top_details, rv_health, rv_brand;
     CategoryListener catLisener;
-    HomeClickLisener lisener;
+    BrandLisener brandLisener;
+    ProductListener productLisener;
     FragmentManager fragmentManager;
+    private Category category;
+    List<SubCategory> subCatList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Nullable
@@ -60,85 +87,13 @@ public class HomeFragment extends Fragment {
         click();
 
         ll_search.setVisibility(View.VISIBLE);
-        bannerList.add(R.drawable.banner2);
-        bannerList.add(R.drawable.banner2);
-        bannerList.add(R.drawable.banner2);
-        bannerList.add(R.drawable.banner2);
-
-        for (int i = 0; i < bannerList.size(); i++) {
-            textSliderView = new DefaultSliderView(getContext());
-            textSliderView
-                    .description("")
-                    .image(bannerList.get(i))
-                    .setScaleType(BaseSliderView.ScaleType.Fit);
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra", "");
-            imageSlider.addSlider(textSliderView);
-        }
-        imageSlider.startAutoCycle();
-
-        Category cat = new Category();
-        cat.setIv_category(R.drawable.grapes);
-        cat.setTv_category_name("Fruits & Vegetables");
-
-        Category cat1 = new Category();
-        cat1.setIv_category(R.drawable.flower);
-        cat1.setTv_category_name("Fruits & Vegetables");
-
-        categoryList.add(cat);
-        categoryList.add(cat1);
-        categoryList.add(cat1);
-        categoryList.add(cat);
-        categoryList.add(cat);
-        categoryList.add(cat1);
-
-        CategoryAdapter adapter = new CategoryAdapter(catLisener,categoryList);
-        rv_category.setAdapter(adapter);
-
-        Category cate = new Category();
-        cate.setIv_best(R.drawable.aata);
-        cate.setTv_pr_name("Fortune");
-        cate.setTv_pr_sub_name("Sunlife");
-
-        Category cate1 = new Category();
-        cate1.setIv_best(R.drawable.soup);
-        cate1.setTv_pr_name("Soup");
-        cate1.setTv_pr_sub_name("Manchow Veg");
-
-        bestSellingList.add(cate);
-        bestSellingList.add(cate1);
-        bestSellingList.add(cate1);
-        bestSellingList.add(cate);
-
-        BeseSellingAdapter adapter1 = new BeseSellingAdapter(lisener, bestSellingList);
-        rv_top_details.setAdapter(adapter1);
-        rv_health.setAdapter(adapter1);
-
-        /*HealthAdapter adapter2 = new HealthAdapter(bestSellingList);
-        rv_health.setAdapter(adapter2);*/
-
-        Category catBrand = new Category();
-        catBrand.setIv_brand(R.drawable.dettol);
-
-        Category catBrand1 = new Category();
-        catBrand1.setIv_brand(R.drawable.amul);
-
-        brandList.add(catBrand);
-        brandList.add(catBrand1);
-        brandList.add(catBrand);
-        brandList.add(catBrand1);
-        brandList.add(catBrand);
-        brandList.add(catBrand1);
-
-        BrandAdapter adapter3 = new BrandAdapter(lisener, brandList);
-        rv_brand.setAdapter(adapter3);
 
         return rootView;
     }
 
     private void init(View rootView){
         fragmentManager = getActivity().getSupportFragmentManager();
+        subCatList = new ArrayList<>();
         bannerList=new ArrayList<>();
         categoryList=new ArrayList<>();
         bestSellingList=new ArrayList<>();
@@ -157,7 +112,7 @@ public class HomeFragment extends Fragment {
 
 
     private void click(){
-
+        getHomeData();
         tv_view_recently_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,24 +130,88 @@ public class HomeFragment extends Fragment {
         tv_view_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("", "", "", "")).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("category", "", "", "")).addToBackStack(null).commit();
             }
         });
 
         tv_view_brand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("", "", "", "")).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(appBarContainer, new ProductFragment("brand", "", "", "")).addToBackStack(null).commit();
             }
         });
+    }
+
+
+    private void getHomeData(){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("tempUserId", "95445566");
+        jsonObject.addProperty("userId", "");
+
+
+        new RestClient().getApiService().home(jsonObject, new Callback<HomeModel>() {
+            @Override
+            public void success(HomeModel modCategory, Response response) {
+
+                if(modCategory.getSuccess().equals("1")){
+                    manageDetails(modCategory);
+                }else{
+                    Toast.makeText(getActivity(), modCategory.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void manageDetails(HomeModel modCategory) {
+        arrangeCategoryAdpt(modCategory.getCategory());
+        arrangeBestSellingAdpt(modCategory.getProduct());
+        arrangeBrands(modCategory.getBrand());
+        arrangeBanner(modCategory);
+
+        ((MainActivity)getContext()).setCartCount(Integer.parseInt(modCategory.getCount_cart()));
+
+    }
+
+    private void arrangeBestSellingAdpt(ArrayList<Product> product) {
+        BeseSellingAdapter adapter1 = new BeseSellingAdapter(productLisener, product);
+        rv_top_details.setAdapter(adapter1);
+        rv_health.setAdapter(adapter1);
+    }
+
+    private void arrangeCategoryAdpt(ArrayList<Category> category) {
+        CategoryAdapter adapter = new CategoryAdapter(getActivity(),catLisener, NavCategoryFragment.categories,
+                AppConstant.FROM_HOME_CATEGORY_PRODUCT);
+        rv_category.setAdapter(adapter);
+    }
+
+    private void arrangeBrands(ArrayList<Brand> brand) {
+        BrandAdapter adapter=new BrandAdapter(getContext(),brandLisener,brand);
+        rv_brand.setAdapter(adapter);
+    }
+
+    private void arrangeBanner(HomeModel modCategory) {
+        ArrayList<Poster> posters = new ArrayList<>();
+        for (int i = 0; i < modCategory.getBanner().size(); i++) {
+            Banner img = modCategory.getBanner().get(i);
+            immm = img.getImage();
+                posters.add(new RemoteImage(immm));
+        }
+        poster_slider.setPosters(posters);
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if(context instanceof MainActivity){
-            lisener = (HomeClickLisener) context;
-            catLisener = (CategoryListener) context;
+            brandLisener= (BrandLisener) context;
+            catLisener= (CategoryListener) context;
+            productLisener= (ProductListener) context;
         }
     }
 

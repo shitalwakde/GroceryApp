@@ -11,8 +11,7 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.callback.HomeClickLisener;
-import com.app.features.home.Category;
-import com.app.features.home.SubCategory;
+import com.app.features.home.model.Category;
 
 public class OrderActivity extends AppCompatActivity implements HomeClickLisener {
 

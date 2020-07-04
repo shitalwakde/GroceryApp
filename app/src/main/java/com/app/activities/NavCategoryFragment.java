@@ -10,9 +10,8 @@ import android.widget.ImageView;
 
 import com.app.R;
 import com.app.callback.CategoryListener;
-import com.app.callback.HomeClickLisener;
-import com.app.features.home.Category;
-import com.app.features.home.SubCategory;
+import com.app.features.home.model.Category;
+import com.app.features.home.model.SubCategory;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
