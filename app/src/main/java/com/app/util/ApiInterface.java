@@ -1,8 +1,12 @@
 package com.app.util;
 
 import com.app.activities.ModCategory;
+import com.app.features.cart.Cart;
 import com.app.features.home.model.HomeModel;
+import com.app.features.home.model.Product;
 import com.app.features.login.ModLogin;
+import com.app.features.navmenu.WishList;
+import com.app.features.productdetail.ProductDetailModel;
 import com.google.gson.JsonObject;
 
 import retrofit.Callback;
@@ -30,4 +34,28 @@ public interface ApiInterface {
 
     @POST("/Api/home")
     void home(@Body JsonObject jsonObject, Callback<HomeModel> signUpModelCallback);
+
+
+    @POST("/Api/getProduct")
+    void getProductCategory(@Body JsonObject jsonObject, Callback<HomeModel> signUpModelCallback);
+
+
+    @POST("/Api/getProductsList")
+    void getProductDetail(@Body JsonObject jsonObject, Callback<Product> signUpModelCallback);
+
+
+    @POST("/Api/addToCart")
+    void addToCart(@Body JsonObject jsonObject, Callback<Product> signUpModelCallback);
+
+
+    @POST("/Api/addWishList")
+    void addWishList(@Body JsonObject jsonObject, Callback<Product> signUpModelCallback);
+
+
+    @POST("/Api/getCartList")
+    void getCartList(@Body JsonObject jsonObject, Callback<Cart> signUpModelCallback);
+
+
+    @POST("/Api/getWishList")
+    void getWishList(@Body JsonObject jsonObject, Callback<WishList> signUpModelCallback);
 }

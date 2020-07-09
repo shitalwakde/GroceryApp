@@ -7,7 +7,7 @@
     android:layout_marginBottom="1dp"
     android:padding="5dp"
     android:background="@drawable/bg_arrival"
-    android:layout_height="155dp">
+    android:layout_height="145dp">
 
     <RelativeLayout
         android:id="@+id/rl_wish"
@@ -22,7 +22,6 @@
             android:layout_height="24dp"
             android:src="@drawable/ic_heart_red" />
     </RelativeLayout>
-
 
     <RelativeLayout
         android:id="@+id/rl_image"
@@ -103,7 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_pr_name"
-            android:layout_marginTop="-5dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/roboto"
             android:text="HazeInut Spread with Cocoa"
             android:textSize="11sp" />
@@ -156,37 +155,58 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_weight"
+            android:id="@+id/rl_quant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_rating"
-            android:background="@drawable/bg_border"
-            android:layout_marginTop="5dp">
+            android:layout_toRightOf="@+id/rl_price">
             <TextView
-                android:id="@+id/tv_peice"
+                android:id="@+id/tvPiece"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="11sp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="9dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/grey"
                 android:fontFamily="@font/roboto"
-                android:layout_marginRight="1dp"
-                android:text="1 Kg"/>
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_toRightOf="@+id/tv_peice"
-                android:src="@drawable/ic_down"
-                android:visibility="visible"/>
+                android:layout_centerHorizontal="true"
+                android:textSize="11sp"
+                android:text="7 Rating"
+                android:visibility="gone"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_border"
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true">
+                <TextView
+                    android:id="@+id/tv_peice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="9dp"
+                    android:fontFamily="@font/roboto"
+                    android:layout_marginRight="1dp"
+                    android:text="1 Kg"/>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_toRightOf="@+id/tv_peice"
+                    android:src="@drawable/ic_down"
+                    android:visibility="visible"/>
+            </RelativeLayout>
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_price"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_below="@+id/rl_weight">
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:layout_below="@+id/rl_rating">
 
             <TextView
                 android:id="@+id/tv_discount_price"
@@ -204,7 +224,7 @@
                 android:textColor="@color/grey"
                 android:fontFamily="@font/roboto"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/tv_discount_price"
                 android:textSize="11sp"
                 android:text="Rs 1550"/>
@@ -214,7 +234,7 @@
             android:layout_below="@+id/rl_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:paddingRight="10dp">
             <RelativeLayout
                 android:id="@+id/rl_quantity"

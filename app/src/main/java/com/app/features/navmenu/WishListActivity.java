@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.app.R;
+import com.app.activities.BaseActivity;
 import com.app.callback.HomeClickLisener;
+import com.app.callback.ProductListener;
 import com.app.features.home.model.Category;
+import com.app.features.home.model.Product;
 import com.app.features.productdetail.ProductDetailActivity;
 
-public class WishListActivity extends AppCompatActivity implements HomeClickLisener {
+public class WishListActivity extends BaseActivity implements ProductListener {
 
     FragmentManager fragmentManager;
     @Override
@@ -43,14 +46,14 @@ public class WishListActivity extends AppCompatActivity implements HomeClickLise
     }
 
     @Override
-    public void productClickLisener(Category category) {
+    public void productClickLisener(Product product) {
         Intent intent = new Intent(this, ProductDetailActivity.class);
+        intent.putExtra("productId", product.getProductId());
         startActivity(intent);
     }
 
     @Override
-    public void orderClickLisener(Category category) {
-
+    public void updateCartCount(String cartCount) {
+       setCartCount();
     }
-
 }

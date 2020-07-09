@@ -1,14 +1,30 @@
 package com.app.util;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Toast;
 
+import com.app.R;
+import com.app.callback.HomePageListener;
+import com.app.callback.OnItemCountChanged;
 import com.app.constant.AppConstant;
+import com.app.controller.AppController;
+import com.app.features.home.model.Product;
 import com.app.features.login.ModLogin;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
+import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
+
+import androidx.recyclerview.widget.RecyclerView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 
 public class AppUtils {
 
@@ -84,10 +100,101 @@ public class AppUtils {
     }
 
     public static ModLogin getUserDetails(Context context){
-        String userDetail=PrefUtil.getInstance(context).getPreferences().getString(AppConstant.PREF_USER_DATA,null);
+        String userDetail=PrefUtil.getInstance(AppController.getInstance()).getPreferences().getString(AppConstant.PREF_USER_DATA,null);
         ModLogin loginModel=null;
         if(userDetail!=null)
             loginModel=new Gson().fromJson(userDetail,ModLogin.class);
         return loginModel;
     }
+
+    public static String getUniqueId(Context context){
+        String uuid= PrefUtil.getInstance(context).getPreferences().getString(AppConstant.UUID,null);
+        if(TextUtils.isEmpty(uuid)){
+            UUID uniqueId=UUID.randomUUID();
+            uuid=uniqueId.toString();
+            PrefUtil.getInstance(context).putData(AppConstant.UUID,uuid);
+        }
+        return uuid;
+    }
+
+
+    public static void setCartCount(String cartCount){
+        PrefUtil.getInstance(AppController.getInstance()).putData(AppConstant.PREF_CART_COUNT, cartCount);
+    }
+
+
+    public static String getCartCount(Context context){
+        String cartCount = PrefUtil.getInstance(context).getPreferences().getString(AppConstant.PREF_CART_COUNT, null);
+        return cartCount;
+    }
+
+
+    public static void addTocart(int qty, final int position, List<Product> mdata, RecyclerView.Adapter adapter, Context context,final OnItemCountChanged listener){
+        JsonObject jsonObject = new JsonObject();
+        if(AppConstant.isLogin(null)){
+            jsonObject.addProperty("userId", AppUtils.getUserDetails(null).getLoginId());
+        }else{
+            jsonObject.addProperty("userId", "");
+        }
+        jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
+        //jsonObject.addProperty("tempUserId", "5478965545");
+        jsonObject.addProperty("productId", mdata.get(position).getProductId());
+        jsonObject.addProperty("quantity", String.valueOf(qty));
+
+        new RestClient().getApiService().addToCart(jsonObject, new Callback<Product>() {
+            @Override
+            public void success(Product product, Response response) {
+                if(product.getSuccess().equals("1")){
+                    if(product.getCartCount()!=null){
+                        setCartCount(product.getCartCount());
+                    }
+                    listener.onSuccess();
+//                    if(!product.getQuantity().equals("0")){
+                        mdata.get(position).setCartQuantity(qty);
+//                    }
+                    adapter.notifyItemChanged(position);
+//                        Toast.makeText(itemView.getContext(), product.getMessage(), Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(context, product.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    public static void addWishList(String wishList, final int position, List<Product> mdata, RecyclerView.Adapter adapter, Context context){
+        JsonObject jsonObject = new JsonObject();
+        if(AppConstant.isLogin(null)){
+            jsonObject.addProperty("userId", AppUtils.getUserDetails(null).getLoginId());
+        }else{
+            jsonObject.addProperty("userId", "");
+        }
+        jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
+        jsonObject.addProperty("productId",mdata.get(position).getProductId());
+        jsonObject.addProperty("wishList",wishList);
+
+        new RestClient().getApiService().addWishList(jsonObject, new Callback<Product>() {
+            @Override
+            public void success(Product product, Response response) {
+                if(product.getSuccess().equals("1")){
+                    adapter.notifyDataSetChanged();
+                    //Toast.makeText(context, product.getMessage(), Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(context, product.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 }

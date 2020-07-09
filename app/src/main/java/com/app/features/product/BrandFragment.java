@@ -1,4 +1,4 @@
-package com.app.features.navmenu;
+package com.app.features.product;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,19 +10,18 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.app.R;
-import com.app.activities.MainActivity;
-import com.app.callback.HomeClickLisener;
+import com.app.callback.CategoryListener;
 import com.app.callback.ProductListener;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
-import com.app.features.home.model.Category;
+import com.app.features.home.model.HomeModel;
 import com.app.features.home.model.Product;
+import com.app.features.product.adapter.ProductAdapter;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,13 +31,18 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class WishListFragment extends Fragment {
+public class BrandFragment extends Fragment {
+
     View rootView;
-    RecyclerView rv_wish;
-    List<Product> productList;
-    ProductListener productListener;
-    RelativeLayout rl_noDataFound;
+    RecyclerView rv_product;
     ProgressBar progressBar;
+    RelativeLayout rl_noDataFound;
+    ProductListener lisener;
+    String brandId;
+
+    public BrandFragment(String brandId) {
+        this.brandId = brandId;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,35 +53,25 @@ public class WishListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.wishlist_fragment, container, false);
+        rootView = inflater.inflate(R.layout.product_fragment, container, false);
         init(rootView);
-        setAdapters();
-
+        click();
         return rootView;
     }
 
     private void init(View rootView){
-        productList = new ArrayList<>();
-        rv_wish = (RecyclerView)rootView.findViewById(R.id.rv_wish);
-        rl_noDataFound = (RelativeLayout)rootView.findViewById(R.id.rl_noDataFound);
+        rv_product = (RecyclerView) rootView.findViewById(R.id.rv_product);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progressBar);
-    }
-
-    private void setAdapters(){
-
-        getWishList();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if(context instanceof WishListActivity){
-            productListener = (ProductListener) context;
-        }
+        rl_noDataFound = (RelativeLayout)rootView.findViewById(R.id.rl_noDataFound);
     }
 
 
-    private void getWishList(){
+    private void click(){
+        getProductbyCategory(brandId);
+    }
+
+
+    private void getProductbyCategory(String brandId){
         progressBar.setVisibility(View.VISIBLE);
         JsonObject jsonObject = new JsonObject();
         if(AppConstant.isLogin(getContext())){
@@ -86,20 +80,20 @@ public class WishListFragment extends Fragment {
             jsonObject.addProperty("userId", "");
         }
         jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
-        //jsonObject.addProperty("tempUserId", "5478965545");
+        jsonObject.addProperty("brandId", brandId);
+        jsonObject.addProperty("categoryId", "");
+        jsonObject.addProperty("subCategoryId", "");
 
-        new RestClient().getApiService().getWishList(jsonObject, new Callback<WishList>() {
+        new RestClient().getApiService().getProductCategory(jsonObject, new Callback<HomeModel>() {
             @Override
-            public void success(WishList wishList, Response response) {
+            public void success(HomeModel homeModel, Response response) {
                 progressBar.setVisibility(View.GONE);
-                if(wishList.getSuccess().equals("1")){
-                    AppUtils.setCartCount(wishList.getCartCount());
-                    ((WishListActivity)getContext()).setCartCount();
-                    arrangeWishAdap(wishList.getWishList());
+                if(homeModel.getSuccess().equals("1")){
+                    arrangeProductAdpt(homeModel.getProductsList());
                     rl_noDataFound.setVisibility(View.GONE);
-                }else {
+                }else{
                     rl_noDataFound.setVisibility(View.VISIBLE);
-                    //Toast.makeText(getActivity(), wishList.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), homeModel.getMsg(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -111,8 +105,16 @@ public class WishListFragment extends Fragment {
         });
     }
 
-    private void arrangeWishAdap(ArrayList<Product> wishList) {
-        WishListAdapter adapter1 = new WishListAdapter(productListener, wishList,this);
-        rv_wish.setAdapter(adapter1);
+
+    private void arrangeProductAdpt(ArrayList<Product> product) {
+        ProductAdapter adapter1 = new ProductAdapter(lisener, product);
+        rv_product.setAdapter(adapter1);
     }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        lisener = (ProductListener) context;
+    }
+
 }

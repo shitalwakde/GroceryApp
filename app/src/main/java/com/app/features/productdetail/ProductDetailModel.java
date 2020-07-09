@@ -1,13 +1,12 @@
-package com.app.features.home.model;
+package com.app.features.productdetail;
 
-import android.text.TextUtils;
+import com.app.features.home.model.Product;
 
-import org.w3c.dom.Text;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Product implements Serializable {
+public class ProductDetailModel {
+    private String success;
+    private String msg;
     private String productId;
     private String categoryId;
     private String subCatrgoryId;
@@ -19,46 +18,38 @@ public class Product implements Serializable {
     private String discount;
     private String stockAvailable;
     private String quantity;
-    private float grossAmount;
-    private float finalAmount;
+    private String grossAmount;
+    private String finalAmount;
     private String deliveryCharges;
     private String offerName;
     private String status;
     private String image;
     private String brandName;
-    //private String isInCard;
+    private String isInCard;
     private String cartQuantity;
     private String isInWishList;
+    private String cartCount;
 
     ArrayList<Product> recentProduct;
     ArrayList<Product> similarProduct;
 
-    //====addToCart
-    private String success;
-    private String msg;
-    private String Msg;
-    private String message;
-    private String tempUserId;
-    private String cartCount;
+    public String getCartCount() {
+        return cartCount;
+    }
 
-    //====cartList
-    private String cartId;
-    private String cartDate;
-    private String cartProduct;
-    private String productImage;
-    private String productFinalAmount;
-    private String productCartAmount;
+    public void setCartCount(String cartCount) {
+        this.cartCount = cartCount;
+    }
 
-    //====addToWishList
-    private String userId;
+    public String getIsInCard() {
+        if(isInCard==null)
+            isInCard="";
+        return isInCard;
+    }
 
-    //====wishList
-
-    private String wishListId;
-    private String wishListDate;
-    private String productName;
-    private String productQuantity;
-
+    public void setIsInCard(String isInCard) {
+        this.isInCard = isInCard;
+    }
 
     public String getCartQuantity() {
         return cartQuantity;
@@ -69,7 +60,7 @@ public class Product implements Serializable {
     }
 
     public int getCartQuantityInteger(){
-        if(!TextUtils.isEmpty(cartQuantity))
+        if(cartQuantity!=null)
             return Integer.parseInt(cartQuantity);
         return 0;
     }
@@ -86,108 +77,6 @@ public class Product implements Serializable {
 
     public void setIsInWishList(String isInWishList) {
         this.isInWishList = isInWishList;
-    }
-
-    public String getWishListId() {
-        return wishListId;
-    }
-
-    public void setWishListId(String wishListId) {
-        this.wishListId = wishListId;
-    }
-
-    public String getWishListDate() {
-        return wishListDate;
-    }
-
-    public void setWishListDate(String wishListDate) {
-        this.wishListDate = wishListDate;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getProductQuantity() {
-        return productQuantity;
-    }
-
-    public void setProductQuantity(String productQuantity) {
-        this.productQuantity = productQuantity;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(String cartId) {
-        this.cartId = cartId;
-    }
-
-    /*public String getCartQuantity() {
-        return cartQuantity;
-    }
-
-    public int getCartQuantityInteger(){
-        if(cartQuantity!=null)
-            return Integer.parseInt(cartQuantity);
-        return 0;
-    }
-
-    public void setCartQuantity(String cartQuantity) {
-        this.cartQuantity = cartQuantity;
-    }*/
-
-    public String getCartDate() {
-        return cartDate;
-    }
-
-    public void setCartDate(String cartDate) {
-        this.cartDate = cartDate;
-    }
-
-    public String getCartProduct() {
-        return cartProduct;
-    }
-
-    public void setCartProduct(String cartProduct) {
-        this.cartProduct = cartProduct;
-    }
-
-    public String getProductImage() {
-        return productImage;
-    }
-
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
-    }
-
-    public String getProductFinalAmount() {
-        return productFinalAmount;
-    }
-
-    public void setProductFinalAmount(String productFinalAmount) {
-        this.productFinalAmount = productFinalAmount;
-    }
-
-    public String getProductCartAmount() {
-        return productCartAmount;
-    }
-
-    public void setProductCartAmount(String productCartAmount) {
-        this.productCartAmount = productCartAmount;
     }
 
     public ArrayList<Product> getRecentProduct() {
@@ -221,17 +110,6 @@ public class Product implements Serializable {
     public void setMsg(String msg) {
         this.msg = msg;
     }
-
-
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
 
     public String getProductId() {
         return productId;
@@ -321,19 +199,19 @@ public class Product implements Serializable {
         this.quantity = quantity;
     }
 
-    public float getGrossAmount() {
+    public String getGrossAmount() {
         return grossAmount;
     }
 
-    public void setGrossAmount(float grossAmount) {
+    public void setGrossAmount(String grossAmount) {
         this.grossAmount = grossAmount;
     }
 
-    public float getFinalAmount() {
+    public String getFinalAmount() {
         return finalAmount;
     }
 
-    public void setFinalAmount(float finalAmount) {
+    public void setFinalAmount(String finalAmount) {
         this.finalAmount = finalAmount;
     }
 
@@ -375,21 +253,5 @@ public class Product implements Serializable {
 
     public void setBrandName(String brandName) {
         this.brandName = brandName;
-    }
-
-    public String getTempUserId() {
-        return tempUserId;
-    }
-
-    public void setTempUserId(String tempUserId) {
-        this.tempUserId = tempUserId;
-    }
-
-    public String getCartCount() {
-        return cartCount;
-    }
-
-    public void setCartCount(String cartCount) {
-        this.cartCount = cartCount;
     }
 }

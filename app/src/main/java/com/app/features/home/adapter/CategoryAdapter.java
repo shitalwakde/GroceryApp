@@ -21,13 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
     private static final String TAG = "CategoryAdapter";
-    Context context;
     List<Category> mdata;
     private int source;
     private final CategoryListener lisener;
 
-    public CategoryAdapter(Context context,CategoryListener lisener, List<Category> mdata,int source) {
-        this.context = context;
+    public CategoryAdapter(CategoryListener lisener, List<Category> mdata,int source) {
         this.lisener = lisener;
         this.mdata = mdata;
         this.source = source;
@@ -43,9 +41,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Category category = mdata.get(position);
-        Log.d(TAG, "onBindViewHolder: "+category.getImage());
-        Picasso.with(context).load(category.getImage()).into(holder.iv_category);
+        //Log.d(TAG, "onBindViewHolder: "+category.getImage());
+
         if(category!=null) {
+            Picasso.with(holder.itemView.getContext()).load(category.getImage()).into(holder.iv_category);
             holder.tv_category_name.setText(category.getCategoryName());
         }
     }

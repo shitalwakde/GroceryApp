@@ -14,12 +14,10 @@ import android.widget.Toast;
 
 import com.app.R;
 import com.app.activities.MainActivity;
-import com.app.callback.HomeClickLisener;
 import com.app.callback.OnItemCountChanged;
 import com.app.callback.ProductListener;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
-import com.app.features.home.model.Category;
 import com.app.features.home.model.Product;
 import com.app.features.login.LoginActivity;
 import com.app.util.AppUtils;
@@ -27,6 +25,7 @@ import com.app.util.RestClient;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -36,24 +35,25 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHolder> {
+public class BestSellingAdapter extends RecyclerView.Adapter<BestSellingAdapter.MyViewHolder> {
     List<Product> mdata;
     ProductListener lisener;
-    boolean flag = false;
     public static final int ADD=1;
     public static final int REMOVE=2;
     public static final int RESET=3;
+    boolean flag = false;
     String wishList="";
 
-    public HealthAdapter(ProductListener lisener, List<Product> mdata) {
+    public BestSellingAdapter(ProductListener lisener, final ArrayList<Product> mdata) {
         this.lisener = lisener;
         this.mdata = mdata;
     }
 
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.health_adapter, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.best_selling_adapter, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -100,10 +100,10 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return mdata.size();
+        return mdata.size()>=4? 4:(mdata.size()/2)*2;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements OnItemCountChanged {
+    public class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView iv_best, iv_unwish;
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_minus, tv_quantity, tv_plus, tvPiece, tv_star,tv_rating, txtDiscountOff, tv_peice;
@@ -131,13 +131,14 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
             rl_like = (RelativeLayout)itemView.findViewById(R.id.rl_like);
             rl_weight = (RelativeLayout)itemView.findViewById(R.id.rl_weight);
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     lisener.productClickLisener(mdata.get(getAdapterPosition()));
-                    lisener.updateCartCount(mdata.get(getAdapterPosition()).getCartCount());
                 }
             });
+
 
             rl_like.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -172,7 +173,7 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
             tv_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    changeQty(getAdapterPosition(),ADD);
+                   changeQty(getAdapterPosition(),ADD);
                 }
             });
 
@@ -201,13 +202,14 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
             }else {
                 qty = 0;
             }
-            AppUtils.addTocart(qty,getAdapterPosition(),mdata,HealthAdapter.this,itemView.getContext(),this);
+            AppUtils.addTocart(qty,getAdapterPosition(),mdata,BestSellingAdapter.this,itemView.getContext(),new OnItemCountChanged(){
+                @Override
+                public void onSuccess(){
+                    lisener.updateCartCount(null);
+                }
+            });
         }
 
-        @Override
-        public void onSuccess() {
-            lisener.updateCartCount(null);
-        }
 
         private void addWishList(String wishList, final Product mDataProduct, final int position){
             JsonObject jsonObject = new JsonObject();
@@ -244,6 +246,4 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
             });
         }
     }
-
-
 }

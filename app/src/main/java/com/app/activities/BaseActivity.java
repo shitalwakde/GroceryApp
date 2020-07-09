@@ -1,10 +1,12 @@
 package com.app.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,12 +18,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.R;
+import com.app.constant.AppConstant;
 import com.app.features.cart.CartActivity;
 import com.app.features.cart.CartFragment;
+import com.app.features.login.LoginActivity;
+import com.app.util.AppUtils;
+import com.app.util.PrefUtil;
 
 public class BaseActivity extends AppCompatActivity {
 
-    public static TextView tv;
+    public TextView tv;
+    public ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,7 @@ public class BaseActivity extends AppCompatActivity {
 
         tv = (TextView) MenuItemCompat.getActionView(item).findViewById(R.id.actionbar_notifcation_textview);
         //tv.setText(sharedPreferences.getCartCount());
-        ImageView iv = (ImageView) MenuItemCompat.getActionView(item).findViewById(R.id.actionbar_notifcation_iv);
+        iv = (ImageView) MenuItemCompat.getActionView(item).findViewById(R.id.actionbar_notifcation_iv);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,12 +73,15 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    public void setCartCount(int count){
-        if(count==0){
-            tv.setVisibility(View.GONE);
-        }else{
-            tv.setVisibility(View.VISIBLE);
-            tv.setText(String.valueOf(count));
-        }
+    public void setCartCount(){
+ //            tv.setText(String.valueOf(count));
+            if(AppUtils.getCartCount(this) != null){
+                tv.setText(AppUtils.getCartCount(this));
+                tv.setVisibility(View.VISIBLE);
+            }else{
+                tv.setVisibility(View.GONE);
+                tv.setText(String.valueOf(0));
+            }
+
     }
 }

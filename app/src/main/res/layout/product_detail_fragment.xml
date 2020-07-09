@@ -48,7 +48,7 @@
                 android:layout_width="300dp"
                 android:scaleType="fitXY"
                 android:layout_centerInParent="true"
-                android:src="@drawable/grapes"
+                android:src="@drawable/background_login"
                 android:padding="50dp"
                 android:layout_height="300dp" />
             <androidx.cardview.widget.CardView
@@ -103,7 +103,7 @@
                     android:layout_marginTop="2dp"
                     android:textColor="@color/colorBlack"
                     android:fontFamily="@font/roboto"
-                    android:text="Nutella"/>
+                    android:text=""/>
 
                 <TextView
                     android:id="@+id/tv_pr_sub_name"
@@ -113,7 +113,7 @@
                     android:textSize="13sp"
                     android:layout_below="@+id/tv_pr_name"
                     android:fontFamily="@font/roboto"
-                    android:text="HazeInut Spread with Cocoa"/>
+                    android:text=""/>
 
                 <RelativeLayout
                     android:id="@+id/rl_rating"
@@ -162,29 +162,46 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rl_weight"
+                    android:id="@+id/rl_quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl_rating"
-                    android:background="@drawable/bg_border"
-                    android:layout_marginTop="5dp">
+                    android:layout_below="@+id/rl_rating">
                     <TextView
-                        android:id="@+id/tv_peice"
+                        android:id="@+id/tvPiece"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/grey"
                         android:fontFamily="@font/roboto"
-                        android:layout_marginRight="1dp"
-                        android:text="1 Kg"/>
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_toRightOf="@+id/tv_peice"
-                        android:src="@drawable/ic_down"
-                        android:visibility="visible"/>
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="13sp"
+                        android:text="7 Rating"
+                        android:visibility="gone"/>
+                    <RelativeLayout
+                        android:id="@+id/rl_weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_border"
+                        android:layout_marginTop="5dp">
+                        <TextView
+                            android:id="@+id/tv_peice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:fontFamily="@font/roboto"
+                            android:layout_marginRight="1dp"
+                            android:text="1 Kg"/>
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_toRightOf="@+id/tv_peice"
+                            android:src="@drawable/ic_down"
+                            android:visibility="visible"/>
+                    </RelativeLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -192,7 +209,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@+id/rl_rating">
+                    android:layout_below="@+id/rl_quantity">
                     <TextView
                         android:id="@+id/tv_add"
                         android:layout_width="wrap_content"
@@ -257,7 +274,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_below="@+id/rl_weight">
+                    android:layout_below="@+id/rl_quantity">
 
                     <TextView
                         android:id="@+id/tv_discount_price"
@@ -265,7 +282,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
                         android:textColor="@color/colorBlack"
-                        android:text="\u20B9 550"/>
+                        android:text=""/>
 
                     <TextView
                         android:id="@+id/tv_price"
@@ -276,7 +293,7 @@
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@+id/tv_discount_price"
-                        android:text="1550"/>
+                        android:text=""/>
 
                     <TextView
                         android:id="@+id/tv_offer"
@@ -287,7 +304,7 @@
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@+id/tv_price"
-                        android:text="77% off" />
+                        android:text="" />
 
                 </RelativeLayout>
             </RelativeLayout>
@@ -463,7 +480,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
                     android:textSize="12sp"
-                    android:text="It feets in my leg and it also gives a gorgeous look in may leg"/>
+                    android:text="I had a great experiance"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rl_view_all_rating"

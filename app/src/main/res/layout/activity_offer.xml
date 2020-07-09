@@ -6,6 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".features.navmenu.OrderActivity">
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -17,7 +23,7 @@
             android:id="@+id/tv_toolbar_offer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Grocery Application"
+            android:text="Offers"
             android:layout_marginRight="20dp"
             android:fontFamily="serif"
             android:textColor="@color/colorWhite"

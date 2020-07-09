@@ -1,5 +1,6 @@
 package com.app.features.signup.mvvm;
 
+import com.app.controller.AppController;
 import com.app.features.login.ModLogin;
 import com.app.util.RestClient;
 import com.google.gson.JsonObject;
@@ -16,6 +17,7 @@ public class SignUpInteractorImp implements SignUpMvvm.SignUpInteractor {
         jsonObject.addProperty("email", email);
         jsonObject.addProperty("mobile", mobile);
         jsonObject.addProperty("password", password);
+        jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
 
         new RestClient().getApiService().getSignUp(jsonObject, new Callback<ModLogin>() {
             @Override

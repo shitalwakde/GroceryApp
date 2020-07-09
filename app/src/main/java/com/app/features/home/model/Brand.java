@@ -1,6 +1,8 @@
 package com.app.features.home.model;
 
-public class Brand {
+import java.io.Serializable;
+
+public class Brand implements Serializable {
     private String brandId;
     private String status;
     private String brandName;

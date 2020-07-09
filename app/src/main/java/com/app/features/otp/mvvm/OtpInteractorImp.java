@@ -3,6 +3,7 @@ package com.app.features.otp.mvvm;
 import android.content.Context;
 import android.util.Log;
 
+import com.app.controller.AppController;
 import com.app.features.login.ModLogin;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
@@ -15,7 +16,6 @@ import retrofit.client.Response;
 
 public class OtpInteractorImp implements OtpMvvm.OtpInteractor {
 
-
     @Override
     public void callApiForOtp(Context context, String otp, OtpMvvm.OtpPresenter presenter) {
         JsonObject jsonObject = new JsonObject();
@@ -25,6 +25,7 @@ public class OtpInteractorImp implements OtpMvvm.OtpInteractor {
             jsonObject.addProperty("mobileEmail", AppUtils.getUserDetails(context).getEmail());
         }
         jsonObject.addProperty("otp", otp);
+        jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
 
         Log.w("TAG", "mobileEmail : "+ AppUtils.getUserDetails(context).getEmail());
 

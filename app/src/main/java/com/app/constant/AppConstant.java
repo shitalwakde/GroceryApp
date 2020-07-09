@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.app.R;
 import com.app.activities.NavMenu;
+import com.app.controller.AppController;
 import com.app.util.PrefUtil;
 
 import java.util.ArrayList;
@@ -13,8 +14,7 @@ import java.util.List;
 public class AppConstant {
 
     public static final String EXTRA_PROD_CATEGORY = "extra_category";
-
-
+    public static final String UUID = "uniqueId";
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     int PRIVATE_MODE = 0;
@@ -24,13 +24,14 @@ public class AppConstant {
     public static final String PREF_IS_LOGGED_IN="isLoggedIn";
     public static final String PREF_USER_NAME = "userfullname";
     public static final String PREF_USER_DATA = "user_detail";
+    public static final String PREF_CART_COUNT = "cart_count";
 
     public static final int FROM_CATEGORY_PRODUCT = 1;
     public static final int FROM_HOME_CATEGORY_PRODUCT = 2;
 
 
     public static boolean isLogin(Context context){
-        String userId= PrefUtil.getInstance(context).getPreferences().getString(PREF_USER_ID, null);
+        String userId= PrefUtil.getInstance(AppController.getInstance()).getPreferences().getString(PREF_USER_ID, null);
         return userId!=null;
     }
 

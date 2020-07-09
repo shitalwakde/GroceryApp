@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class HomeModel {
     private String success;
     private String message;
+    private String msg;
     private String whatsapp_mobile;
     private String offer_image;
     private String discount_image;
@@ -16,7 +17,7 @@ public class HomeModel {
     ArrayList<Category> category;
     ArrayList<Brand> brand;
     ArrayList<Product> product;
-
+    ArrayList<Product> productsList;
 
     public String getSuccess() {
         return success;
@@ -24,6 +25,14 @@ public class HomeModel {
 
     public void setSuccess(String success) {
         this.success = success;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public String getMessage() {
@@ -96,5 +105,13 @@ public class HomeModel {
 
     public void setProduct(ArrayList<Product> product) {
         this.product = product;
+    }
+
+    public ArrayList<Product> getProductsList() {
+        return productsList;
+    }
+
+    public void setProductsList(ArrayList<Product> productsList) {
+        this.productsList = productsList;
     }
 }

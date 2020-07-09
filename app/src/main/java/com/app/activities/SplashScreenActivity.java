@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.app.R;
+import com.app.constant.AppConstant;
+import com.app.controller.AppController;
 import com.app.features.login.ModLogin;
+import com.app.util.AppUtils;
 import com.app.util.RestClient;
 import com.google.gson.JsonObject;
 
@@ -50,6 +53,12 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         try {
             JsonObject jsonObject = new JsonObject();
+            if(AppConstant.isLogin(this)){
+                jsonObject.addProperty("userId", AppUtils.getUserDetails(this).getLoginId());
+            }else{
+                jsonObject.addProperty("userId", "");
+            }
+            jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
 
             new RestClient().getApiService().getCategories(jsonObject, new Callback<ModCategory>() {
                 @Override

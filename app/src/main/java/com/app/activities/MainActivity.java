@@ -30,6 +30,7 @@ import com.app.features.home.model.SubCategory;
 import com.app.features.navmenu.OrderActivity;
 import com.app.features.navmenu.WishListActivity;
 import com.app.features.notification.NotificationActivity;
+import com.app.features.product.BrandFragment;
 import com.app.features.productdetail.ProductDetailActivity;
 import com.app.features.home.model.Category;
 import com.app.features.home.HomeFragment;
@@ -175,33 +176,9 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
     };
 
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home_new, menu);
-
-        MenuItem item = menu.findItem(R.id.action_open_cart);
-        MenuItemCompat.setActionView(item, R.layout.cart_new_layout);
-
-        tv = (TextView) MenuItemCompat.getActionView(item).findViewById(R.id.actionbar_notifcation_textview);
-        //tv.setText(sharedPreferences.getCartCount());
-        ImageView iv = (ImageView) MenuItemCompat.getActionView(item).findViewById(R.id.actionbar_notifcation_iv);
-        iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                *//*Intent intent = new Intent(getApplicationContext(), ActCart.class);
-                intent.putExtra("source","dashboard");
-                startActivity(intent);*//*
-            }
-        });
-
-        return true;
-    }*/
-
-
     @Override
     public void categoryClickLisener(Category category) {
-        Fragment fragment=new ProductFragment("", "", "", "");
+        Fragment fragment=new ProductFragment("", category.getCategoryId(), "", "");
         Bundle bundle=new Bundle();
         bundle.putSerializable(AppConstant.EXTRA_PROD_CATEGORY, (Serializable) category);
         fragment.setArguments(bundle);
@@ -237,11 +214,18 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
 
     @Override
     public void brandLisener(Brand brand) {
-
+        fragmentManager.beginTransaction().replace(appBarContainer, new BrandFragment(brand.getBrandId())).addToBackStack(null).commit();
     }
 
     @Override
     public void productClickLisener(Product product) {
+        Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
+        intent.putExtra("productId", product.getProductId());
+        startActivity(intent);
+    }
 
+    @Override
+    public void updateCartCount(String cartCount) {
+        setCartCount();
     }
 }

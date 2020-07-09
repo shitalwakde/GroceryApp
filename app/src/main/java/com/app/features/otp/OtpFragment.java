@@ -16,6 +16,7 @@ import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.app.R;
 import com.app.activities.MainActivity;
 import com.app.constant.AppConstant;
+import com.app.controller.AppController;
 import com.app.features.login.ModLogin;
 import com.app.features.otp.mvvm.OtpMvvm;
 import com.app.features.otp.mvvm.OtpPresenterImp;
@@ -130,6 +131,7 @@ public class OtpFragment extends Fragment implements OtpMvvm.OtpView {
 
     private void callApiForResendOtp(){
         JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
         if(AppUtils.getUserDetails(getActivity()).getEmail() == null){
             jsonObject.addProperty("mobileEmail", AppUtils.getUserDetails(getActivity()).getMobile());
         }else {

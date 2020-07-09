@@ -6,14 +6,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.app.R;
 import com.app.callback.CategoryListener;
+import com.app.callback.ProductListener;
 import com.app.constant.AppConstant;
-import com.app.features.home.adapter.BrandAdapter;
+import com.app.controller.AppController;
+import com.app.features.home.model.Brand;
 import com.app.features.home.model.Category;
-import com.app.features.home.adapter.CategoryAdapter;
+import com.app.features.home.model.HomeModel;
+import com.app.features.home.model.Product;
 import com.app.features.home.model.SubCategory;
+import com.app.features.product.adapter.ProductAdapter;
+import com.app.features.product.adapter.SubCatAdapter;
+import com.app.util.AppUtils;
+import com.app.util.RestClient;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +33,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 import static com.app.activities.MainActivity.ll_search;
 
@@ -29,14 +43,17 @@ public class ProductFragment extends Fragment {
 
     View rootView;
     LinearLayout ll_sort_filter, ll_sort_data, ll_filter;
+    RelativeLayout rl_noDataFound;
     RecyclerView rv_product, rv_product2, rv_product3, rv_subCat;
-    List<Category> productList;
-    List<Category> brandList;
-    List<Category> categoryList;
+    ArrayList<Product> productList;
+    ArrayList<Brand> brandList;
+    ArrayList<Category> categoryList;
     List<SubCategory> subCatList;
-    CategoryListener lisener;
+    ProductListener lisener;
+    CategoryListener categoryListener;
     String viewAllType="", categoryId="", subCategoryId="", subCategoryName="";
     private Category category;
+    ProgressBar progressBar;
 
     public ProductFragment(String viewAllType, String categoryId, String subCategoryId, String subCategoryName) {
         this.viewAllType = viewAllType;
@@ -71,9 +88,10 @@ public class ProductFragment extends Fragment {
 
 
     private void init(View rootView){
-        productList = new ArrayList<>();
+        productList = new ArrayList<Product>();
         brandList = new ArrayList<>();
         categoryList = new ArrayList<>();
+        progressBar= (ProgressBar)rootView.findViewById(R.id.progressBar);
         rv_product = (RecyclerView)rootView.findViewById(R.id.rv_product);
         rv_product2 = (RecyclerView)rootView.findViewById(R.id.rv_product2);
         rv_product3 = (RecyclerView)rootView.findViewById(R.id.rv_product3);
@@ -81,59 +99,20 @@ public class ProductFragment extends Fragment {
         ll_sort_filter = (LinearLayout) rootView.findViewById(R.id.ll_sort_filter);
         ll_sort_data = (LinearLayout) rootView.findViewById(R.id.ll_sort_data);
         ll_filter = (LinearLayout) rootView.findViewById(R.id.ll_filter);
+        rl_noDataFound = (RelativeLayout) rootView.findViewById(R.id.rl_noDataFound);
     }
 
 
     private void click(){
 
-        if(viewAllType.equals("category")){
-//            ll_sort_filter.setVisibility(View.GONE);
-//            rv_product2.setVisibility(View.VISIBLE);
-//            rv_product.setVisibility(View.GONE);
-//
-//            categoryList.add(category);
-//
-//            CategoryAdapter adapter = new CategoryAdapter(getActivity(),lisener,categoryList,AppConstant.FROM_CATEGORY_PRODUCT);
- //           rv_product2.setAdapter(adapter);
-
-        }else if(viewAllType.equals("brand")){
-            /*ll_sort_filter.setVisibility(View.GONE);
-            rv_product3.setVisibility(View.VISIBLE);
-            rv_product.setVisibility(View.GONE);
-            Category catBrand = new Category();
-            catBrand.setIv_brand(R.drawable.dettol);
-
-            Category catBrand1 = new Category();
-            catBrand1.setIv_brand(R.drawable.amul);
-
-            brandList.add(catBrand);
-            brandList.add(catBrand1);
-            brandList.add(catBrand);
-            brandList.add(catBrand1);
-            brandList.add(catBrand);
-            brandList.add(catBrand1);
-
-            BrandAdapter adapter3 = new BrandAdapter(lisener, brandList);
-            rv_product3.setAdapter(adapter3);*/
-        }else {
-            Category cate = new Category();
-            cate.setIv_best(R.drawable.grapes);
-            cate.setTv_pr_name("Nutella");
-            cate.setTv_pr_sub_name("HazeInut Spread with Cocoa");
-
-            productList.add(cate);
-            productList.add(cate);
-            productList.add(cate);
-            productList.add(cate);
-
-            ProductAdapter adapter1 = new ProductAdapter(lisener, productList);
-            rv_product.setAdapter(adapter1);
+        getProductbyCategory(categoryId, subCategoryId);
 
             //============subcategory====================
+
             if(subCatList==null) {
                 throw new IllegalStateException("Sub category list is null, please check bundle from onCreate");
             }else{
-                SubCatAdapter adapter2 = new SubCatAdapter(lisener,category, subCatList, subCategoryName);
+                SubCatAdapter adapter2 = new SubCatAdapter(categoryListener,category, subCatList, subCategoryName);
                 rv_subCat.setAdapter(adapter2);
             }
 
@@ -154,8 +133,6 @@ public class ProductFragment extends Fragment {
             });
         }
 
-    }
-
 
     private void showBottomSheetFragment(String filterType){
         BottomSheetFragment bottomSheetFragment = new BottomSheetFragment(filterType);
@@ -165,6 +142,46 @@ public class ProductFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        lisener = (CategoryListener) context;
+        lisener = (ProductListener) context;
+        categoryListener = (CategoryListener) context;
+    }
+
+    private void getProductbyCategory(String categoryId, String subCategoryId){
+        progressBar.setVisibility(View.VISIBLE);
+        JsonObject jsonObject = new JsonObject();
+        if(AppConstant.isLogin(getContext())){
+            jsonObject.addProperty("userId", AppUtils.getUserDetails(getContext()).getLoginId());
+        }else{
+            jsonObject.addProperty("userId", "");
+        }
+        jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
+        jsonObject.addProperty("categoryId", categoryId);
+        jsonObject.addProperty("subCategoryId", subCategoryId);
+
+        new RestClient().getApiService().getProductCategory(jsonObject, new Callback<HomeModel>() {
+            @Override
+            public void success(HomeModel homeModel, Response response) {
+                progressBar.setVisibility(View.GONE);
+                if(homeModel.getSuccess().equals("1")){
+                    arrangeProductAdpt(homeModel.getProductsList());
+                    rl_noDataFound.setVisibility(View.GONE);
+                }else{
+                    rl_noDataFound.setVisibility(View.VISIBLE);
+                    //Toast.makeText(getActivity(), homeModel.getMsg(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+        private void arrangeProductAdpt(ArrayList<Product> product) {
+            ProductAdapter adapter1 = new ProductAdapter(lisener, product);
+            rv_product.setAdapter(adapter1);
     }
 }

@@ -1,4 +1,4 @@
-package com.app.features.product;
+package com.app.features.product.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

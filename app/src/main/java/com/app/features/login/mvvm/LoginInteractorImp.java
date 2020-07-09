@@ -1,8 +1,11 @@
 package com.app.features.login.mvvm;
 
+import android.content.Context;
 import android.widget.Toast;
 
+import com.app.controller.AppController;
 import com.app.features.login.ModLogin;
+import com.app.util.AppUtils;
 import com.app.util.RestClient;
 import com.app.util.Utility;
 import com.google.gson.JsonObject;
@@ -18,6 +21,7 @@ public class LoginInteractorImp implements LoginInteractor {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("emailMobile", username);
         jsonObject.addProperty("password", password);
+        jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
 
         new RestClient().getApiService().getLogin(jsonObject, new Callback<ModLogin>() {
             @Override

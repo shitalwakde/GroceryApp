@@ -1,5 +1,7 @@
 package com.app.features.navmenu;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,27 +10,46 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.R;
+import com.app.activities.MainActivity;
 import com.app.callback.HomeClickLisener;
+import com.app.callback.OnItemCountChanged;
+import com.app.callback.ProductListener;
+import com.app.constant.AppConstant;
+import com.app.controller.AppController;
 import com.app.features.home.model.Category;
+import com.app.features.home.model.Product;
+import com.app.util.AppUtils;
+import com.app.util.RestClient;
+import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 
 public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyViewHolder> {
-    List<Category> mdata;
-    HomeClickLisener lisener;
+    List<Product> mdata;
+    ProductListener productListener;
     boolean flag = false;
     public static final int ADD=1;
     public static final int REMOVE=2;
     public static final int RESET=3;
+    private WeakReference<WishListFragment> weakWishlistFragment;
 
-    public WishListAdapter(HomeClickLisener lisener, List<Category> mdata) {
-        this.lisener = lisener;
+    public WishListAdapter(ProductListener productListener, List<Product> mdata, WishListFragment wishListFragment) {
+        this.productListener = productListener;
         this.mdata = mdata;
+        weakWishlistFragment=new WeakReference<WishListFragment>(wishListFragment);
     }
 
     @NonNull
@@ -40,21 +61,31 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Category category = mdata.get(position);
-        holder.iv_best.setImageResource(category.getIv_best());
-        holder.tv_pr_name.setText(category.getTv_pr_name());
-        holder.tv_pr_sub_name.setText(category.getTv_pr_sub_name());
+        Product category = mdata.get(position);
+        Picasso.with(holder.itemView.getContext()).load(category.getProductImage()).into(holder.iv_best);
+        holder.tv_pr_name.setText(category.getProductName());
+        holder.tv_pr_sub_name.setText(category.getBrandName());
+        holder.txtDiscountOff.setText(category.getDiscount()+"%");
+        holder.tv_discount_price.setText("\u20B9 "+String.valueOf(category.getFinalAmount()));
+        holder.tv_price.setText("\u20B9 "+String.valueOf(category.getGrossAmount()));
         holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
                 | Paint.STRIKE_THRU_TEXT_FLAG);
 
-        if(category.qty <= 0){
+
+        if(category.getCartQuantityInteger()<=0){
             holder.tv_add.setVisibility(View.VISIBLE);
             holder.ll_quantity.setVisibility(View.GONE);
-        }else {
+        }else{
             holder.ll_quantity.setVisibility(View.VISIBLE);
             holder.tv_add.setVisibility(View.GONE);
+            holder.tv_quantity.setText(String.valueOf(category.getCartQuantityInteger()));
         }
-        holder.tv_quantity.setText(String.valueOf(category.qty));
+
+        /*if(category.getIsInWishList().equals("No")){
+            holder.iv_unwish.setImageResource(R.drawable.ic_heart);
+        }else{
+            holder.iv_unwish.setImageResource(R.drawable.ic_heart_red);
+        }*/
     }
 
     @Override
@@ -62,10 +93,10 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
         return mdata.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements OnItemCountChanged {
 
         ImageView iv_best, iv_unwish;
-        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_remove, tv_minus, tv_quantity, tv_plus;
+        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_remove, tv_minus, tv_quantity, tv_plus, txtDiscountOff;
         LinearLayout ll_quantity;
         RelativeLayout rl_wish;
 
@@ -83,24 +114,30 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             tv_minus = (TextView)itemView.findViewById(R.id.tv_minus);
             tv_quantity = (TextView)itemView.findViewById(R.id.tv_quantity);
             tv_plus = (TextView)itemView.findViewById(R.id.tv_plus);
+            txtDiscountOff = (TextView)itemView.findViewById(R.id.txtDiscountOff);
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
             rl_wish = (RelativeLayout)itemView.findViewById(R.id.rl_wish);
 
-
             tv_remove.setVisibility(View.VISIBLE);
             rl_wish.setVisibility(View.GONE);
-            ll_quantity.setVisibility(View.VISIBLE);
-            tv_add.setVisibility(View.GONE);
-            iv_unwish.setOnClickListener(new View.OnClickListener() {
+
+            tv_remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(flag==false){
-                        flag=true;
-                        iv_unwish.setImageResource(R.drawable.ic_heart);
-                    }else{
-                        flag=false;
-                        iv_unwish.setImageResource(R.drawable.ic_heart_red);
-                    }
+                    AlertDialog.Builder builder=new AlertDialog.Builder(itemView.getContext());
+                    builder.setMessage("Are you sure want to remove the product ?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            addWishList("no", getAdapterPosition(),mdata,WishListAdapter.this,itemView.getContext());
+                            dialog.dismiss();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
                 }
             });
 
@@ -108,7 +145,8 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    lisener.productClickLisener(mdata.get(getAdapterPosition()));
+                    productListener.productClickLisener(mdata.get(getAdapterPosition()));
+                    productListener.updateCartCount(mdata.get(getAdapterPosition()).getCartCount());
                 }
             });
 
@@ -130,20 +168,63 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
                 @Override
                 public void onClick(View v) {
                     changeQty(getAdapterPosition(),REMOVE);
+
                 }
             });
         }
 
         private void changeQty(int adapterPosition,int type) {
-            int qty=mdata.get(adapterPosition).qty;
-            if(type==ADD)
-                qty=qty +1;
-            else if(type ==REMOVE)
-                qty=qty-1;
-            else
-                qty=0;
-            mdata.get(adapterPosition).qty=qty;
-            notifyItemChanged(adapterPosition);
+            int qty=mdata.get(adapterPosition).getCartQuantityInteger();
+            if(type==ADD) {
+                qty = qty + 1;
+            }else if(type ==REMOVE) {
+                qty = qty - 1;
+            }else {
+                qty = 0;
+            }
+            AppUtils.addTocart(qty,getAdapterPosition(),mdata,WishListAdapter.this,itemView.getContext(),this);
+        }
+
+
+        public void addWishList(String wishList, final int position, List<Product> mdata, RecyclerView.Adapter adapter, Context context){
+            JsonObject jsonObject = new JsonObject();
+            if(AppConstant.isLogin(null)){
+                jsonObject.addProperty("userId", AppUtils.getUserDetails(null).getLoginId());
+            }else{
+                jsonObject.addProperty("userId", "");
+            }
+            jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
+            jsonObject.addProperty("productId",mdata.get(position).getProductId());
+            jsonObject.addProperty("wishList",wishList);
+
+            new RestClient().getApiService().addWishList(jsonObject, new Callback<Product>() {
+                @Override
+                public void success(Product product, Response response) {
+                    if(product.getSuccess().equals("1")){
+                        mdata.remove(position);
+                        adapter.notifyDataSetChanged();
+                        if(weakWishlistFragment.get()!=null)
+                            if(mdata.size()==0){
+                                weakWishlistFragment.get().rl_noDataFound.setVisibility(View.VISIBLE);
+                            }else{
+                                weakWishlistFragment.get().rl_noDataFound.setVisibility(View.GONE);
+                            }
+                        //Toast.makeText(context, product.getMessage(), Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(context, product.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        @Override
+        public void onSuccess() {
+            productListener.updateCartCount(null);
         }
     }
 }
