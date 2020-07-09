@@ -17,6 +17,7 @@ import com.app.callback.ProductListener;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
 import com.app.features.address.AddressFragment;
+import com.app.features.checkout.CheckOutFragment;
 import com.app.features.home.model.Product;
 import com.app.features.login.LoginActivity;
 import com.app.util.AppUtils;
@@ -45,7 +46,7 @@ public class CartFragment extends Fragment {
     RecyclerView rv_cart;
     List<Product> productList;
     ProductListener productListener;
-    TextView tv_checkout;
+    TextView tv_checkout, tv_total_price;
     FragmentManager fragmentManager;
     RelativeLayout rl_noDataFound;
     ProgressBar progressBar;
@@ -72,6 +73,7 @@ public class CartFragment extends Fragment {
         productList = new ArrayList<>();
         rv_cart = (RecyclerView)rootView.findViewById(R.id.rv_cart);
         tv_checkout = (TextView)rootView.findViewById(R.id.tv_checkout);
+        tv_total_price = (TextView)rootView.findViewById(R.id.tv_total_price);
         rl_noDataFound = (RelativeLayout)rootView.findViewById(R.id.rl_noDataFound);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progressBar);
     }
@@ -84,7 +86,7 @@ public class CartFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(AppConstant.isLogin(getContext())){
-                    fragmentManager.beginTransaction().replace(cartContainer, new AddressFragment()).addToBackStack(null).commit();
+                    fragmentManager.beginTransaction().replace(cartContainer, new CheckOutFragment()).addToBackStack(null).commit();
                 }else {
                     AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
                     builder.setMessage("Please login to place order");
@@ -123,6 +125,7 @@ public class CartFragment extends Fragment {
             public void success(Cart cartModel, Response response) {
                 progressBar.setVisibility(View.GONE);
                 if(cartModel.getSuccess().equals("1")){
+                    tv_total_price.setText("PRICE : \u20B9 "+cartModel.getTotalSum());
                     arrangeCartAdap(cartModel.getCart());
                     rl_noDataFound.setVisibility(View.GONE);
                 }else{

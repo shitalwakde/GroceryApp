@@ -198,12 +198,15 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
         int qty=category.getCartQuantityInteger();
         if(type==ADD) {
             qty = qty + 1;
+            addTocart(qty);
         }else if(type ==REMOVE) {
             qty = qty - 1;
+            addTocart(qty);
         }else {
             qty = 0;
+            addTocart(qty);
         }
-        addTocart(qty);
+
     }
 
     private void getProductDetail(){
@@ -286,7 +289,15 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
             @Override
             public void success(Product product, Response response) {
                 if(product.getSuccess().equals("1")){
-                    category.setCartQuantity(qty);
+                    category.setCartQuantity(product.getQuantity());
+
+                    if(product.getQuantity().equalsIgnoreCase("0")){
+                        tv_add.setVisibility(View.VISIBLE);
+                        ll_quantity.setVisibility(View.GONE);
+                    }else{
+                        tv_add.setVisibility(View.GONE);
+                        ll_quantity.setVisibility(View.VISIBLE);
+                    }
                     AppUtils.setCartCount(product.getCartCount());
                     setCartCount();
                     //Toast.makeText(ProductDetailActivity.this, product.getMessage(), Toast.LENGTH_SHORT).show();

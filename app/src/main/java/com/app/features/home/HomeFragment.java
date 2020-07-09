@@ -253,8 +253,8 @@ public class HomeFragment extends Fragment {
 
     private void arrangeBanner(HomeModel modCategory) {
         posters = new ArrayList<>();
-
-        /*for (int i = 0; i < modCategory.getBanner().size(); i++) {
+        imageSlider.removeAllSliders();
+        for (int i = 0; i < modCategory.getBanner().size(); i++) {
             textSliderView = new DefaultSliderView(getContext());
             textSliderView
                     .description("")
@@ -265,8 +265,9 @@ public class HomeFragment extends Fragment {
                     .putString("extra", "");
             imageSlider.addSlider(textSliderView);
         }
-        imageSlider.startAutoCycle();*/
-        for (int i = 0; i < modCategory.getBanner().size(); i++) {
+        imageSlider.startAutoCycle();
+
+        /*for (int i = 0; i < modCategory.getBanner().size(); i++) {
             Banner img = modCategory.getBanner().get(i);
             immm = img.getImage();
             if(!posters.contains(immm)){
@@ -276,7 +277,7 @@ public class HomeFragment extends Fragment {
             }
         }
             poster_slider.removeAllPosters();
-            poster_slider.setPosters(posters);
+            poster_slider.setPosters(posters);*/
     }
 
     @Override

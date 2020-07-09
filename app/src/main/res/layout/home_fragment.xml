@@ -26,7 +26,7 @@
             app:imageSlideInterval="5000"
             app:loopSlides="true"
             android:background="@drawable/background_login"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
         <com.daimajia.slider.library.Indicators.PagerIndicator
             android:id="@+id/custom_indicator2"
             style="@style/AndroidImageSlider_Corner_Oval_Orange"
@@ -41,7 +41,7 @@
             custom:auto_cycle="true"
             custom:pager_animation="Accordion"
             custom:pager_animation_span="1100"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <LinearLayout
             android:id="@+id/ll_categories"

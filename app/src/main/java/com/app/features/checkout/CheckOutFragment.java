@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.activities.MainActivity;
+import com.app.features.address.AddressFragment;
 import com.app.features.address.AddressListFragment;
 import com.app.features.navmenu.OrderDetailFragment;
 
@@ -57,10 +58,12 @@ public class CheckOutFragment extends Fragment {
 
         tv_toolbar_cart.setText("CheckOut");
 
+
         tv_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(cartContainer, new AddressListFragment()).addToBackStack(null).commit();
+                //fragmentManager.beginTransaction().replace(cartContainer, new AddressListFragment()).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(cartContainer, new AddressFragment()).addToBackStack(null).commit();
             }
         });
 
