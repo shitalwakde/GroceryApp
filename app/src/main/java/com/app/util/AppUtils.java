@@ -152,6 +152,7 @@ public class AppUtils {
 //                    if(!product.getQuantity().equals("0")){
                         mdata.get(position).setCartQuantity(qty);
 //                    }
+                    adapter.notifyDataSetChanged();
                     adapter.notifyItemChanged(position);
 //                        Toast.makeText(itemView.getContext(), product.getMessage(), Toast.LENGTH_SHORT).show();
                 }else {

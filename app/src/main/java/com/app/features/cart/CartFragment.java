@@ -1,6 +1,8 @@
 package com.app.features.cart;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.app.constant.AppConstant;
 import com.app.controller.AppController;
 import com.app.features.address.AddressFragment;
 import com.app.features.home.model.Product;
+import com.app.features.login.LoginActivity;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
 import com.google.gson.JsonObject;
@@ -25,6 +28,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,7 +83,26 @@ public class CartFragment extends Fragment {
         tv_checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(cartContainer, new AddressFragment()).addToBackStack(null).commit();
+                if(AppConstant.isLogin(getContext())){
+                    fragmentManager.beginTransaction().replace(cartContainer, new AddressFragment()).addToBackStack(null).commit();
+                }else {
+                    AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+                    builder.setMessage("Please login to place order");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                            intent.putExtra("type","login");
+                            getContext().startActivity(intent);
+                            dialog.cancel();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+                }
             }
         });
     }

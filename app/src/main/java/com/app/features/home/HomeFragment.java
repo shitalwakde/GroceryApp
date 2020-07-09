@@ -269,12 +269,14 @@ public class HomeFragment extends Fragment {
         for (int i = 0; i < modCategory.getBanner().size(); i++) {
             Banner img = modCategory.getBanner().get(i);
             immm = img.getImage();
-            if(modCategory.getBanner().size()>0){
-                posters.add(new RemoteImage(immm));
+            if(!posters.contains(immm)){
+                if(modCategory.getBanner().size()>0){
+                    posters.add(new RemoteImage(immm));
+                }
             }
         }
-        poster_slider.removeAllPosters();
-        poster_slider.setPosters(posters);
+            poster_slider.removeAllPosters();
+            poster_slider.setPosters(posters);
     }
 
     @Override

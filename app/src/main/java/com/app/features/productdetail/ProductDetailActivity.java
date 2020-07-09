@@ -286,10 +286,10 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
             @Override
             public void success(Product product, Response response) {
                 if(product.getSuccess().equals("1")){
-                    category.setCartQuantity(String.valueOf(qty));
+                    category.setCartQuantity(qty);
                     AppUtils.setCartCount(product.getCartCount());
                     setCartCount();
-                    Toast.makeText(ProductDetailActivity.this, product.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ProductDetailActivity.this, product.getMessage(), Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(ProductDetailActivity.this, product.getMessage(), Toast.LENGTH_SHORT).show();
                 }
