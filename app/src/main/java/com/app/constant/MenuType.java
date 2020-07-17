@@ -1,7 +1,6 @@
 package com.app.constant;
 
 public enum MenuType {
-
     Home,
     ShopByCategory,
     Offers,

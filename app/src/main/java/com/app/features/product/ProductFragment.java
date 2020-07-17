@@ -48,9 +48,11 @@ public class ProductFragment extends Fragment {
     ArrayList<Product> productList;
     ArrayList<Brand> brandList;
     ArrayList<Category> categoryList;
-    List<SubCategory> subCatList;
+    ArrayList<SubCategory> subCatList= new ArrayList<>();
+    List<SubCategory> subCat;
     ProductListener lisener;
     CategoryListener categoryListener;
+    SubCategory subCategory;
     String viewAllType="", categoryId="", subCategoryId="", subCategoryName="";
     private Category category;
     ProgressBar progressBar;
@@ -67,8 +69,12 @@ public class ProductFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments()!=null) {
             category = (Category) getArguments().getSerializable(AppConstant.EXTRA_PROD_CATEGORY);
-            if (category != null)
-                subCatList=category.getSubcategory();
+            if (category != null) {
+                subCatList = category.getSubcategory();
+//                subCategory = new SubCategory();
+//                subCategory.setName("All");
+//                subCatList.add(subCategory);
+            }
         }
     }
 

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/colorWhite">
+
+    <TextView
+        android:id="@+id/tv_forgot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thank you !!!"
+        android:textSize="18sp"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:padding="20dp"/>
+    <TextView
+        android:id="@+id/tv_location_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your order No. is #0001 &amp; Your order will be delivered within 2-3 days"
+        android:textSize="13sp"
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/roboto"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_border"
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/tv_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Confirm"
+            android:textColor="@color/colorWhite"
+            android:fontFamily="@font/roboto"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_login"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+</LinearLayout>

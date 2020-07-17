@@ -495,6 +495,7 @@
                     android:layout_height="wrap_content"
                     android:text="All 7 reviewes"
                     android:textSize="12sp"
+                    android:layout_marginTop="2dp"
                     android:textColor="@color/colorBlack"
                     android:fontFamily="@font/roboto" />
                 <ImageView
@@ -506,7 +507,7 @@
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_similar_product"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:padding="10dp"
@@ -538,7 +539,8 @@
                     android:fontFamily="@font/roboto"
                     android:background="@drawable/button_red"
                     android:layout_alignParentRight="true"
-                    android:textSize="@dimen/text_size"/>
+                    android:textSize="@dimen/text_size"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -552,7 +554,7 @@
 
         <LinearLayout
             android:id="@+id/ll_recently"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:padding="10dp"
@@ -584,7 +586,8 @@
                     android:fontFamily="@font/roboto"
                     android:background="@drawable/button_red"
                     android:layout_alignParentRight="true"
-                    android:textSize="@dimen/text_size"/>
+                    android:textSize="@dimen/text_size"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -598,7 +601,12 @@
 
     </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
     <LinearLayout
         android:id="@+id/bottom_button"
         android:layout_width="match_parent"

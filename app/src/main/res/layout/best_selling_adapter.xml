@@ -235,6 +235,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_addCartContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_price_weight"
@@ -299,7 +300,13 @@
                     android:textSize="18sp" />
             </LinearLayout>
         </RelativeLayout>
-
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignBottom="@+id/rl_addCartContainer"
+            android:visibility="gone"/>
     </RelativeLayout>
 
 </RelativeLayout>

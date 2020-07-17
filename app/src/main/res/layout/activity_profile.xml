@@ -55,12 +55,13 @@
                 android:id="@+id/rl_top"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:background="@color/bg">
+                android:background="@color/colorWhite">
 
                 <RelativeLayout
                     android:id="@+id/rl_image"
                     android:layout_width="100dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/img_profile"
@@ -88,7 +89,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/rl_image"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/tv_name"
@@ -99,22 +101,21 @@
                         android:fontFamily="@font/roboto_light"
                         android:textColor="@color/colorBlack"
                         android:textSize="14dp" />
-
                     <TextView
-                        android:id="@+id/tv_mobile"
+                        android:id="@+id/tv_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="+91 9999988888"
+                        android:text="john@gmail.com"
                         android:textColor="@color/colorBlack"
                         android:fontFamily="@font/roboto_light"
                         android:layout_marginTop="5dp"
                         android:textSize="13dp" />
 
                     <TextView
-                        android:id="@+id/tv_email"
+                        android:id="@+id/tv_mobile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="john@gmail.com"
+                        android:text="+91 9999988888"
                         android:textColor="@color/colorBlack"
                         android:fontFamily="@font/roboto_light"
                         android:layout_marginTop="5dp"
@@ -127,19 +128,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/rl_top"
-                android:background="@color/grey" />
+                android:background="@color/grey"
+                android:visibility="gone"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view_profile"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:orientation="vertical">
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/et_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Full Name"
@@ -151,10 +153,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/et_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Mobile Number"
-                        android:inputType="number"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
                         android:textSize="13sp"
                         android:fontFamily="@font/roboto_light"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -162,10 +165,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/et_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Email Address"
-                        android:inputType="textEmailAddress"
+                        android:hint="Mobile"
+                        android:inputType="number"
+                        android:maxLength="10"
                         android:textSize="13sp"
                         android:fontFamily="@font/roboto_light"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -202,9 +207,7 @@
                     android:id="@+id/tv_submit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="40dp"
                     android:gravity="center"
                     android:background="@drawable/add_button"
                     android:textColor="@color/colorWhite"

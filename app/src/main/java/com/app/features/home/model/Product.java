@@ -59,6 +59,16 @@ public class Product implements Serializable {
     private String productName;
     private String productQuantity;
 
+    //======progress
+    private boolean isLoading;
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
+    }
 
     public String getCartQuantity() {
         return cartQuantity;

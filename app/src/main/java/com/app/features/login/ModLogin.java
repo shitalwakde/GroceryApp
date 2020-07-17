@@ -1,7 +1,7 @@
 package com.app.features.login;
 
 public class ModLogin {
-    private String loginId, name, email, mobile, success, msg, message ;
+    private String loginId, name, email, mobile, success, msg, message, address;
 
     public String getLoginId() {
         return loginId;
@@ -57,5 +57,13 @@ public class ModLogin {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

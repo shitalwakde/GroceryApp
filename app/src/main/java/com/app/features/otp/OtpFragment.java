@@ -101,8 +101,9 @@ public class OtpFragment extends Fragment implements OtpMvvm.OtpView {
     @Override
     public void onOtpInvalid(String message) {
         progressBar.setVisibility(View.GONE);
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        //etOtp.setError(message);
+        //Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        etOtp.setError(message);
+        etOtp.requestFocus();
     }
 
     @Override
@@ -111,7 +112,7 @@ public class OtpFragment extends Fragment implements OtpMvvm.OtpView {
         PrefUtil.getInstance(getContext()).putData(AppConstant.PREF_USER_ID, loginModel.getLoginId());
         AppUtils.setUserDetails(getContext(), loginModel);
         getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
-        getActivity().finish();
+        getActivity().finishAffinity();
     }
 
     @Override

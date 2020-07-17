@@ -3,14 +3,12 @@ package com.app.util;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Toast;
 
-import com.app.R;
-import com.app.callback.HomePageListener;
 import com.app.callback.OnItemCountChanged;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
+import com.app.features.cart.CartAdapter;
 import com.app.features.home.model.Product;
 import com.app.features.login.ModLogin;
 import com.google.gson.Gson;
@@ -99,6 +97,15 @@ public class AppUtils {
         }
     }
 
+    public static void updateUserDetails(Context context,ModLogin loginModel) {
+        if(loginModel!=null) {
+            String userDetail = new Gson().toJson(loginModel);
+            PrefUtil.getInstance(context).putData(AppConstant.PREF_USER_DATA, userDetail);
+        }else {
+            PrefUtil.getInstance(context).removeKeyData(AppConstant.PREF_USER_DATA);
+        }
+    }
+
     public static ModLogin getUserDetails(Context context){
         String userDetail=PrefUtil.getInstance(AppController.getInstance()).getPreferences().getString(AppConstant.PREF_USER_DATA,null);
         ModLogin loginModel=null;
@@ -129,7 +136,7 @@ public class AppUtils {
     }
 
 
-    public static void addTocart(int qty, final int position, List<Product> mdata, RecyclerView.Adapter adapter, Context context,final OnItemCountChanged listener){
+    public static void addTocart(int qty, final int position, List<Product> mdata, RecyclerView.Adapter adapter, Context context, final OnItemCountChanged listener){
         JsonObject jsonObject = new JsonObject();
         if(AppConstant.isLogin(null)){
             jsonObject.addProperty("userId", AppUtils.getUserDetails(null).getLoginId());
@@ -144,6 +151,7 @@ public class AppUtils {
         new RestClient().getApiService().addToCart(jsonObject, new Callback<Product>() {
             @Override
             public void success(Product product, Response response) {
+                mdata.get(position).setLoading(false);
                 if(product.getSuccess().equals("1")){
                     if(product.getCartCount()!=null){
                         setCartCount(product.getCartCount());
@@ -162,6 +170,8 @@ public class AppUtils {
 
             @Override
             public void failure(RetrofitError error) {
+                mdata.get(position).setLoading(false);
+                adapter.notifyItemChanged(position);
                 Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

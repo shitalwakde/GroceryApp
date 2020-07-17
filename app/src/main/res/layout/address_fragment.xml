@@ -10,7 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="50dp"
             android:background="@color/colorWhite">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -24,6 +24,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/etName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Full Name *"
@@ -35,17 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Mobile Number *"
-                        android:inputType="number"
-                        android:textSize="13sp"
-                        android:fontFamily="@font/roboto_light"/>
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <EditText
+                        android:id="@+id/etEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Email Address *"
@@ -53,6 +44,20 @@
                         android:textSize="13sp"
                         android:fontFamily="@font/roboto_light"/>
                 </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/etMobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Mobile*"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/roboto_light"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
             <View
@@ -72,6 +77,7 @@
                 android:layout_marginLeft="10dp"/>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
@@ -115,6 +121,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/etHouseNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="House No., Buliding Name *"
@@ -126,6 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/etArea"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Road Name, Area, Colony *"
@@ -143,6 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
                     <EditText
+                        android:id="@+id/etCity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="City *"
@@ -155,6 +164,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
                         <EditText
+                            android:id="@+id/etState"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="State *"
@@ -167,6 +177,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/etLandmark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Landmark(Optional)"
@@ -178,6 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/etPincode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Pincode *"
@@ -199,7 +211,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:visibility="gone">
+                android:visibility="visible">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -211,6 +223,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp">
                     <RadioButton
+                        android:id="@+id/rbHome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Home Address"
@@ -218,30 +231,39 @@
                         android:fontFamily="@font/roboto_light"
                         android:layout_marginTop="10dp"/>
                     <RadioButton
+                        android:id="@+id/rbWork"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Office Address"
+                        android:text="Work Address"
                         android:textSize="13sp"
                         android:fontFamily="@font/roboto_light"
                         android:layout_marginTop="10dp"/>
                 </RadioGroup>
 
+                <CheckBox
+                    android:id="@+id/cbDefault"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Set this as my default delivery address"
+                    android:fontFamily="@font/roboto"
+                    android:layout_marginTop="20dp"/>
+
             </LinearLayout>
-            <TextView
-                android:id="@+id/tv_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
-                android:background="@drawable/add_button"
-                android:textColor="@color/colorWhite"
-                android:fontFamily="@font/roboto"
-                android:text="SAVE"
-                android:padding="15dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/tv_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:background="@drawable/add_button"
+        android:textColor="@color/colorWhite"
+        android:fontFamily="@font/roboto"
+        android:text="SAVE"
+        android:padding="15dp"/>
 
 </RelativeLayout>

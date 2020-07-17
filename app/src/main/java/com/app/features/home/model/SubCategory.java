@@ -7,6 +7,15 @@ public class SubCategory implements Serializable {
     private String categoryId;
     private String name;
     private String image;
+    boolean highlight =false;
+
+    public boolean isHighlight() {
+        return highlight;
+    }
+
+    public void setHighlight(boolean highlight) {
+        this.highlight = highlight;
+    }
 
     public String getSubCategoryId() {
         return subCategoryId;

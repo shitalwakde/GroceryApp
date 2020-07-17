@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:hint="Enter Amount"
             android:textSize="18sp"
+            android:inputType="number"
             android:layout_marginLeft="10dp"
             android:background="@color/colorWhite" />
     </LinearLayout>

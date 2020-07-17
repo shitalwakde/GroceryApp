@@ -128,20 +128,24 @@ public class LoginFragment extends Fragment implements LoginView {
     }
 
     @Override
-    public void onUsernameInvalid() {
+    public void onUsernameEmpty() {
         progressBar.setVisibility(View.GONE);
-        tv_username.setError("Username is not valid");
+        et_username.setError("Please Enter Username");
+        et_username.requestFocus();
     }
 
-    private void resetError(){
-        tv_username.setError(null);
-        tv_password.setError(null);
+    @Override
+    public void onUsernameInvalid() {
+        progressBar.setVisibility(View.GONE);
+        tv_username.setError("Please Enter Valid Username");
+        tv_username.requestFocus();
     }
 
     @Override
     public void onPasswordInvalid() {
         progressBar.setVisibility(View.GONE);
         tv_password.setError("Please Enter Password");
+        tv_password.requestFocus();
     }
 
     @Override
@@ -150,7 +154,7 @@ public class LoginFragment extends Fragment implements LoginView {
         PrefUtil.getInstance(getContext()).putData(AppConstant.PREF_USER_ID,loginModel.getLoginId());
         AppUtils.setUserDetails(getContext(),loginModel);
         getActivity().startActivity(new Intent(getContext(),MainActivity.class));
-        (getActivity()).finish();
+        getActivity().finishAffinity();
         //AppUtils.getUserDetails(getContext()).getLoginId();
     }
 

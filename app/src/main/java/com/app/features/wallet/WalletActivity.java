@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.app.R;
-import com.app.features.navmenu.OrderFragment;
 
 public class WalletActivity extends AppCompatActivity {
 

@@ -16,7 +16,10 @@ public class LoginPresenterImp implements LoginPresenter {
     @Override
     public void onLoginClicked(String username, String password) {
         boolean isAllValid=true;
-        if(!(AppUtils.isValidEmail(loginView.getContext(),username) || AppUtils.isValidMobile(loginView.getContext(),username))){
+        if(AppUtils.isNullOrEmpty(username)){
+            loginView.onUsernameEmpty();
+            isAllValid=false;
+        }else if(!(AppUtils.isValidEmail(loginView.getContext(),username) || AppUtils.isValidMobile(loginView.getContext(),username))){
             loginView.onUsernameInvalid();
             isAllValid=false;
         }

@@ -35,6 +35,7 @@ public class ViewAllFragment extends Fragment {
     ArrayList<Brand> brands;
     ArrayList<Product> bestSellingList;
     ArrayList<Product> recentlyViewList;
+    ArrayList<Product> searchKeyList;
     View rootView;
     String type ="";
 
@@ -45,6 +46,7 @@ public class ViewAllFragment extends Fragment {
             brands = (ArrayList<Brand>) getArguments().getSerializable("List");
             bestSellingList = (ArrayList<Product>) getArguments().getSerializable("List");
             recentlyViewList = (ArrayList<Product>) getArguments().getSerializable("List");
+            searchKeyList = (ArrayList<Product>) getArguments().getSerializable("List");
             type = getArguments().getString("type");
         }
     }
@@ -71,9 +73,11 @@ public class ViewAllFragment extends Fragment {
             ll_sort_filter.setVisibility(View.GONE);
             rv_product2.setVisibility(View.VISIBLE);
             rv_product.setVisibility(View.GONE);
-            CategoryAdapter adapter = new CategoryAdapter(catLisener, NavCategoryFragment.categories,
-                    AppConstant.FROM_CATEGORY_PRODUCT);
-            rv_product2.setAdapter(adapter);
+            if(NavCategoryFragment.categories != null){
+                CategoryAdapter adapter = new CategoryAdapter(catLisener, NavCategoryFragment.categories,
+                        AppConstant.FROM_CATEGORY_PRODUCT);
+                rv_product2.setAdapter(adapter);
+            }
         }else if(type.equals("brand")){
             ll_sort_filter.setVisibility(View.GONE);
             rv_product2.setVisibility(View.VISIBLE);
@@ -86,7 +90,13 @@ public class ViewAllFragment extends Fragment {
             rv_product.setVisibility(View.VISIBLE);
             ProductAdapter adapter1 = new ProductAdapter(lisener, bestSellingList);
             rv_product.setAdapter(adapter1);
-        }else {
+        }else if(type.equals("recently")){
+            ll_sort_filter.setVisibility(View.VISIBLE);
+            rv_product2.setVisibility(View.GONE);
+            rv_product.setVisibility(View.VISIBLE);
+            ProductAdapter adapter1 = new ProductAdapter(lisener, recentlyViewList);
+            rv_product.setAdapter(adapter1);
+        }else{
             ll_sort_filter.setVisibility(View.VISIBLE);
             rv_product2.setVisibility(View.GONE);
             rv_product.setVisibility(View.VISIBLE);

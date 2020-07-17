@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.R;
+import com.app.callback.CalculateLisener;
 import com.app.callback.ProductListener;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
+import com.app.features.address.AddressActivity;
 import com.app.features.address.AddressFragment;
+import com.app.features.address.AddressListFragment;
+import com.app.features.address.AddressModel;
 import com.app.features.checkout.CheckOutFragment;
 import com.app.features.home.model.Product;
 import com.app.features.login.LoginActivity;
@@ -40,7 +46,7 @@ import retrofit.client.Response;
 import static com.app.features.cart.CartActivity.cartContainer;
 import static com.app.features.cart.CartActivity.tv_toolbar_cart;
 
-public class CartFragment extends Fragment {
+public class CartFragment extends Fragment implements CalculateLisener {
 
     View rootView;
     RecyclerView rv_cart;
@@ -81,32 +87,6 @@ public class CartFragment extends Fragment {
     private void setAdapters(){
         getCartList();
         tv_toolbar_cart.setText("My Cart");
-
-        tv_checkout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(AppConstant.isLogin(getContext())){
-                    fragmentManager.beginTransaction().replace(cartContainer, new CheckOutFragment()).addToBackStack(null).commit();
-                }else {
-                    AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
-                    builder.setMessage("Please login to place order");
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(getContext(), LoginActivity.class);
-                            intent.putExtra("type","login");
-                            getContext().startActivity(intent);
-                            dialog.cancel();
-                        }
-                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).show();
-                }
-            }
-        });
     }
 
 
@@ -128,6 +108,35 @@ public class CartFragment extends Fragment {
                     tv_total_price.setText("PRICE : \u20B9 "+cartModel.getTotalSum());
                     arrangeCartAdap(cartModel.getCart());
                     rl_noDataFound.setVisibility(View.GONE);
+                    tv_checkout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(cartModel.getCart().size() == 0){
+                                Toast.makeText(getActivity(), "Cart should not be empty", Toast.LENGTH_SHORT).show();
+                            }else{
+                                if(AppConstant.isLogin(getContext())){
+                                    getDeliveryLocation();
+                                }else {
+                                    AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+                                    builder.setMessage("Please login to place order");
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                                            intent.putExtra("type","login");
+                                            getContext().startActivity(intent);
+                                            dialog.cancel();
+                                        }
+                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }
+                            }
+                        }
+                    });
                 }else{
                     rl_noDataFound.setVisibility(View.VISIBLE);
                     //Toast.makeText(getActivity(), cartModel.getMessage(), Toast.LENGTH_SHORT).show();
@@ -143,8 +152,46 @@ public class CartFragment extends Fragment {
 
     }
 
+
+    private void getDeliveryLocation(){
+        JsonObject jsonObject = new JsonObject();
+        if(AppConstant.isLogin(getContext())){
+            jsonObject.addProperty("userId", AppUtils.getUserDetails(getContext()).getLoginId());
+        }else{
+            jsonObject.addProperty("userId", "");
+        }
+        jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
+
+        new RestClient().getApiService().getDeliveryLocation(jsonObject, new Callback<AddressModel>() {
+            @Override
+            public void success(AddressModel addressModel, Response response) {
+                if(addressModel.getSuccess().equals("1")){
+                    if(addressModel.getDeliveryLocationList().size() == 0){
+                        //fragmentManager.beginTransaction().replace(cartContainer, new AddressFragment()).addToBackStack(null).commit();
+                    }else{
+                        Intent intent = new Intent(getActivity(), AddressActivity.class);
+                        intent.putExtra("address", "checkout");
+                        intent.putExtra("deliveryId", "");
+                        startActivity(intent);
+                        //fragmentManager.beginTransaction().replace(cartContainer, new CheckOutFragment("")).addToBackStack(null).commit();
+                    }
+                }else{
+                    Intent intent = new Intent(getActivity(), AddressActivity.class);
+                    intent.putExtra("address", "add");
+                    intent.putExtra("deliveryId", "");
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void arrangeCartAdap(ArrayList<Product> cart) {
-        CartAdapter adapter1 = new CartAdapter(productListener, cart, rl_noDataFound);
+        CartAdapter adapter1 = new CartAdapter(productListener, cart, rl_noDataFound, this);
         rv_cart.setAdapter(adapter1);
     }
 
@@ -156,4 +203,26 @@ public class CartFragment extends Fragment {
             productListener = (ProductListener) context;
         }
     }
+
+
+    private void calculateAmountPlus(List<Product> product) {
+        float amount = 0.0f;
+        float quantity = 0.0f;
+        float calculateAmountPlus = 0.0f;
+        for (int i=0; i<product.size(); i++){
+            amount = Float.parseFloat(product.get(i).getProductCartAmount());
+            //quantity = Float.parseFloat(product.get(i).getCartQuantity());
+            //calculateAmountPlus += (amount * quantity);
+            calculateAmountPlus += (amount);
+        }
+
+        tv_total_price.setText("PRICE : \u20B9 " + Math.round(calculateAmountPlus));
+    }
+
+
+    @Override
+    public void calculatePlus(List<Product> product) {
+        calculateAmountPlus(product);
+    }
+
 }

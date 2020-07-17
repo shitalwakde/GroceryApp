@@ -1,10 +1,15 @@
 package com.app.features.home;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +20,7 @@ import com.app.activities.NavCategoryFragment;
 import com.app.callback.BrandLisener;
 import com.app.callback.CategoryListener;
 import com.app.callback.ProductListener;
+import com.app.callback.SearchLisener;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
 import com.app.features.home.adapter.Banner;
@@ -27,11 +33,12 @@ import com.app.features.home.model.HomeModel;
 import com.app.features.home.model.Product;
 import com.app.features.home.model.SubCategory;
 import com.app.features.product.adapter.ViewAllFragment;
+import com.app.features.search.SearchAdapter;
+import com.app.features.search.SearchModel;
 import com.app.util.AppUtils;
 import com.app.util.PrefUtil;
 import com.app.util.RestClient;
 import com.asura.library.posters.Poster;
-import com.asura.library.posters.RemoteImage;
 import com.asura.library.views.PosterSlider;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
@@ -53,7 +60,7 @@ import retrofit.client.Response;
 import static com.app.activities.MainActivity.appBarContainer;
 import static com.app.activities.MainActivity.ll_search;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements SearchLisener {
 
     View rootView;
     PosterSlider poster_slider;
@@ -74,6 +81,8 @@ public class HomeFragment extends Fragment {
     FragmentManager fragmentManager;
     List<SubCategory> subCatList;
     ProgressBar progressBar;
+    RecyclerView rv_recyclerDialog;
+    ArrayList<SearchModel> searchKeyList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,8 +97,6 @@ public class HomeFragment extends Fragment {
         init(rootView);
         click();
 
-        ll_search.setVisibility(View.VISIBLE);
-
         return rootView;
     }
 
@@ -102,6 +109,7 @@ public class HomeFragment extends Fragment {
         bestSellingList=new ArrayList<>();
         recentlyViewList = new ArrayList<>();
         brandList=new ArrayList<>();
+        searchKeyList = new ArrayList<>();
         progressBar = (ProgressBar)rootView.findViewById(R.id.progressBar);
         poster_slider = (PosterSlider)rootView.findViewById(R.id.poster_slider);
         imageSlider=(SliderLayout)rootView.findViewById(R.id.fh_slider);
@@ -123,6 +131,15 @@ public class HomeFragment extends Fragment {
 
     private void click(){
         //getHomeData();
+        ll_search.setVisibility(View.VISIBLE);
+
+        ll_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //getSearchkey();
+            }
+        });
+
         tv_view_recently_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,6 +197,42 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private void getSearchkey(){
+        showDialog(searchKeyList);
+    }
+
+    private void showDialog(ArrayList<SearchModel> searchKeyList){
+        final Dialog dialog1 = new Dialog(getActivity());
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setCancelable(true);
+        dialog1.setContentView(R.layout.dlg_search);
+        EditText et_search = (EditText)dialog1.findViewById(R.id.et_search);
+        rv_recyclerDialog = (RecyclerView)dialog1.findViewById(R.id.rv_recyclerDialog);
+
+        et_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setDialogAdapter(dialog1);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        dialog1.show();
+    }
+
+    private void setDialogAdapter(Dialog dialog1){
+        SearchAdapter adapter = new SearchAdapter(searchKeyList, dialog1, this);
+        rv_recyclerDialog.setAdapter(adapter);
+    }
 
     private void getHomeData(){
         progressBar.setVisibility(View.VISIBLE);
@@ -241,9 +294,11 @@ public class HomeFragment extends Fragment {
     }
 
     private void arrangeCategoryAdpt(ArrayList<Category> category) {
-        CategoryAdapter adapter = new CategoryAdapter(catLisener, NavCategoryFragment.categories,
-                AppConstant.FROM_HOME_CATEGORY_PRODUCT);
-        rv_category.setAdapter(adapter);
+        if(NavCategoryFragment.categories != null) {
+            CategoryAdapter adapter = new CategoryAdapter(catLisener, NavCategoryFragment.categories,
+                    AppConstant.FROM_HOME_CATEGORY_PRODUCT);
+            rv_category.setAdapter(adapter);
+        }
     }
 
     private void arrangeBrands(ArrayList<Brand> brand) {
@@ -288,6 +343,18 @@ public class HomeFragment extends Fragment {
             catLisener= (CategoryListener) context;
             productLisener= (ProductListener) context;
         }
+    }
+
+    @Override
+    public void SearchLisener(String key) {
+        Fragment fragment=new ViewAllFragment();
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("List", searchKeyList);
+        bundle.putString("type", "search");
+        fragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(appBarContainer ,fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 }

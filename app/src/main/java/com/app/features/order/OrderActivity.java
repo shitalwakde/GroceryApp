@@ -1,4 +1,4 @@
-package com.app.features.navmenu;
+package com.app.features.order;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +13,7 @@ import com.app.R;
 import com.app.callback.HomeClickLisener;
 import com.app.features.home.model.Category;
 
-public class OrderActivity extends AppCompatActivity implements HomeClickLisener {
+public class OrderActivity extends AppCompatActivity{
 
     FragmentManager fragmentManager;
     public static TextView tv_toolbar_order;
@@ -41,20 +41,6 @@ public class OrderActivity extends AppCompatActivity implements HomeClickLisener
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-
-
-    @Override
-    public void productClickLisener(Category category) {
-
-    }
-
-    @Override
-    public void orderClickLisener(Category category) {
-        fragmentManager.beginTransaction().replace(R.id.order_container , new OrderDetailFragment())
-                .addToBackStack(null)
-                .commit();
     }
 
 

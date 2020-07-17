@@ -8,6 +8,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,19 +18,19 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.R;
-import com.app.callback.BrandLisener;
-import com.app.callback.CategoryListener;
-import com.app.callback.HomeClickLisener;
 import com.app.callback.DrawerItemClickLisener;
 import com.app.callback.HomePageListener;
 import com.app.constant.AppConstant;
+import com.app.controller.AppController;
 import com.app.databinding.ActivityMainBinding;
 import com.app.features.home.model.Brand;
 import com.app.features.home.model.Product;
 import com.app.features.home.model.SubCategory;
-import com.app.features.navmenu.OrderActivity;
+import com.app.features.login.LoginActivity;
+import com.app.features.order.OrderActivity;
 import com.app.features.navmenu.WishListActivity;
 import com.app.features.notification.NotificationActivity;
 import com.app.features.product.BrandFragment;
@@ -37,11 +40,15 @@ import com.app.features.home.HomeFragment;
 import com.app.features.product.ProductFragment;
 import com.app.features.profile.ProfileActivity;
 import com.app.features.wallet.WalletActivity;
+import com.app.util.AppUtils;
 import com.app.util.PrefUtil;
+import com.app.util.RestClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends BaseActivity implements DrawerItemClickLisener, HomePageListener {
     private static final String TAG_DRAWER_FRAGMENT = "drawerFragment";
@@ -58,9 +65,12 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
         mView = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
         //Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mView.included.toolbar);
+        NavCategoryFragment.categories = new ArrayList<>();
+        NavCategoryFragment.categorySubcat = new HashMap<>();
+        getCategorySubCategory();
+
         containNav = R.id.container_nav;
         appBarContainer = R.id.app_bar_container;
         ll_search = (LinearLayout)findViewById(R.id.ll_search);
@@ -163,12 +173,76 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                     startActivity(intent);
                     break;
                 case R.id.bbn_search:
-                    Intent intent1 = new Intent(MainActivity.this, OrderActivity.class);
-                    startActivity(intent1);
+                    if(AppConstant.isLogin(MainActivity.this)){
+                        Intent intent1 = new Intent(MainActivity.this, OrderActivity.class);
+                        startActivity(intent1);
+                    }else{
+                        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage("Please login to see my orders");
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                intent.putExtra("type","login");
+                                startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
                     break;
                 case R.id.bn_profile:
-                    Intent intent2 = new Intent(MainActivity.this, ProfileActivity.class);
-                    startActivity(intent2);
+                    if(AppConstant.isLogin(MainActivity.this)){
+                        Intent intent2 = new Intent(MainActivity.this, ProfileActivity.class);
+                        startActivity(intent2);
+                    }else{
+                        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage("Please login to see my profile");
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                intent.putExtra("type","login");
+                                startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
+
+                    break;
+
+                case R.id.bbn_categories:
+                    if(AppConstant.isLogin(MainActivity.this)){
+                        Intent intent3 = new Intent(MainActivity.this, WalletActivity.class);
+                        startActivity(intent3);
+                    }else{
+                        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage("Please login to see my wallet");
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                intent.putExtra("type","login");
+                                startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
+
                     break;
             }
             return false;
@@ -228,4 +302,43 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
     public void updateCartCount(String cartCount) {
         setCartCount();
     }
+
+
+    private void getCategorySubCategory() {
+
+        try {
+            JsonObject jsonObject = new JsonObject();
+            if(AppConstant.isLogin(this)){
+                jsonObject.addProperty("userId", AppUtils.getUserDetails(this).getLoginId());
+            }else{
+                jsonObject.addProperty("userId", "");
+            }
+            jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
+
+            new RestClient().getApiService().getCategories(jsonObject, new Callback<ModCategory>() {
+                @Override
+                public void success(ModCategory loginModel, Response response) {
+                    if (loginModel.getSuccess().equals("1")) {
+                        if (loginModel.getCategories().size() > 0) {
+                            NavCategoryFragment.categories=loginModel.getCategories();
+                            for(int i=0;i< NavCategoryFragment.categories.size();i++){
+                                NavCategoryFragment.categorySubcat.put( NavCategoryFragment.categories.get(i),  NavCategoryFragment.categories.get(i).getSubcategory());
+                            }
+                        }
+
+                    } else {
+                        Toast.makeText(MainActivity.this, loginModel.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+
+        }
+    }
+
 }

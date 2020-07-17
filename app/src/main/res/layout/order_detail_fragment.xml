@@ -34,6 +34,7 @@
                             android:fontFamily="@font/roboto"
                             android:layout_weight="1"/>
                         <TextView
+                            android:id="@+id/tv_orderAmount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="\u20B9 2018"
@@ -56,6 +57,7 @@
                             android:fontFamily="@font/roboto"
                             android:layout_weight="1"/>
                         <TextView
+                            android:id="@+id/tv_deliveryDateTop"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="28 Jun 2020"
@@ -93,6 +95,7 @@
                             android:textColor="@color/colorBlack"
                             android:layout_weight="1"/>
                         <TextView
+                            android:id="@+id/tv_orderStatus"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Order Placed"
@@ -103,6 +106,7 @@
                             android:layout_weight="1"/>
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/tv_delivery"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Delivery Address"
@@ -112,6 +116,7 @@
                         android:layout_weight="1"
                         android:layout_marginTop="10dp"/>
                     <TextView
+                        android:id="@+id/tv_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Albert Jhon, Indira nagar, Nagpur, 440022"
@@ -140,6 +145,7 @@
                             android:fontFamily="@font/roboto_light"
                             android:layout_weight="1"/>
                         <TextView
+                            android:id="@+id/tv_orderDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="27 Jun 2020"
@@ -161,6 +167,7 @@
                             android:fontFamily="@font/roboto_light"
                             android:layout_weight="1"/>
                         <TextView
+                            android:id="@+id/tv_deliveryDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="28 Jun 2020"
@@ -191,6 +198,7 @@
                             android:fontFamily="@font/roboto_light"
                             android:layout_weight="1"/>
                         <TextView
+                            android:id="@+id/tv_purchaseAmount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="\u20B9 2000"
@@ -212,6 +220,29 @@
                             android:fontFamily="@font/roboto_light"
                             android:layout_weight="1"/>
                         <TextView
+                            android:id="@+id/tv_deliveryCharge"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="\u20B9 18"
+                            android:gravity="right"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/roboto_light"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="GST"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/roboto_light"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/tv_gst"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="\u20B9 18"
@@ -233,6 +264,7 @@
                             android:layout_weight="1"
                             android:textSize="12sp"/>
                         <TextView
+                            android:id="@+id/tv_totalFinalAmount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="\u20B9 2018"
@@ -255,6 +287,7 @@
                             android:fontFamily="@font/roboto_light"
                             android:layout_weight="1"/>
                         <TextView
+                            android:id="@+id/tv_paymentStatus"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Cash on delivery"
@@ -283,15 +316,33 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    <TextView
-        android:id="@+id/tv_continue"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="CONTINUE SHOPPING"
-        android:textColor="@color/colorWhite"
-        android:fontFamily="@font/roboto"
-        android:gravity="center"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/submit"
-        android:visibility="gone"/>
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_reorder"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="REORDER"
+            android:textColor="@color/colorWhite"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:background="@color/submit"
+            android:visibility="visible"/>
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="CANCEL ORDER"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:background="@color/colorWhite"
+            android:visibility="visible"/>
+    </LinearLayout>
+
 </RelativeLayout>

@@ -14,8 +14,10 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [onesignal_app_id               : "7d6430d8-db3f-4d30-b1e5-5af39eb15617",
+                                onesignal_google_project_number: "1077523915847"]
+
     }
 
     buildTypes {
@@ -51,6 +53,13 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.0'
     implementation 'com.alimuzaffar.lib:pinentryedittext:2.0.6'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
+    implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
+    implementation 'com.onesignal:OneSignal:3.+@aar'
+    //=====================butterKnife=======================
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.8.7@aar') {

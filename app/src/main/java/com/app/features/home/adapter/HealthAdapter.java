@@ -8,18 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.R;
-import com.app.activities.MainActivity;
-import com.app.callback.HomeClickLisener;
 import com.app.callback.OnItemCountChanged;
 import com.app.callback.ProductListener;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
-import com.app.features.home.model.Category;
 import com.app.features.home.model.Product;
 import com.app.features.login.LoginActivity;
 import com.app.util.AppUtils;
@@ -65,11 +63,27 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
         holder.tv_pr_sub_name.setText(category.getBrandName());
         holder.tv_star.setText("4.5");
         holder.tv_rating.setText(category.getRate()+" Rating");
-        holder.txtDiscountOff.setText(category.getDiscount()+"%");
-        holder.tv_price.setText("\u20B9 "+category.getGrossAmount());
-        holder.tv_discount_price.setText("\u20B9 "+category.getFinalAmount());
-        holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
-                | Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.tv_discount_price.setText("\u20B9 "+category.getGrossAmount());
+
+        if(category.isLoading()){
+            holder.rl_addCartContainer.setVisibility(View.INVISIBLE);
+            holder.progressBar.setVisibility(View.VISIBLE);
+        }else {
+            holder.rl_addCartContainer.setVisibility(View.VISIBLE);
+            holder.progressBar.setVisibility(View.GONE);
+        }
+
+        if(category.getDiscount().equals("0")){
+            holder.tv_price.setVisibility(View.GONE);
+            holder.rl_discount.setVisibility(View.GONE);
+        }else{
+            holder.tv_price.setVisibility(View.VISIBLE);
+            holder.rl_discount.setVisibility(View.VISIBLE);
+            holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
+                    | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.tv_price.setText("\u20B9 "+category.getFinalAmount());
+            holder.txtDiscountOff.setText(category.getDiscount()+"%");
+        }
 
         if(category.getCartQuantityInteger()<=0){
             holder.tv_add.setVisibility(View.VISIBLE);
@@ -108,7 +122,8 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
         ImageView iv_best, iv_unwish;
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_minus, tv_quantity, tv_plus, tvPiece, tv_star,tv_rating, txtDiscountOff, tv_peice;
         LinearLayout ll_quantity;
-        RelativeLayout rl_like, rl_weight;
+        RelativeLayout rl_like, rl_weight, rl_discount, rl_addCartContainer;
+        ProgressBar progressBar;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -130,6 +145,9 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
             rl_like = (RelativeLayout)itemView.findViewById(R.id.rl_like);
             rl_weight = (RelativeLayout)itemView.findViewById(R.id.rl_weight);
+            rl_discount = (RelativeLayout)itemView.findViewById(R.id.rl_discount);
+            rl_addCartContainer = (RelativeLayout)itemView.findViewById(R.id.rl_addCartContainer);
+            progressBar = itemView.findViewById(R.id.progressbar);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -193,6 +211,8 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
         }
 
         private void changeQty(int adapterPosition,int type) {
+            mdata.get(getAdapterPosition()).setLoading(true);
+            notifyItemChanged(getAdapterPosition());
             int qty=mdata.get(adapterPosition).getCartQuantityInteger();
             if(type==ADD) {
                 qty = qty + 1;

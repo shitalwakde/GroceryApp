@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,9 +45,11 @@ import static java.security.AccessController.getContext;
 public class ProductDetailActivity extends BaseActivity implements ProductListener {
 
     ImageView iv_product, iv_unwish;
-    TextView tv_price, tv_rate_product, tv_add, tv_minus, tv_quantity, tv_plus, tv_pr_name, tv_pr_sub_name, tv_discount_price, tvPiece, tv_star,tv_rating, tv_peice, tv_offer;
+    TextView tv_price, tv_rate_product, tv_add, tv_minus, tv_quantity, tv_plus, tv_pr_name, tv_pr_sub_name,
+            tv_discount_price, tvPiece, tv_star,tv_rating, tv_peice, tv_offer, tv_description;
     RelativeLayout rl_like, rl_weight;
     LinearLayout ll_quantity;
+    ProgressBar progressBar;
     FragmentManager fragmentManager;
     public static TextView tv;
     RecyclerView rv_related_img, rv_related_img1;
@@ -70,7 +73,6 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         init();
-        getProductDetail();
 
         productContainer = R.id.productContainer;
     }
@@ -79,6 +81,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
         productId = getIntent().getStringExtra("productId");
         fragmentManager = getSupportFragmentManager();
         bestSellingList = new ArrayList<>();
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
         iv_product = (ImageView) findViewById(R.id.iv_product);
         iv_unwish = (ImageView) findViewById(R.id.iv_unwish);
         tv_price = (TextView) findViewById(R.id.tv_price);
@@ -95,6 +98,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
         tv_rating = (TextView)findViewById(R.id.tv_rating);
         tv_peice = (TextView)findViewById(R.id.tv_peice);
         tv_offer = (TextView)findViewById(R.id.tv_offer);
+        tv_description = (TextView)findViewById(R.id.tv_description);
         rv_related_img = (RecyclerView)findViewById(R.id.rv_related_img);
         rv_related_img1 = (RecyclerView)findViewById(R.id.rv_related_img1);
         rl_like = (RelativeLayout)findViewById(R.id.rl_like);
@@ -102,9 +106,13 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
         ll_quantity = (LinearLayout)findViewById(R.id.ll_quantity);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getProductDetail();
+    }
+
     private void click() {
-        tv_price.setPaintFlags(tv_price.getPaintFlags()
-                | Paint.STRIKE_THRU_TEXT_FLAG);
 
         rl_like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,18 +206,17 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
         int qty=category.getCartQuantityInteger();
         if(type==ADD) {
             qty = qty + 1;
-            addTocart(qty);
         }else if(type ==REMOVE) {
             qty = qty - 1;
-            addTocart(qty);
         }else {
             qty = 0;
-            addTocart(qty);
         }
+        addTocart(qty);
 
     }
 
     private void getProductDetail(){
+        progressBar.setVisibility(View.VISIBLE);
         JsonObject jsonObject = new JsonObject();
         if(AppConstant.isLogin(this)){
             jsonObject.addProperty("userId", AppUtils.getUserDetails(this).getLoginId());
@@ -222,6 +229,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
         new RestClient().getApiService().getProductDetail(jsonObject, new Callback<Product>() {
             @Override
             public void success(Product productDetailModel, Response response) {
+                progressBar.setVisibility(View.GONE);
                 if(productDetailModel.getSuccess().equals("1")){
                     AppUtils.setCartCount(productDetailModel.getCartCount());
                     setCartCount();
@@ -233,6 +241,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
 
             @Override
             public void failure(RetrofitError error) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(ProductDetailActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -249,9 +258,21 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
         tv_pr_sub_name.setText(productDetailModel.getBrandName());
         tv_star.setText("4.5");
         tv_rating.setText(productDetailModel.getRate()+" Rating");
-        tv_price.setText("\u20B9 "+productDetailModel.getGrossAmount());
-        tv_discount_price.setText("\u20B9 "+productDetailModel.getFinalAmount());
-        tv_offer.setText(productDetailModel.getDiscount()+" % off");
+        tv_discount_price.setText("\u20B9 "+productDetailModel.getGrossAmount());
+        tv_description.setText(productDetailModel.getDescription());
+
+        if(productDetailModel.getDiscount().equals("0")){
+            tv_price.setVisibility(View.GONE);
+            tv_offer.setVisibility(View.GONE);
+        }else{
+            tv_price.setVisibility(View.VISIBLE);
+            tv_offer.setVisibility(View.VISIBLE);
+            tv_price.setPaintFlags(tv_price.getPaintFlags()
+                    | Paint.STRIKE_THRU_TEXT_FLAG);
+            tv_price.setText("\u20B9 "+productDetailModel.getFinalAmount());
+            tv_offer.setText(productDetailModel.getDiscount()+" % off");
+        }
+
         if(productDetailModel.getProductType().equals("Quantity")){
             rl_weight.setVisibility(View.GONE);
             tvPiece.setVisibility(View.VISIBLE);
@@ -289,7 +310,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
             @Override
             public void success(Product product, Response response) {
                 if(product.getSuccess().equals("1")){
-                    category.setCartQuantity(product.getQuantity());
+                    category.setCartQuantity(qty);
 
                     if(product.getQuantity().equalsIgnoreCase("0")){
                         tv_add.setVisibility(View.VISIBLE);

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.app.R;
 import com.app.activities.BaseActivity;
+import com.app.activities.MainActivity;
 import com.app.callback.CategoryListener;
 import com.app.callback.HomeClickLisener;
 import com.app.callback.HomePageListener;
@@ -34,6 +35,7 @@ import com.app.features.product.ProductFragment;
 import com.app.features.product.adapter.ViewAllFragment;
 import com.app.features.productdetail.ProductDetailActivity;
 import com.app.util.AppUtils;
+import com.app.util.PrefUtil;
 import com.app.util.RestClient;
 import com.google.gson.JsonObject;
 
@@ -124,6 +126,11 @@ public class OfferActivity extends BaseActivity implements HomePageListener {
             public void success(HomeModel modCategory, Response response) {
                 progressBar.setVisibility(View.GONE);
                 if(modCategory.getSuccess().equals("1")){
+                    if(modCategory.getCount_cart()!= null) {
+                        PrefUtil.getInstance(OfferActivity.this).putData(AppConstant.PREF_CART_COUNT, modCategory.getCount_cart());
+                        AppUtils.setCartCount(modCategory.getCount_cart());
+                        setCartCount();
+                    }
                     recentlyViewList = modCategory.getProduct();
                     if(getIntent().getStringExtra("product").equals("discount")){
                         Fragment fragment=new ViewAllFragment();

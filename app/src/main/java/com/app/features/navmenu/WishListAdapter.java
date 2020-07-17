@@ -13,13 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.R;
-import com.app.activities.MainActivity;
-import com.app.callback.HomeClickLisener;
 import com.app.callback.OnItemCountChanged;
 import com.app.callback.ProductListener;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
-import com.app.features.home.model.Category;
 import com.app.features.home.model.Product;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
@@ -66,10 +63,22 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
         holder.tv_pr_name.setText(category.getProductName());
         holder.tv_pr_sub_name.setText(category.getBrandName());
         holder.txtDiscountOff.setText(category.getDiscount()+"%");
-        holder.tv_discount_price.setText("\u20B9 "+String.valueOf(category.getFinalAmount()));
-        holder.tv_price.setText("\u20B9 "+String.valueOf(category.getGrossAmount()));
+        holder.tv_discount_price.setText("\u20B9 "+(category.getGrossAmount()));
+        holder.tv_price.setText("\u20B9 "+(category.getGrossAmount()));
         holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
                 | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        if(category.getDiscount().equals("0")){
+            holder.tv_price.setVisibility(View.GONE);
+            holder.rl_discount.setVisibility(View.GONE);
+        }else{
+            holder.tv_price.setVisibility(View.VISIBLE);
+            holder.rl_discount.setVisibility(View.VISIBLE);
+            holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
+                    | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.tv_price.setText("\u20B9 "+category.getFinalAmount());
+            holder.txtDiscountOff.setText(category.getDiscount()+"%");
+        }
 
 
         if(category.getCartQuantityInteger()<=0){
@@ -81,11 +90,6 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             holder.tv_quantity.setText(String.valueOf(category.getCartQuantityInteger()));
         }
 
-        /*if(category.getIsInWishList().equals("No")){
-            holder.iv_unwish.setImageResource(R.drawable.ic_heart);
-        }else{
-            holder.iv_unwish.setImageResource(R.drawable.ic_heart_red);
-        }*/
     }
 
     @Override
@@ -98,7 +102,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
         ImageView iv_best, iv_unwish;
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_remove, tv_minus, tv_quantity, tv_plus, txtDiscountOff;
         LinearLayout ll_quantity;
-        RelativeLayout rl_wish;
+        RelativeLayout rl_wish, rl_discount;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -117,6 +121,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             txtDiscountOff = (TextView)itemView.findViewById(R.id.txtDiscountOff);
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
             rl_wish = (RelativeLayout)itemView.findViewById(R.id.rl_wish);
+            rl_discount = (RelativeLayout)itemView.findViewById(R.id.rl_discount);
 
             tv_remove.setVisibility(View.VISIBLE);
             rl_wish.setVisibility(View.GONE);

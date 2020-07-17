@@ -66,11 +66,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         holder.tv_pr_sub_name.setText(category.getBrandName());
         holder.tv_star.setText("4.5");
         holder.tv_rating.setText(category.getRate()+" Rating");
-        holder.txtDiscountOff.setText(category.getDiscount()+"%");
-        holder.tv_price.setText("\u20B9 "+category.getGrossAmount());
         holder.tv_discount_price.setText("\u20B9 "+category.getFinalAmount());
-        holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
-                | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        if(category.getDiscount().equals("0")){
+            holder.tv_price.setVisibility(View.GONE);
+            holder.rl_discount.setVisibility(View.GONE);
+        }else{
+            holder.tv_price.setVisibility(View.VISIBLE);
+            holder.rl_discount.setVisibility(View.VISIBLE);
+            holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
+                    | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.tv_price.setText("\u20B9 "+category.getGrossAmount());
+            holder.txtDiscountOff.setText(category.getDiscount()+"%");
+        }
 
         if(category.getCartQuantityInteger()<=0){
             holder.tv_add.setVisibility(View.VISIBLE);
@@ -109,7 +117,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         ImageView iv_best, iv_unwish;
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_minus, tv_quantity, tv_plus, tvPiece, tv_star,tv_rating, txtDiscountOff, tv_peice;
         LinearLayout ll_quantity;
-        RelativeLayout rl_wish, rl_weight;
+        RelativeLayout rl_wish, rl_weight, rl_discount;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -132,6 +140,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
             rl_wish = (RelativeLayout)itemView.findViewById(R.id.rl_wish);
             rl_weight = (RelativeLayout)itemView.findViewById(R.id.rl_weight);
+            rl_discount = (RelativeLayout)itemView.findViewById(R.id.rl_discount);
 
 
             rl_wish.setVisibility(View.VISIBLE);

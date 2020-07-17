@@ -109,30 +109,35 @@ public class SignupFragment extends Fragment implements SignUpMvvm.SignUpView {
     public void onNameInvalid(String message) {
         progressBar.setVisibility(GONE);
         tvName.setError(message);
+        tvName.requestFocus();
     }
 
     @Override
     public void onEmailInvalid(String message) {
         progressBar.setVisibility(GONE);
         tvEmail.setError(message);
+        tvEmail.requestFocus();
     }
 
     @Override
     public void onMobileInvalid(String message) {
         progressBar.setVisibility(GONE);
         tvMobile.setError(message);
+        tvMobile.requestFocus();
     }
 
     @Override
     public void onPasswordInvalid(String message) {
         progressBar.setVisibility(GONE);
         tvPassword.setError(message);
+        tvPassword.requestFocus();
     }
 
     @Override
     public void onConfirmPasswordInvalid(String message) {
         progressBar.setVisibility(GONE);
         tvComfirmPassword.setError(message);
+        tvComfirmPassword.requestFocus();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.app.features.navmenu;
+package com.app.features.order;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,27 +8,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.R;
 import com.app.callback.HomeClickLisener;
+import com.app.callback.OrderDetailLisener;
 import com.app.features.cart.CartActivity;
 import com.app.features.home.model.Category;
+import com.app.util.RestClient;
+import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
-    Context mcontext;
-    List<Category> mdata;
-    HomeClickLisener lisener;
+    ArrayList<OrderList> mdata;
+    OrderDetailLisener lisener;
 
-    public OrderAdapter(Context mcontext, HomeClickLisener lisener, List<Category> mdata) {
-        this.mcontext = mcontext;
-        this.lisener = lisener;
+    public OrderAdapter(ArrayList<OrderList> mdata, OrderDetailLisener lisener) {
         this.mdata = mdata;
+        this.lisener = lisener;
     }
+
 
     @NonNull
     @Override
@@ -40,13 +47,24 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Category category = mdata.get(position);
-        holder.tv_orderId.setText(category.getTv_orderId());
-        holder.tv_orderDate.setText(category.getTv_orderDate());
-        holder.tv_deliveryDate.setText(category.getTv_deliveryDate());
-        holder.tv_orderStatus.setText(category.getTv_orderStatus());
-        holder.tv_payment_status.setText(category.getTv_payment_status());
-        holder.tv_orderAmount.setText(category.getTv_orderAmount());
+        OrderList category = mdata.get(position);
+        holder.tv_orderId.setText(category.getOrderId());
+        holder.tv_orderDate.setText(category.getOrderDate());
+        holder.tv_deliveryDate.setText(category.getOrderDate());
+        if(category.getOrderStatus().equals("Pending")){
+            holder.tv_orderStatus.setTextColor(Color.parseColor("#f47443"));
+        }else if(category.getOrderStatus().equals("Cancelled")){
+            holder.tv_orderStatus.setTextColor(Color.parseColor("#E72408"));
+        }else {
+            holder.tv_orderStatus.setTextColor(Color.parseColor("#4d8603"));
+        }
+        holder.tv_orderStatus.setText(category.getOrderStatus());
+        if(category.getOrderStatus().equals("Pending")){
+            holder.tv_payment_status.setText("Unpaid");
+        }else{
+            holder.tv_payment_status.setText("Paid");
+        }
+        holder.tv_orderAmount.setText("\u20B9 "+category.getOrderAmount());
     }
 
     @Override
@@ -71,23 +89,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             tv_cancel = (TextView)itemView.findViewById(R.id.tv_cancel);
             iv_cancel = (ImageView)itemView.findViewById(R.id.iv_cancel);
 
-            iv_cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    iv_cancel.setVisibility(View.GONE);
-                    tv_reorder.setVisibility(View.VISIBLE);
-                    tv_orderStatus.setText("Cancelled");
-                    tv_orderStatus.setTextColor(Color.parseColor("#E72408"));
-                }
-            });
-
-            tv_reorder.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mcontext, CartActivity.class);
-                    mcontext.startActivity(intent);
-                }
-            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -95,6 +96,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                     lisener.orderClickLisener(mdata.get(getAdapterPosition()));
                 }
             });
+
         }
+
     }
 }

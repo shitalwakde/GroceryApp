@@ -7,21 +7,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RatingBar;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.R;
 import com.app.activities.MainActivity;
-import com.app.features.address.AddressFragment;
+import com.app.features.address.AddressActivity;
 import com.app.features.address.AddressListFragment;
-import com.app.features.navmenu.OrderDetailFragment;
+import com.app.features.address.AddressModel;
+import com.app.util.AppUtils;
+import com.app.util.RestClient;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 import static com.app.features.cart.CartActivity.cartContainer;
 import static com.app.features.cart.CartActivity.tv_toolbar_cart;
@@ -31,6 +44,43 @@ public class CheckOutFragment extends Fragment {
     View rootView;
     TextView tv_order, tv_change;
     FragmentManager fragmentManager;
+    ArrayList<String> cartStringList = new ArrayList<>();
+
+    String deliveryId;
+    @BindView(R.id.tv_name)
+    TextView tvName;
+    @BindView(R.id.tv_mobile)
+    TextView tvMobile;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
+    @BindView(R.id.cityPincode)
+    TextView cityPincode;
+    @BindView(R.id.tv_change)
+    TextView tvChange;
+    @BindView(R.id.tv_price)
+    TextView tvPrice;
+    @BindView(R.id.tv_total_price)
+    TextView tvTotalPrice;
+    @BindView(R.id.tv_deliveryCharge)
+    TextView tvDeliveryCharge;
+    @BindView(R.id.tv_payable_amount)
+    TextView tvPayableAmount;
+    @BindView(R.id.rbCashOnDelivery)
+    RadioButton rbCashOnDelivery;
+    @BindView(R.id.tv_total_payable_amount)
+    TextView tvTotalPayableAmount;
+    @BindView(R.id.tv_continue)
+    TextView tvContinue;
+    @BindView(R.id.tv_order)
+    TextView tvOrder;
+    @BindView(R.id.bottom_button)
+    LinearLayout bottomButton;
+    @BindView(R.id.tv_gst)
+    TextView tvGst;
+
+    public CheckOutFragment(String deliveryId) {
+        this.deliveryId = deliveryId;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,56 +92,151 @@ public class CheckOutFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.checkout_fragment, container, false);
+        ButterKnife.bind(this, rootView);
         init(rootView);
         click();
 
         return rootView;
     }
 
-    private void init(View rootView){
+    private void init(View rootView) {
         fragmentManager = getActivity().getSupportFragmentManager();
-        tv_order = (TextView)rootView.findViewById(R.id.tv_order);
-        tv_change = (TextView)rootView.findViewById(R.id.tv_change);
+        tv_order = (TextView) rootView.findViewById(R.id.tv_order);
+        tv_change = (TextView) rootView.findViewById(R.id.tv_change);
     }
 
-    private void click(){
-
-        tv_toolbar_cart.setText("CheckOut");
-
-
+    private void click() {
+        tv_toolbar_cart.setText("Checkout");
+        addToOrderSummery();
         tv_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //fragmentManager.beginTransaction().replace(cartContainer, new AddressListFragment()).addToBackStack(null).commit();
-                fragmentManager.beginTransaction().replace(cartContainer, new AddressFragment()).addToBackStack(null).commit();
+                Intent intent = new Intent(getActivity(), AddressActivity.class);
+                intent.putExtra("address", "list");
+                intent.putExtra("deliveryId", "");
+                startActivity(intent);
+                getActivity().finish();
+//                fragmentManager.beginTransaction().replace(cartContainer, new AddressListFragment()).addToBackStack(null).commit();
             }
         });
 
-        tv_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showRatingDialog();
-                //fragmentManager.beginTransaction().replace(cartContainer, new OrderDetailFragment()).addToBackStack(null).commit();
-            }
-        });
     }
 
-    public void showRatingDialog(){
+    public void showRatingDialog(String orderId) {
         final Dialog dialog1 = new Dialog(getActivity());
         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog1.setCancelable(true);
         dialog1.setContentView(R.layout.dlg_thankyou);
-        TextView tv_submit = (TextView)dialog1.findViewById(R.id.tv_submit);
+        TextView tv_submit = (TextView) dialog1.findViewById(R.id.tv_submit);
+        TextView tv_message = (TextView) dialog1.findViewById(R.id.tv_message);
+
+        tv_message.setText("Your order No. is " + orderId + " & Your order will be delivered within 2-3 days");
 
         tv_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
-                //saveRatings(String.valueOf(ratingBar.getRating()), et_review.getText().toString(), dialog1);
+                getActivity().finishAffinity();
             }
         });
 
         dialog1.show();
     }
+
+
+    private void addToOrderSummery() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("userId", AppUtils.getUserDetails(getActivity()).getLoginId());
+        jsonObject.addProperty("deliveryId", deliveryId);
+
+        new RestClient().getApiService().addToOrderSummery(jsonObject, new Callback<AddressModel>() {
+            @Override
+            public void success(AddressModel addressModel, Response response) {
+                if (addressModel.getSuccess().equals("1")) {
+                    String cartId = "";
+                    for (int i = 0; i < addressModel.getCartList().size(); i++) {
+                        cartId = addressModel.getCartList().get(i).getCardId();
+                        cartStringList.add(cartId);
+//                        if (cartStringList.contains(cartId)) {
+//                            cartStringList.set(i, cartId);
+//                        } else {
+//                            cartStringList.add(cartId);
+//                        }
+                    }
+                    setOrderDetail(addressModel, cartStringList);
+                    //Toast.makeText(getActivity(), addressModel.getMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), addressModel.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void setOrderDetail(AddressModel addressModel, ArrayList<String> cartStringList) {
+        tvName.setText(addressModel.getName());
+        tvMobile.setText(addressModel.getMobile());
+        tvAddress.setText(addressModel.getHouseNo() + ", " + addressModel.getArea() + ", " + addressModel.getLandmark() + ",");
+        cityPincode.setText(addressModel.getCity() + " " + addressModel.getPincode() + ".");
+        tvPrice.setText("Price " + "(" + addressModel.getCartCount() + " items)");
+        tvPayableAmount.setText("\u20B9 " + addressModel.getTotalFinalAmount());
+        tvTotalPayableAmount.setText("PRICE : \u20B9 " + addressModel.getTotalFinalAmount());
+        tvTotalPrice.setText("\u20B9 " + addressModel.getTotalSum());
+
+        if (addressModel.getDeliveryCharges().equals("0")) {
+            tvDeliveryCharge.setText("FREE");
+        } else {
+            tvDeliveryCharge.setText("\u20B9 " + addressModel.getDeliveryCharges());
+        }
+
+        if (addressModel.getGst().equals("0")) {
+            tvGst.setText("NONE");
+        } else {
+            tvGst.setText("\u20B9 " + addressModel.getGst());
+        }
+
+        tv_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                placeOrder(addressModel, cartStringList);
+            }
+        });
+
+    }
+
+
+    private void placeOrder(AddressModel addressModel, ArrayList<String> cartStringList) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("userId", AppUtils.getUserDetails(getActivity()).getLoginId());
+        jsonObject.addProperty("deliveryId", addressModel.getDeliveryId());
+        jsonObject.addProperty("totalFinalAmount", addressModel.getTotalFinalAmount());
+        jsonObject.addProperty("paymentType", "COD");
+
+        Gson gsonAssignee = new GsonBuilder().create();
+        JsonArray catList = gsonAssignee.toJsonTree(cartStringList).getAsJsonArray();
+        jsonObject.add("cardIds", catList);
+
+        new RestClient().getApiService().placeOrder(jsonObject, new Callback<AddressModel>() {
+            @Override
+            public void success(AddressModel addressModel, Response response) {
+                if (addressModel.getSuccess().equals("1")) {
+                    showRatingDialog(addressModel.getOrderId());
+                } else {
+                    Toast.makeText(getActivity(), addressModel.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
