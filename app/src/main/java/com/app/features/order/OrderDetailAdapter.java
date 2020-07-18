@@ -43,14 +43,11 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         holder.tv_pr_name.setText(category.getProductName());
         holder.tv_pr_sub_name.setText(category.getProductName());
         holder.tv_discount_price.setText("\u20B9 "+category.getProductGrossAmount());
-        if(category.getProductQuantity().equals("Quantity")){
-            holder.rl_weight.setVisibility(View.GONE);
-            holder.tvPc.setVisibility(View.VISIBLE);
-            holder.tvPc.setText(category.getQuantity()+"Pc");
+
+        if(category.getProductType().equals("Quantity")){
+            holder.tvPc.setText(category.getProductQuantity()+"Pc");
         }else{
-            holder.tvPc.setVisibility(View.GONE);
-            holder.rl_weight.setVisibility(View.VISIBLE);
-            holder.tv_peice.setText(category.getQuantity()+"Kg");
+            holder.tvPc.setText(category.getProductQuantity());
         }
         if(category.getProductDiscount().equals("0")){
             holder.rl_discount.setVisibility(View.GONE);
@@ -92,6 +89,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             rl_discount = (RelativeLayout)itemView.findViewById(R.id.rl_discount);
             rl_weight = (RelativeLayout)itemView.findViewById(R.id.rl_weight);
 
+            rl_weight.setVisibility(View.GONE);
+            tvPc.setVisibility(View.VISIBLE);
 
             tv_rate_product.setOnClickListener(new View.OnClickListener() {
                 @Override

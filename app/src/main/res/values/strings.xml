@@ -5,4 +5,5 @@
     <string name="Rs">\u20B9</string>
     <string name="currency"> ₹ </string>
     <string name="didn_t_received_otp">Didn\'t received OTP?<font color='blue'> Click Here</font></string>
+    <string name="search_products">Search products</string>
 </resources>

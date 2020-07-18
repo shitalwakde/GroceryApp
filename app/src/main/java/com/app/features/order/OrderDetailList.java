@@ -16,6 +16,7 @@ public class OrderDetailList implements Serializable {
     private String status;
     private String productName;
     private String productQuantity;
+    private String productType;
     private String productImage;
 
     public String getOrderDetailId() {
@@ -128,5 +129,13 @@ public class OrderDetailList implements Serializable {
 
     public void setProductImage(String productImage) {
         this.productImage = productImage;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 }

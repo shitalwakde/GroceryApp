@@ -62,7 +62,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Product category = mdata.get(position);
-        Picasso.with(holder.itemView.getContext()).load(category.getProductImage()).into(holder.iv_best);
+        Picasso.with(holder.itemView.getContext()).load(category.getImage()).into(holder.iv_best);
         holder.tv_pr_name.setText(category.getProductName());
         holder.tv_pr_sub_name.setText(category.getBrandName());
         holder.txtDiscountOff.setText(category.getDiscount()+"%");
@@ -136,7 +136,6 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
                         // Do something with the selection
                         selected = items[item].toString();
                         category.setWeightSelected(item);
-                        category.setProductVarientId(category.getProductVarientId());
                         getProductDetailsByWeight(position, selected, category);
                     }
                 });
@@ -280,6 +279,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             }
             jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
             jsonObject.addProperty("productId",mdata.get(position).getProductId());
+            jsonObject.addProperty("productVarientId", mdata.get(position).getProductVarientId());
             jsonObject.addProperty("wishList",wishList);
 
             new RestClient().getApiService().addWishList(jsonObject, new Callback<Product>() {

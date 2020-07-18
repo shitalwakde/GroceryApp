@@ -216,6 +216,7 @@ public class CartFragment extends Fragment implements CalculateLisener {
             calculateAmountPlus += (amount);
         }
 
+        //tv_total_price.setText("PRICE : \u20B9 " + String.format("%.2f", calculateAmountPlus));
         tv_total_price.setText("PRICE : \u20B9 " + Math.round(calculateAmountPlus));
     }
 

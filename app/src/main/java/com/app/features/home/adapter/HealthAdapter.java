@@ -146,7 +146,6 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
                         // Do something with the selection
                         selected = items[item].toString();
                         category.setWeightSelected(item);
-                        category.setProductVarientId(category.getProductVarientId());
                         getProductDetailsByWeight(position, selected, category);
                     }
                 });
@@ -299,6 +298,7 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
             }
             jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
             jsonObject.addProperty("productId",mdata.get(getAdapterPosition()).getProductId());
+            jsonObject.addProperty("productVarientId", mdata.get(position).getProductVarientId());
             jsonObject.addProperty("wishList",wishList);
 
             new RestClient().getApiService().addWishList(jsonObject, new Callback<Product>() {

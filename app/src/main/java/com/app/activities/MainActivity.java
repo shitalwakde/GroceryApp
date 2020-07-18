@@ -3,7 +3,9 @@ package com.app.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -12,10 +14,16 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,9 +81,8 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
 
         containNav = R.id.container_nav;
         appBarContainer = R.id.app_bar_container;
-        ll_search = (LinearLayout)findViewById(R.id.ll_search);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         mView.included.bottomNav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mView.drawer, mView.included.toolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -85,6 +92,47 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(appBarContainer, new HomeFragment()).commit();
         fragmentManager.beginTransaction().replace(containNav , new NavigationViewFragment(),TAG_DRAWER_FRAGMENT).commit();
+
+        ll_search = (LinearLayout)findViewById(R.id.ll_search);
+        SearchView searchView= (SearchView) findViewById(R.id.searchView);
+
+        // Get SearchView autocomplete object.
+        final SearchView.SearchAutoComplete searchAutoComplete = (SearchView.SearchAutoComplete)searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchAutoComplete.setBackgroundColor(Color.WHITE);
+        searchAutoComplete.setTextColor(Color.GRAY);
+        searchAutoComplete.setTextSize(14);
+        searchAutoComplete.setDropDownBackgroundResource(android.R.color.white);
+
+        // Create a new ArrayAdapter and add data to search auto complete object.
+        String dataArr[] = {"Apple" , "Amazon" , "Amd", "Microsoft", "Microwave", "MicroNews", "Intel", "Intelligence"};
+        ArrayAdapter<String> newsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, dataArr);
+        searchAutoComplete.setAdapter(newsAdapter);
+
+        // Listen to search view item on click event.
+        searchAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int itemIndex, long id) {
+                String queryString=(String)adapterView.getItemAtPosition(itemIndex);
+                searchAutoComplete.setText(queryString);
+                //Toast.makeText(MainActivity.this, "you clicked " + queryString, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Below event is triggered when submit search query.
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setMessage("Search keyword is " + query);
+                alertDialog.show();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     @Override

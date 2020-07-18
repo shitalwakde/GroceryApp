@@ -50,25 +50,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:orientation="horizontal"
                     android:background="@drawable/background_off_white"
-                    android:gravity="center_vertical"
-                    android:padding="8dp">
+                    android:gravity="center_vertical">
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
                         android:padding="2dp"
                         android:src="@mipmap/grey_search" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_search"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/head"
-                        android:text="Search products"
+                        android:text="Search Products"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/roboto"
+                        android:layout_marginLeft="10dp"
+                        android:visibility="gone"/>
+
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/searchView"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:textSize="10sp"
+                        android:transitionName="@string/search_products"
+                        android:textColorHint="@color/grey"
                         android:fontFamily="serif"
-                        android:textColor="@color/grey"/>
+                        app:actionViewClass="androidx.appcompat.widget.SearchView"
+                        android:textColor="@color/grey"
+                        android:visibility="visible"/>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>

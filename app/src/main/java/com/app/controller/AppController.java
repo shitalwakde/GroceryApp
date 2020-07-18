@@ -2,6 +2,8 @@ package com.app.controller;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.util.Log;
 
 import com.app.activities.MainActivity;
@@ -73,6 +75,7 @@ public class AppController extends Application {
             Log.w("TAG","Recieved "+notification);
         }
     }
+
 
 
 }

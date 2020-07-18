@@ -81,7 +81,6 @@ public class HomeFragment extends Fragment implements SearchLisener {
     FragmentManager fragmentManager;
     List<SubCategory> subCatList;
     ProgressBar progressBar;
-    RecyclerView rv_recyclerDialog;
     ArrayList<SearchModel> searchKeyList;
 
     @Override
@@ -133,12 +132,6 @@ public class HomeFragment extends Fragment implements SearchLisener {
         //getHomeData();
         ll_search.setVisibility(View.VISIBLE);
 
-        ll_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //getSearchkey();
-            }
-        });
 
         tv_view_recently_product.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,42 +190,6 @@ public class HomeFragment extends Fragment implements SearchLisener {
         });
     }
 
-    private void getSearchkey(){
-        showDialog(searchKeyList);
-    }
-
-    private void showDialog(ArrayList<SearchModel> searchKeyList){
-        final Dialog dialog1 = new Dialog(getActivity());
-        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog1.setCancelable(true);
-        dialog1.setContentView(R.layout.dlg_search);
-        EditText et_search = (EditText)dialog1.findViewById(R.id.et_search);
-        rv_recyclerDialog = (RecyclerView)dialog1.findViewById(R.id.rv_recyclerDialog);
-
-        et_search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setDialogAdapter(dialog1);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        dialog1.show();
-    }
-
-    private void setDialogAdapter(Dialog dialog1){
-        SearchAdapter adapter = new SearchAdapter(searchKeyList, dialog1, this);
-        rv_recyclerDialog.setAdapter(adapter);
-    }
 
     private void getHomeData(){
         progressBar.setVisibility(View.VISIBLE);

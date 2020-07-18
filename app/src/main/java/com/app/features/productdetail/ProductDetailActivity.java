@@ -318,8 +318,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
                     public void onClick(DialogInterface dialog, int item) {
                         // Do something with the selection
                         selected = items[item].toString();
-                        category.setWeightSelected(item);
-                        category.setProductVarientId(productDetailModel.getProductVarientId());
+                        productDetailModel.setWeightSelected(item);
                         getProductDetailsByWeight(selected, productDetailModel);
                     }
                 });
@@ -407,6 +406,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
         }
         jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
         jsonObject.addProperty("productId",productId);
+        jsonObject.addProperty("productVarientId", productVarientId);
         jsonObject.addProperty("wishList",wishList);
 
         new RestClient().getApiService().addWishList(jsonObject, new Callback<Product>() {
@@ -430,7 +430,6 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-
         switch(item.getItemId()){
             case android.R.id.home:
                 finish();
@@ -444,6 +443,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
     public void productClickLisener(Product product) {
         Intent intent = new Intent(this, ProductDetailActivity.class);
         intent.putExtra("productId", product.getProductId());
+        intent.putExtra("productVarientId", product.getProductVarientId());
         startActivity(intent);
     }
 

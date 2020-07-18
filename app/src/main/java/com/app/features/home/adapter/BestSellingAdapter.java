@@ -137,7 +137,6 @@ public class BestSellingAdapter extends RecyclerView.Adapter<BestSellingAdapter.
                         // Do something with the selection
                         selected = items[item].toString();
                         category.setWeightSelected(item);
-                        category.setProductVarientId(category.getProductVarientId());
                         getProductDetailsByWeight(position, selected, category);
                     }
                 });
@@ -291,6 +290,7 @@ public class BestSellingAdapter extends RecyclerView.Adapter<BestSellingAdapter.
             }
             jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
             jsonObject.addProperty("productId",mdata.get(getAdapterPosition()).getProductId());
+            jsonObject.addProperty("productVarientId", mdata.get(position).getProductVarientId());
             jsonObject.addProperty("wishList",wishList);
 
             new RestClient().getApiService().addWishList(jsonObject, new Callback<Product>() {
