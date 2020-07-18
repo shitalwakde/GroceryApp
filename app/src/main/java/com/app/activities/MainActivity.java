@@ -263,8 +263,6 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
 
     @Override
     public void productClickLisener(Category category) {
-        Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
-        startActivity(intent);
         /*fragmentManager.beginTransaction().replace(R.id.app_bar_container , new ProductDetailFragment())
                 .addToBackStack(null)
                 .commit();*/
@@ -295,6 +293,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
     public void productClickLisener(Product product) {
         Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
         intent.putExtra("productId", product.getProductId());
+        intent.putExtra("productVarientId", product.getProductVarientId());
         startActivity(intent);
     }
 

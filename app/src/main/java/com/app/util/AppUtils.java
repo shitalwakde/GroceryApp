@@ -144,8 +144,8 @@ public class AppUtils {
             jsonObject.addProperty("userId", "");
         }
         jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
-        //jsonObject.addProperty("tempUserId", "5478965545");
         jsonObject.addProperty("productId", mdata.get(position).getProductId());
+        jsonObject.addProperty("productVarientId", mdata.get(position).getProductVarientId());
         jsonObject.addProperty("quantity", String.valueOf(qty));
 
         new RestClient().getApiService().addToCart(jsonObject, new Callback<Product>() {

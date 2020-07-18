@@ -29,6 +29,7 @@ public class Product implements Serializable {
     //private String isInCard;
     private String cartQuantity;
     private String isInWishList;
+    private String isVarient;
 
     ArrayList<Product> recentProduct;
     ArrayList<Product> similarProduct;
@@ -61,6 +62,43 @@ public class Product implements Serializable {
 
     //======progress
     private boolean isLoading;
+
+    //======varient
+    ArrayList<Product> varientList;
+    private String productVarientId;
+    private int weightSelected;
+
+    public int getWeightSelected() {
+        return weightSelected;
+    }
+
+    public void setWeightSelected(int weightSelected) {
+        this.weightSelected = weightSelected;
+    }
+
+    public String getIsVarient() {
+        return isVarient;
+    }
+
+    public void setIsVarient(String isVarient) {
+        this.isVarient = isVarient;
+    }
+
+    public ArrayList<Product> getVarientList() {
+        return varientList;
+    }
+
+    public void setVarientList(ArrayList<Product> varientList) {
+        this.varientList = varientList;
+    }
+
+    public String getProductVarientId() {
+        return productVarientId;
+    }
+
+    public void setProductVarientId(String productVarientId) {
+        this.productVarientId = productVarientId;
+    }
 
     public boolean isLoading() {
         return isLoading;

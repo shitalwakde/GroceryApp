@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.google.android.gms:play-services-places:15.0.1'
     implementation 'com.onesignal:OneSignal:3.+@aar'
+    implementation 'com.github.maayyaannkk:ImagePicker:1.0.5'
     //=====================butterKnife=======================
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'

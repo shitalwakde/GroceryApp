@@ -60,8 +60,8 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
     public static final int ADD=1;
     public static final int REMOVE=2;
     public static final int RESET=3;
-    private String productId="";
-    String wishList="";
+    private String productId="", productVarientId ="";
+    String wishList="", selected="";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +79,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
 
     private void init() {
         productId = getIntent().getStringExtra("productId");
+        productVarientId = getIntent().getStringExtra("productVarientId");
         fragmentManager = getSupportFragmentManager();
         bestSellingList = new ArrayList<>();
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
@@ -273,7 +274,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
             tv_offer.setText(productDetailModel.getDiscount()+" % off");
         }
 
-        if(productDetailModel.getProductType().equals("Quantity")){
+        /*if(productDetailModel.getProductType().equals("Quantity")){
             rl_weight.setVisibility(View.GONE);
             tvPiece.setVisibility(View.VISIBLE);
             tvPiece.setText(productDetailModel.getQuantity()+" Pc");
@@ -281,6 +282,66 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
             rl_weight.setVisibility(View.VISIBLE);
             tvPiece.setVisibility(View.GONE);
             tv_peice.setText(productDetailModel.getQuantity()+" Kg");
+        }*/
+
+        if(productDetailModel.getIsVarient().equals("Yes")){
+            rl_weight.setVisibility(View.VISIBLE);
+            tvPiece.setVisibility(View.GONE);
+            tv_peice.setText(productDetailModel.getQuantity());
+            /*if(category.getProductType().equals("Quantity")){
+                holder.tv_peice.setText(category.getQuantity()+" Pc");
+            }else{
+            }*/
+        }else{
+            rl_weight.setVisibility(View.GONE);
+            tvPiece.setVisibility(View.VISIBLE);
+            tvPiece.setText(productDetailModel.getQuantity()+" Pc");
+            /*if(category.getProductType().equals("Quantity")){
+            }else{
+                holder.tvPiece.setText(category.getQuantity()+" Kg");
+            }*/
+        }
+
+        rl_weight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<String> weightStrings = new ArrayList<>();
+                for (Product weight : productDetailModel.getVarientList()) {
+                    weightStrings.add(weight.getQuantity());
+                }
+                final CharSequence[] items = weightStrings.toArray(new CharSequence[weightStrings.size()]);
+
+//                new ContextThemeWrapper(context, R.style.AlertDialogCustom)
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ProductDetailActivity.this);
+                builder.setTitle("Select...");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        // Do something with the selection
+                        selected = items[item].toString();
+                        category.setWeightSelected(item);
+                        category.setProductVarientId(productDetailModel.getProductVarientId());
+                        getProductDetailsByWeight(selected, productDetailModel);
+                    }
+                });
+                android.app.AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+    }
+
+    private void getProductDetailsByWeight(String weight, Product category) {
+        for (int i = 0; i < category.getVarientList().size(); i++) {
+            if(weight.equals(category.getVarientList().get(i).getQuantity())){
+                category.setProductVarientId(category.getVarientList().get(i).getProductVarientId());
+                category.setImage(category.getVarientList().get(i).getImage());
+                category.setDiscount(category.getVarientList().get(i).getDiscount());
+                category.setQuantity(category.getVarientList().get(i).getQuantity());
+                category.setFinalAmount(category.getVarientList().get(i).getFinalAmount());
+                category.setGrossAmount(category.getVarientList().get(i).getGrossAmount());
+//                notifyDataSetChanged();
+//                notifyItemChanged(position);
+            }
+
         }
     }
 
@@ -304,6 +365,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductListen
         }
         jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
         jsonObject.addProperty("productId", productId);
+        jsonObject.addProperty("productVarientId", productVarientId);
         jsonObject.addProperty("quantity", String.valueOf(qty));
 
         new RestClient().getApiService().addToCart(jsonObject, new Callback<Product>() {

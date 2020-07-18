@@ -1,10 +1,12 @@
 package com.app.features.profile;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -38,6 +40,7 @@ import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import in.mayanknagwanshi.imagepicker.ImageSelectActivity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -148,7 +151,12 @@ public class ProfileActivity extends AppCompatActivity {
         ivEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openBottomDailog();
+                //openBottomDailog();
+                Intent intent = new Intent(ProfileActivity.this, ImageSelectActivity.class);
+                intent.putExtra(ImageSelectActivity.FLAG_COMPRESS, true);
+                intent.putExtra(ImageSelectActivity.FLAG_CAMERA, true);
+                intent.putExtra(ImageSelectActivity.FLAG_GALLERY, true);
+                startActivityForResult(intent, 1213);
             }
         });
 
@@ -205,54 +213,19 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case SELECT_PHOTO:
-                if (resultCode ==RESULT_OK) {
-                    imgProfile.setImageURI(data.getData());
-                    Bitmap bitmap=((BitmapDrawable)imgProfile.getDrawable()).getBitmap();
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 0, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    captureImg= Base64.encodeToString(byteArray,Base64.NO_WRAP);
-                }
-                break;
+        if (requestCode == 1213 && resultCode == Activity.RESULT_OK) {
+            String filePath = data.getStringExtra(ImageSelectActivity.RESULT_FILE_PATH);
+            Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
+            imgProfile.setImageBitmap(selectedImage);
+            Bitmap bitmap=((BitmapDrawable)imgProfile.getDrawable()).getBitmap();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 0, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            captureImg= Base64.encodeToString(byteArray,Base64.DEFAULT);
+        }
 
-            case CAMERA_PIC_REQUEST:
-                if (resultCode ==RESULT_OK) {
-                    Bitmap image = (Bitmap) data.getExtras().get("data");
-                    imgProfile.setImageBitmap(image);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    image.compress(Bitmap.CompressFormat.JPEG, 0, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    captureImg=Base64.encodeToString(byteArray, Base64.DEFAULT);
-                }
-                break;
-        }
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_WRITE_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                    photoPickerIntent.setType("image/*");
-                    startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-                } else {
-                    //Permission not granted
-                    Toast.makeText(this, "Sorry image cannot be uploaded", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case REQUEST_CAMERA:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-                } else {
-                    //Permission not granted
-                    Toast.makeText(this, "Sorry image cannot be uploaded", Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
-    }
+
 
     private void updateProfile(String name, String email, String mobile) {
         JsonObject jsonObject = new JsonObject();

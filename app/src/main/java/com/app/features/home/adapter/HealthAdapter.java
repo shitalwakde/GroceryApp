@@ -25,6 +25,7 @@ import com.app.util.RestClient;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -41,7 +42,7 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
     public static final int ADD=1;
     public static final int REMOVE=2;
     public static final int RESET=3;
-    String wishList="";
+    String wishList="", selected="";
 
     public HealthAdapter(ProductListener lisener, List<Product> mdata) {
         this.lisener = lisener;
@@ -100,16 +101,76 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
             holder.iv_unwish.setImageResource(R.drawable.ic_heart_red);
         }
 
-        if(category.getProductType().equals("Quantity")){
+//        if(category.getProductType().equals("Quantity")){
+//            holder.rl_weight.setVisibility(View.GONE);
+//            holder.tvPiece.setVisibility(View.VISIBLE);
+//            holder.tvPiece.setText(category.getQuantity()+" Pc");
+//        }else{
+//            holder.rl_weight.setVisibility(View.VISIBLE);
+//            holder.tvPiece.setVisibility(View.GONE);
+//            holder.tv_peice.setText(category.getQuantity()+" Kg");
+//        }
+
+        if(category.getIsVarient().equals("Yes")){
+            holder.rl_weight.setVisibility(View.VISIBLE);
+            holder.tvPiece.setVisibility(View.GONE);
+            holder.tv_peice.setText(category.getQuantity());
+            /*if(category.getProductType().equals("Quantity")){
+                holder.tv_peice.setText(category.getQuantity()+" Pc");
+            }else{
+            }*/
+        }else{
             holder.rl_weight.setVisibility(View.GONE);
             holder.tvPiece.setVisibility(View.VISIBLE);
             holder.tvPiece.setText(category.getQuantity()+" Pc");
-        }else{
-            holder.rl_weight.setVisibility(View.VISIBLE);
-            holder.tvPiece.setVisibility(View.GONE);
-            holder.tv_peice.setText(category.getQuantity()+" Kg");
+            /*if(category.getProductType().equals("Quantity")){
+            }else{
+                holder.tvPiece.setText(category.getQuantity()+" Kg");
+            }*/
         }
 
+        holder.rl_weight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<String> weightStrings = new ArrayList<>();
+                for (Product weight : category.getVarientList()) {
+                    weightStrings.add(weight.getQuantity());
+                }
+                final CharSequence[] items = weightStrings.toArray(new CharSequence[weightStrings.size()]);
+
+//                new ContextThemeWrapper(context, R.style.AlertDialogCustom)
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(holder.itemView.getContext());
+                builder.setTitle("Select...");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        // Do something with the selection
+                        selected = items[item].toString();
+                        category.setWeightSelected(item);
+                        category.setProductVarientId(category.getProductVarientId());
+                        getProductDetailsByWeight(position, selected, category);
+                    }
+                });
+                android.app.AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+
+    }
+
+    private void getProductDetailsByWeight(int position, String weight, Product category) {
+        for (int i=0; i<category.getVarientList().size(); i++){
+            if(weight.equals(category.getVarientList().get(i).getQuantity())){
+                category.setProductVarientId(category.getVarientList().get(i).getProductVarientId());
+                category.setImage(category.getVarientList().get(i).getImage());
+                category.setDiscount(category.getVarientList().get(i).getDiscount());
+                category.setQuantity(category.getVarientList().get(i).getQuantity());
+                category.setFinalAmount(category.getVarientList().get(i).getFinalAmount());
+                category.setGrossAmount(category.getVarientList().get(i).getGrossAmount());
+                notifyDataSetChanged();
+                notifyItemChanged(position);
+            }
+
+        }
     }
 
     @Override
