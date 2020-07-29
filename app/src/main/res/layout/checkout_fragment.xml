@@ -67,6 +67,38 @@
                 android:layout_height="1dp"
                 android:background="@color/greyExtratrans"
                 android:layout_marginTop="20dp"/>
+            <RelativeLayout
+                android:id="@+id/rl_slot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_border"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_down"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"/>
+                <TextView
+                    android:id="@+id/tv_slot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:drawableLeft="@drawable/ic_watch"
+                    android:drawablePadding="10dp"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="13sp"
+                    android:text="22 Jul, Wed 6:30 AM - 8:30 AM"
+                    android:padding="10dp"/>
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/greyExtratrans"
+                android:layout_marginTop="20dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -151,7 +183,7 @@
                     android:id="@+id/tv_gst"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="NONE"
+                    android:text="-  "
                     android:gravity="end"
                     android:textSize="13sp"
                     android:fontFamily="@font/roboto_light"
@@ -218,12 +250,14 @@
                     android:layout_marginLeft="20dp"
                     android:textSize="13sp"
                     android:fontFamily="@font/roboto_light"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/greyExtratrans"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -231,12 +265,14 @@
                     android:layout_marginLeft="20dp"
                     android:textSize="13sp"
                     android:fontFamily="@font/roboto_light"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/greyExtratrans"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -244,12 +280,14 @@
                     android:layout_marginLeft="20dp"
                     android:textSize="13sp"
                     android:fontFamily="@font/roboto_light"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/greyExtratrans"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -257,12 +295,14 @@
                     android:layout_marginLeft="20dp"
                     android:textSize="13sp"
                     android:fontFamily="@font/roboto_light"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/greyExtratrans"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
                 <RadioButton
                     android:id="@+id/rbCashOnDelivery"
                     android:layout_width="match_parent"
@@ -301,7 +341,7 @@
             android:gravity="center_vertical"
             android:padding="10dp"
             android:background="@color/colorWhite"
-            android:text="PRICE : \u20B9 5,764"/>
+            android:text="PRICE : \u20B9 0"/>
 
         <TextView
             android:id="@+id/tv_continue"
@@ -312,7 +352,7 @@
             android:fontFamily="@font/roboto"
             android:padding="12dp"
             android:gravity="center"
-            android:background="@color/submit"
+            android:background="@color/colorBlack"
             android:text="CONTINUE"
             android:visibility="gone"/>
 
@@ -325,7 +365,7 @@
             android:fontFamily="@font/roboto"
             android:padding="12dp"
             android:gravity="center"
-            android:background="@color/submit"
+            android:background="@color/colorBlack"
             android:text="PLACE ORDER"/>
 
     </LinearLayout>

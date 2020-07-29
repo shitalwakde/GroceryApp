@@ -245,7 +245,7 @@
                             android:id="@+id/tv_gst"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="\u20B9 18"
+                            android:text="-   "
                             android:gravity="right"
                             android:textSize="12sp"
                             android:fontFamily="@font/roboto_light"

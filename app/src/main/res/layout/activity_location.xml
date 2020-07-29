@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".features.address.LocationActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:theme="@style/ToolbarTheme"
+        android:background="@color/colorWhite"
+        app:popupTheme="@style/AppTheme">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp">
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_back_arrow"
+                android:layout_marginRight="10dp"/>
+            <AutoCompleteTextView
+                android:id="@+id/etAddress1"
+                android:layout_toRightOf="@+id/iv_back"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="left|top"
+                android:hint="Address"
+                android:inputType="text"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp"
+                android:visibility="visible"/>
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+    <LinearLayout
+        android:id="@+id/ll_choose_location"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="center"
+        android:background="@drawable/add_button">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CHOOSE LOCATION"
+            android:drawableLeft="@drawable/ic_location"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/colorWhite"
+            android:padding="20dp"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/colorWhite" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/ll_choose_location"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginTop="10dp">
+    <fragment
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/host_map"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/map_marker1"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>
+
+
+
+</RelativeLayout>

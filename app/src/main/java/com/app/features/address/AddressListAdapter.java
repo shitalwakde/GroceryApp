@@ -1,5 +1,6 @@
 package com.app.features.address;
 
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -71,13 +73,14 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         RadioButton rbName;
-        ImageView iv_remove;
+        ImageView iv_remove, iv_edit;
         TextView tv_house, tv_Landmark, tv_state, tv_mobile, tv_default, tv_setDefault;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             rbName = (RadioButton)itemView.findViewById(R.id.rbName);
             iv_remove = (ImageView)itemView.findViewById(R.id.iv_remove);
+            iv_edit = (ImageView)itemView.findViewById(R.id.iv_edit);
             tv_house = (TextView)itemView.findViewById(R.id.tv_house);
             tv_Landmark = (TextView)itemView.findViewById(R.id.tv_Landmark);
             tv_state = (TextView)itemView.findViewById(R.id.tv_state);
@@ -92,10 +95,31 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
                 }
             });
 
+            iv_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listLisener.EditAddressLisenerClick(mdata.get(getAdapterPosition()).getDeliveryId());
+                }
+            });
+
             iv_remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setDefaultRemove("remove", getAdapterPosition());
+                    AlertDialog.Builder builder=new AlertDialog.Builder(itemView.getContext());
+                    builder.setMessage("Are you sure want to remove the addressa ?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            setDefaultRemove("remove", getAdapterPosition());
+                            dialog.dismiss();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+
                 }
             });
 

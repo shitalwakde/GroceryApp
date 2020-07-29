@@ -9,15 +9,26 @@ public class HomeModel {
     private String message;
     private String msg;
     private String whatsapp_mobile;
-    private String offer_image;
-    private String discount_image;
+    private String offerImage;
+    private String dicountImage;
     private String count_cart;
 
     ArrayList<Banner> banner;
+    ArrayList<Banner> advertisement;
     ArrayList<Category> category;
     ArrayList<Brand> brand;
     ArrayList<Product> product;
+    ArrayList<Product> recentViewProduct;
+    ArrayList<Product> BestSellingProduct;
     ArrayList<Product> productsList;
+
+    public ArrayList<Banner> getAdvertisement() {
+        return advertisement;
+    }
+
+    public void setAdvertisement(ArrayList<Banner> advertisement) {
+        this.advertisement = advertisement;
+    }
 
     public String getSuccess() {
         return success;
@@ -51,20 +62,20 @@ public class HomeModel {
         this.whatsapp_mobile = whatsapp_mobile;
     }
 
-    public String getOffer_image() {
-        return offer_image;
+    public String getOfferImage() {
+        return offerImage;
     }
 
-    public void setOffer_image(String offer_image) {
-        this.offer_image = offer_image;
+    public void setOfferImage(String offerImage) {
+        this.offerImage = offerImage;
     }
 
-    public String getDiscount_image() {
-        return discount_image;
+    public String getDicountImage() {
+        return dicountImage;
     }
 
-    public void setDiscount_image(String discount_image) {
-        this.discount_image = discount_image;
+    public void setDicountImage(String dicountImage) {
+        this.dicountImage = dicountImage;
     }
 
     public String getCount_cart() {
@@ -113,5 +124,21 @@ public class HomeModel {
 
     public void setProductsList(ArrayList<Product> productsList) {
         this.productsList = productsList;
+    }
+
+    public ArrayList<Product> getRecentViewProduct() {
+        return recentViewProduct;
+    }
+
+    public void setRecentViewProduct(ArrayList<Product> recentViewProduct) {
+        this.recentViewProduct = recentViewProduct;
+    }
+
+    public ArrayList<Product> getBestSellingProduct() {
+        return BestSellingProduct;
+    }
+
+    public void setBestSellingProduct(ArrayList<Product> bestSellingProduct) {
+        BestSellingProduct = bestSellingProduct;
     }
 }

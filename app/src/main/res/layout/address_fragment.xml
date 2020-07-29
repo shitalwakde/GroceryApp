@@ -261,7 +261,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:background="@drawable/add_button"
+        android:background="@color/colorBlack"
         android:textColor="@color/colorWhite"
         android:fontFamily="@font/roboto"
         android:text="SAVE"

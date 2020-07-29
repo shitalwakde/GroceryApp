@@ -1,11 +1,15 @@
 package com.app.features.navmenu;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -18,6 +22,7 @@ import com.app.callback.OnItemCountChanged;
 import com.app.callback.ProductListener;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
+import com.app.features.home.adapter.WeighAdapter;
 import com.app.features.home.model.Product;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
@@ -39,6 +44,7 @@ import retrofit.client.Response;
 public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyViewHolder> {
     List<Product> mdata;
     ProductListener productListener;
+
     boolean flag = false;
     public static final int ADD=1;
     public static final int REMOVE=2;
@@ -66,10 +72,17 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
         holder.tv_pr_name.setText(category.getProductName());
         holder.tv_pr_sub_name.setText(category.getBrandName());
         holder.txtDiscountOff.setText(category.getDiscount()+"%");
-        holder.tv_discount_price.setText("\u20B9 "+(category.getGrossAmount()));
-        holder.tv_price.setText("\u20B9 "+(category.getGrossAmount()));
-        holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
-                | Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.tv_discount_price.setText("\u20B9 "+(category.getFinalAmount()));
+
+        if(category.getMaxProductQuantity().equals("0")){
+            holder.rl_outOfStock.setVisibility(View.VISIBLE);
+            holder.tv_notify.setVisibility(View.VISIBLE);
+            //holder.rl_view.setVisibility(View.GONE);
+        }else {
+            holder.tv_notify.setVisibility(View.GONE);
+            holder.rl_outOfStock.setVisibility(View.GONE);
+            holder.rl_view.setVisibility(View.VISIBLE);
+        }
 
         if(category.isLoading()){
             holder.rl_addCartContainer.setVisibility(View.INVISIBLE);
@@ -87,7 +100,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             holder.rl_discount.setVisibility(View.VISIBLE);
             holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
                     | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tv_price.setText("\u20B9 "+category.getFinalAmount());
+            holder.tv_price.setText("\u20B9 "+category.getGrossAmount());
             holder.txtDiscountOff.setText(category.getDiscount()+"%");
         }
 
@@ -105,62 +118,48 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             holder.rl_weight.setVisibility(View.VISIBLE);
             holder.tvPiece.setVisibility(View.GONE);
             holder.tv_peice.setText(category.getQuantity());
-            /*if(category.getProductType().equals("Quantity")){
-                holder.tv_peice.setText(category.getQuantity()+" Pc");
-            }else{
-            }*/
         }else{
             holder.rl_weight.setVisibility(View.GONE);
             holder.tvPiece.setVisibility(View.VISIBLE);
-            holder.tvPiece.setText(category.getQuantity()+" Pc");
-            /*if(category.getProductType().equals("Quantity")){
-            }else{
-                holder.tvPiece.setText(category.getQuantity()+" Kg");
-            }*/
+            holder.tvPiece.setText(category.getQuantity());
         }
 
         holder.rl_weight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> weightStrings = new ArrayList<>();
-                for (Product weight : category.getVarientList()) {
-                    weightStrings.add(weight.getQuantity());
-                }
-                final CharSequence[] items = weightStrings.toArray(new CharSequence[weightStrings.size()]);
-
-//                new ContextThemeWrapper(context, R.style.AlertDialogCustom)
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(holder.itemView.getContext());
-                builder.setTitle("Select...");
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        // Do something with the selection
-                        selected = items[item].toString();
-                        category.setWeightSelected(item);
-                        getProductDetailsByWeight(position, selected, category);
-                    }
-                });
-                android.app.AlertDialog alert = builder.create();
-                alert.show();
+                showDialog(category.getVarientList(), holder, category);
             }
         });
 
     }
 
+    private void showDialog(ArrayList<Product> items, MyViewHolder holder, Product category) {
+        final Dialog dialog1 = new Dialog(holder.itemView.getContext());
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setCancelable(true);
+        dialog1.setContentView(R.layout.dlg_varient);
+        TextView tv_item_name = (TextView) dialog1.findViewById(R.id.tv_item_name);
+        RecyclerView rv_item = (RecyclerView) dialog1.findViewById(R.id.rv_item);
 
-    private void getProductDetailsByWeight(int position, String weight, Product category) {
-        for (int i=0; i<category.getVarientList().size(); i++){
-            if(weight.equals(category.getVarientList().get(i).getQuantity())){
-                category.setProductVarientId(category.getVarientList().get(i).getProductVarientId());
-                category.setImage(category.getVarientList().get(i).getImage());
-                category.setDiscount(category.getVarientList().get(i).getDiscount());
-                category.setQuantity(category.getVarientList().get(i).getQuantity());
-                category.setFinalAmount(category.getVarientList().get(i).getFinalAmount());
-                category.setGrossAmount(category.getVarientList().get(i).getGrossAmount());
-                notifyDataSetChanged();
-                notifyItemChanged(position);
+        tv_item_name.setText(category.getProductName());
+
+        WeighAdapter adapter = new WeighAdapter(items, new OnWeightItemCLickListener() {
+            @Override
+            public void onWeightClicked(Product product) {
+                dialog1.dismiss();
+                category.setProductVarientId(product.getProductVarientId());
+                category.setImage(product.getImage());
+                category.setDiscount(product.getDiscount());
+                category.setQuantity(product.getQuantity());
+                category.setFinalAmount(product.getFinalAmount());
+                category.setGrossAmount(product.getGrossAmount());
+                category.setMaxProductQuantity(product.getMaxProductQuantity());
+                notifyItemChanged(holder.getAdapterPosition());
             }
+        });
+        rv_item.setAdapter(adapter);
 
-        }
+        dialog1.show();
     }
 
     @Override
@@ -170,17 +169,20 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements OnItemCountChanged {
 
-        ImageView iv_best, iv_unwish;
-        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_remove, tv_minus, tv_quantity, tv_plus, txtDiscountOff, tvPiece, tv_peice;
+        ImageView iv_best, iv_unwish, iv_close;
+        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_remove, tv_minus, tv_quantity, tv_plus,
+                txtDiscountOff, tvPiece, tv_peice, tv_notify, tv_send_notify;
         LinearLayout ll_quantity;
-        RelativeLayout rl_wish, rl_discount, rl_addCartContainer, rl_weight;
+        RelativeLayout rl_wish, rl_discount, rl_addCartContainer, rl_weight, rl_view, rl_send_notify, rl_outOfStock;
         ProgressBar progressBar;
+        EditText et_notify_email;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             iv_best = (ImageView)itemView.findViewById(R.id.iv_best);
             iv_unwish = (ImageView)itemView.findViewById(R.id.iv_unwish);
+            iv_close = (ImageView)itemView.findViewById(R.id.iv_close);
             tvPiece = (TextView)itemView.findViewById(R.id.tvPiece);
             tv_peice = (TextView)itemView.findViewById(R.id.tv_peice);
             tv_pr_name = (TextView)itemView.findViewById(R.id.tv_pr_name);
@@ -199,6 +201,12 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             rl_weight = (RelativeLayout)itemView.findViewById(R.id.rl_weight);
             rl_addCartContainer = (RelativeLayout)itemView.findViewById(R.id.rl_addCartContainer);
             progressBar = itemView.findViewById(R.id.progressBar);
+            tv_notify = (TextView)itemView.findViewById(R.id.tv_notify);
+            tv_send_notify = (TextView)itemView.findViewById(R.id.tv_send_notify);
+            rl_view = (RelativeLayout)itemView.findViewById(R.id.rl_view);
+            rl_send_notify = (RelativeLayout)itemView.findViewById(R.id.rl_send_notify);
+            rl_outOfStock = (RelativeLayout)itemView.findViewById(R.id.rl_outOfStock);
+            et_notify_email = (EditText)itemView.findViewById(R.id.et_notify_email);
 
             tv_remove.setVisibility(View.VISIBLE);
             rl_wish.setVisibility(View.GONE);
@@ -229,6 +237,35 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
                 public void onClick(View v) {
                     productListener.productClickLisener(mdata.get(getAdapterPosition()));
                     productListener.updateCartCount(mdata.get(getAdapterPosition()).getCartCount());
+                }
+            });
+
+            tv_notify.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rl_send_notify.setVisibility(View.VISIBLE);
+                    tv_notify.setVisibility(View.GONE);
+                }
+            });
+
+            tv_send_notify.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(TextUtils.isEmpty(et_notify_email.getText().toString())){
+                        et_notify_email.setError("Please Enter Email");
+                        et_notify_email.requestFocus();
+                    }else{
+                        rl_send_notify.setVisibility(View.GONE);
+                        tv_notify.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
+            iv_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rl_send_notify.setVisibility(View.GONE);
+                    tv_notify.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -266,7 +303,14 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             }else {
                 qty = 0;
             }
-            AppUtils.addTocart(qty,getAdapterPosition(),mdata,WishListAdapter.this,itemView.getContext(),this);
+            int maxQuantity = Integer.parseInt(mdata.get(getAdapterPosition()).getMaxProductQuantity());
+            if(qty <= maxQuantity){
+                AppUtils.addTocart(qty,getAdapterPosition(),mdata,WishListAdapter.this,itemView.getContext(),this);
+            }else{
+                Toast.makeText(itemView.getContext(), "You can not add any more quantities for this product!", Toast.LENGTH_SHORT).show();
+                mdata.get(getAdapterPosition()).setLoading(false);
+                notifyItemChanged(getAdapterPosition());
+            }
         }
 
 
@@ -311,5 +355,10 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
         public void onSuccess() {
             productListener.updateCartCount(null);
         }
+
+    }
+
+    public interface OnWeightItemCLickListener{
+        void onWeightClicked(Product product);
     }
 }

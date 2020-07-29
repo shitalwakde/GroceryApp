@@ -2,6 +2,7 @@ package com.app.features.signup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,8 @@ public class SignupFragment extends Fragment implements SignUpMvvm.SignUpView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.signup_fragment, container, false);
+        //rootView = inflater.inflate(R.layout.signup_fragment, container, false);
+        rootView = inflater.inflate(R.layout.signup_temp_layout, container, false);
         ButterKnife.bind(this, rootView);
         init(rootView);
         click();
@@ -91,6 +93,8 @@ public class SignupFragment extends Fragment implements SignUpMvvm.SignUpView {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
                 getActivity().finish();
             }
         });
@@ -98,9 +102,50 @@ public class SignupFragment extends Fragment implements SignUpMvvm.SignUpView {
         tvSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                presenter.onSignUpClicked(getActivity(), etName.getText().toString(), etEmail.getText().toString(), etMobile.getText().toString(),
-                        etPassword.getText() .toString(), etConfirmPassword.getText().toString());
+                String name = etName.getText().toString();
+                String email = etEmail.getText().toString();
+                String mobile = etMobile.getText().toString();
+                String password = etPassword.getText().toString();
+                String confirmPassword = etConfirmPassword.getText().toString();
+                if(AppUtils.isNullOrEmpty(name)){
+                    progressBar.setVisibility(GONE);
+                    etName.setError("Please Enter Full Name");
+                    etName.requestFocus();
+                }else if(AppUtils.isNullOrEmpty(email)){
+                    progressBar.setVisibility(GONE);
+                    etEmail.setError("Please Enter Email Address");
+                    etEmail.requestFocus();
+                }else
+                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    progressBar.setVisibility(GONE);
+                    etEmail.setError("Please Enter Valid Email Address");
+                    etEmail.requestFocus();
+                }else
+                if(AppUtils.isNullOrEmpty(mobile)){
+                    progressBar.setVisibility(GONE);
+                    etMobile.setError("Please Enter Mobile Number");
+                    etMobile.requestFocus();
+                }else
+                if(AppUtils.isNullOrEmpty(password)){
+                    progressBar.setVisibility(GONE);
+                    etPassword.setError("Please Enter Password");
+                    etPassword.requestFocus();
+                }else
+                if(AppUtils.isNullOrEmpty(confirmPassword)){
+                    progressBar.setVisibility(GONE);
+                    etConfirmPassword.setError("Please Enter Confirm Password");
+                    etConfirmPassword.requestFocus();
+                }else
+                if(!password.equals(confirmPassword)){
+                    progressBar.setVisibility(GONE);
+                    etConfirmPassword.setError("Password does not match");
+                    etConfirmPassword.requestFocus();
+                }else{
+                    progressBar.setVisibility(View.VISIBLE);
+                    presenter.onSignUpClicked(getActivity(), etName.getText().toString(), etEmail.getText().toString(), etMobile.getText().toString(),
+                            etPassword.getText() .toString(), etConfirmPassword.getText().toString());
+                }
+
             }
         });
     }
@@ -108,36 +153,36 @@ public class SignupFragment extends Fragment implements SignUpMvvm.SignUpView {
     @Override
     public void onNameInvalid(String message) {
         progressBar.setVisibility(GONE);
-        tvName.setError(message);
-        tvName.requestFocus();
+        //tvName.setError(message);
+        //tvName.requestFocus();
     }
 
     @Override
     public void onEmailInvalid(String message) {
         progressBar.setVisibility(GONE);
-        tvEmail.setError(message);
-        tvEmail.requestFocus();
+        //tvEmail.setError(message);
+        //tvEmail.requestFocus();
     }
 
     @Override
     public void onMobileInvalid(String message) {
         progressBar.setVisibility(GONE);
-        tvMobile.setError(message);
-        tvMobile.requestFocus();
+        //tvMobile.setError(message);
+        //tvMobile.requestFocus();
     }
 
     @Override
     public void onPasswordInvalid(String message) {
         progressBar.setVisibility(GONE);
-        tvPassword.setError(message);
-        tvPassword.requestFocus();
+        //tvPassword.setError(message);
+        //tvPassword.requestFocus();
     }
 
     @Override
     public void onConfirmPasswordInvalid(String message) {
         progressBar.setVisibility(GONE);
-        tvComfirmPassword.setError(message);
-        tvComfirmPassword.requestFocus();
+        //tvComfirmPassword.setError(message);
+        //tvComfirmPassword.requestFocus();
     }
 
     @Override

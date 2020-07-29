@@ -3,10 +3,12 @@ package com.app.features.cart;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -74,6 +76,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         holder.tv_pr_sub_name.setText(category.getBrandName());
         holder.tv_discount_price.setText("\u20B9 "+category.getProductCartAmount());
 
+        if(category.getMaxProductQuantity().equals("0")){
+            holder.rl_outOfStock.setVisibility(View.VISIBLE);
+            holder.tv_notify.setVisibility(View.VISIBLE);
+            //holder.rl_view.setVisibility(View.GONE);
+        }else {
+            holder.tv_notify.setVisibility(View.GONE);
+            holder.rl_outOfStock.setVisibility(View.GONE);
+            holder.rl_view.setVisibility(View.VISIBLE);
+        }
+
         if(category.isLoading()){
             holder.rl_addCartContainer.setVisibility(View.INVISIBLE);
             holder.progressBar.setVisibility(View.VISIBLE);
@@ -107,7 +119,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         holder.rl_weight.setVisibility(View.GONE);
         holder.tvPiece.setVisibility(View.VISIBLE);
         if(category.getProductVarientId().equals("0")){
-            holder.tvPiece.setText(category.getProductQuantity()+" Pc");
+            holder.tvPiece.setText(category.getProductQuantity());
         }else{
             holder.tvPiece.setText(category.getProductQuantity());
         }
@@ -121,16 +133,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements OnItemCountChanged {
-        ImageView iv_best, iv_unwish;
-        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_remove, tv_minus, tv_quantity, tv_plus, txtDiscountOff, tvPiece, tv_peice;
+        ImageView iv_best, iv_unwish, iv_close;
+        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_remove, tv_minus, tv_quantity, tv_plus,
+                txtDiscountOff, tvPiece, tv_peice, tv_notify, tv_send_notify;
         LinearLayout ll_quantity;
-        RelativeLayout rl_wish, rl_discount, rl_addCartContainer, rl_weight;
+        RelativeLayout rl_wish, rl_discount, rl_addCartContainer, rl_weight, rl_view, rl_send_notify, rl_outOfStock;
         ProgressBar progressBar;
+        EditText et_notify_email;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_remove = (TextView)itemView.findViewById(R.id.tv_remove);
             iv_best = (ImageView)itemView.findViewById(R.id.iv_best);
+            iv_close = (ImageView)itemView.findViewById(R.id.iv_close);
             tvPiece = (TextView)itemView.findViewById(R.id.tvPiece);
             tv_peice = (TextView)itemView.findViewById(R.id.tv_peice);
             tv_pr_name = (TextView)itemView.findViewById(R.id.tv_pr_name);
@@ -149,6 +164,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             rl_weight = (RelativeLayout)itemView.findViewById(R.id.rl_weight);
             rl_addCartContainer = (RelativeLayout)itemView.findViewById(R.id.rl_addCartContainer);
             progressBar = itemView.findViewById(R.id.progressBar);
+            tv_notify = (TextView)itemView.findViewById(R.id.tv_notify);
+            tv_send_notify = (TextView)itemView.findViewById(R.id.tv_send_notify);
+            rl_view = (RelativeLayout)itemView.findViewById(R.id.rl_view);
+            rl_send_notify = (RelativeLayout)itemView.findViewById(R.id.rl_send_notify);
+            rl_outOfStock = (RelativeLayout)itemView.findViewById(R.id.rl_outOfStock);
+            et_notify_email = (EditText)itemView.findViewById(R.id.et_notify_email);
 
             tv_remove.setVisibility(View.VISIBLE);
             ll_quantity.setVisibility(View.VISIBLE);
@@ -181,6 +202,35 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 @Override
                 public void onClick(View v) {
                     productListener.productClickLisener(mdata.get(getAdapterPosition()));
+                }
+            });
+
+            tv_notify.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rl_send_notify.setVisibility(View.VISIBLE);
+                    tv_notify.setVisibility(View.GONE);
+                }
+            });
+
+            tv_send_notify.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(TextUtils.isEmpty(et_notify_email.getText().toString())){
+                        et_notify_email.setError("Please Enter Email");
+                        et_notify_email.requestFocus();
+                    }else{
+                        rl_send_notify.setVisibility(View.GONE);
+                        tv_notify.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
+            iv_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rl_send_notify.setVisibility(View.GONE);
+                    tv_notify.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -217,7 +267,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             }else {
                 qty = 0;
             }
-            addTocart(qty,getAdapterPosition(),mdata,CartAdapter.this,itemView.getContext(),this);
+            int maxQuantity = Integer.parseInt(mdata.get(getAdapterPosition()).getMaxProductQuantity());
+            if(qty <= maxQuantity){
+                addTocart(qty,getAdapterPosition(),mdata,CartAdapter.this,itemView.getContext(),this);
+            }else{
+                Toast.makeText(itemView.getContext(), "You can not add any more quantities for this product!", Toast.LENGTH_SHORT).show();
+                mdata.get(getAdapterPosition()).setLoading(false);
+                notifyItemChanged(getAdapterPosition());
+            }
         }
 
 

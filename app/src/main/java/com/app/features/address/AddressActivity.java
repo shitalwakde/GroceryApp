@@ -19,7 +19,7 @@ public class AddressActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
     public static TextView tv_toolbar_address;
-    String deliveryId="";
+    String deliveryId="", go ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +33,10 @@ public class AddressActivity extends AppCompatActivity {
         tv_toolbar_address = (TextView)findViewById(R.id.tv_toolbar_address);
         fragmentManager = getSupportFragmentManager();
         deliveryId = getIntent().getStringExtra("deliveryId");
+        go = getIntent().getStringExtra("go");
 
         if(getIntent().getStringExtra("address").equals("add")) {
-            fragmentManager.beginTransaction().replace(R.id.address_container, new AddressFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.address_container, new AddressFragment(deliveryId, go)).commit();
         }else if(getIntent().getStringExtra("address").equals("checkout")){
             fragmentManager.beginTransaction().replace(R.id.address_container, new CheckOutFragment(deliveryId)).commit();
         }else{

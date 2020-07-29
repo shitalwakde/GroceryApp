@@ -30,9 +30,13 @@ public class Product implements Serializable {
     private String cartQuantity;
     private String isInWishList;
     private String isVarient;
+    private String maxProductQuantity;
 
-    ArrayList<Product> recentProduct;
-    ArrayList<Product> similarProduct;
+    ArrayList<Product> recentViewProduct;
+    ArrayList<Product> similarProductList;
+    ArrayList<Product> productsImageList;
+    ArrayList<Product> ProductList;
+    private String productimageId;
 
     //====addToCart
     private String success;
@@ -67,6 +71,47 @@ public class Product implements Serializable {
     ArrayList<Product> varientList;
     private String productVarientId;
     private int weightSelected;
+    boolean highlight =false;
+
+    public ArrayList<Product> getProductList() {
+        return ProductList;
+    }
+
+    public void setProductList(ArrayList<Product> productList) {
+        ProductList = productList;
+    }
+
+    public boolean isHighlight() {
+        return highlight;
+    }
+
+    public void setHighlight(boolean highlight) {
+        this.highlight = highlight;
+    }
+
+    public ArrayList<Product> getProductsImageList() {
+        return productsImageList;
+    }
+
+    public void setProductsImageList(ArrayList<Product> productsImageList) {
+        this.productsImageList = productsImageList;
+    }
+
+    public String getProductimageId() {
+        return productimageId;
+    }
+
+    public void setProductimageId(String productimageId) {
+        this.productimageId = productimageId;
+    }
+
+    public String getMaxProductQuantity() {
+        return maxProductQuantity;
+    }
+
+    public void setMaxProductQuantity(String maxProductQuantity) {
+        this.maxProductQuantity = maxProductQuantity;
+    }
 
     public int getWeightSelected() {
         return weightSelected;
@@ -238,20 +283,20 @@ public class Product implements Serializable {
         this.productCartAmount = productCartAmount;
     }
 
-    public ArrayList<Product> getRecentProduct() {
-        return recentProduct;
+    public ArrayList<Product> getRecentViewProduct() {
+        return recentViewProduct;
     }
 
-    public void setRecentProduct(ArrayList<Product> recentProduct) {
-        this.recentProduct = recentProduct;
+    public void setRecentViewProduct(ArrayList<Product> recentViewProduct) {
+        this.recentViewProduct = recentViewProduct;
     }
 
-    public ArrayList<Product> getSimilarProduct() {
-        return similarProduct;
+    public ArrayList<Product> getSimilarProductList() {
+        return similarProductList;
     }
 
-    public void setSimilarProduct(ArrayList<Product> similarProduct) {
-        this.similarProduct = similarProduct;
+    public void setSimilarProductList(ArrayList<Product> similarProductList) {
+        this.similarProductList = similarProductList;
     }
 
     public String getSuccess() {

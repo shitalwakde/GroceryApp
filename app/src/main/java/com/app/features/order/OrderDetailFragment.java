@@ -109,7 +109,7 @@ public class OrderDetailFragment extends Fragment {
         } else {
             tvDelivery.setVisibility(View.VISIBLE);
             tvAddress.setVisibility(View.VISIBLE);
-            tvAddress.setText(orderList.getDeliveryName() + ", " + orderList.getDeliveryMobile() + ", " + orderList.getDeliveryHouseNo() + ", " +
+            tvAddress.setText(orderList.getDeliveryName()+ ", " + orderList.getDeliveryHouseNo() + ", " +
                     orderList.getDeliveryArea() + ", " + orderList.getDeliveryState() + ", " + orderList.getDeliveryCity() + ", " + orderList.getDeliveryPincode());
             tvOrderDate.setText(orderList.getOrderDate());
         }

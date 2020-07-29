@@ -1,7 +1,6 @@
 package com.app.features.navmenu;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
@@ -11,9 +10,7 @@ import android.view.MenuItem;
 
 import com.app.R;
 import com.app.activities.BaseActivity;
-import com.app.callback.HomeClickLisener;
 import com.app.callback.ProductListener;
-import com.app.features.home.model.Category;
 import com.app.features.home.model.Product;
 import com.app.features.productdetail.ProductDetailActivity;
 
@@ -55,5 +52,15 @@ public class WishListActivity extends BaseActivity implements ProductListener {
     @Override
     public void updateCartCount(String cartCount) {
        setCartCount();
+    }
+
+    @Override
+    public void productImageClickLisener(Product product) {
+
+    }
+
+    @Override
+    public void productVieMoreClickLisener(Product product, String type) {
+
     }
 }

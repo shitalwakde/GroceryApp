@@ -1,18 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#78B825</color>
-    <color name="colorPrimaryDark">#4d8603</color>
+<!--    green-->
+<!--    <color name="colorPrimary">#78B825</color>-->
+<!--    <color name="colorPrimaryDark">#4d8603</color>-->cart
+<!--    purple-->
+    <color name="colorPrimary">#9248B5</color>
+    <color name="colorPrimaryDark">#4F2461</color>
+<!--    blue-->
+<!--    <color name="colorPrimary">#3F51B5</color>-->
+<!--    <color name="colorPrimaryDark">#16288A</color>-->
+<!--    black-->
+<!--    <color name="colorPrimary">#000000</color>-->
+<!--    <color name="colorPrimaryDark">#000000</color>-->
+<!--    yellow-->
+<!--    <color name="colorPrimary">#FFEB3B</color>-->
+<!--    <color name="colorPrimaryDark">#FFC107</color>-->
     <color name="colorAccent">#D81B60</color>
+
+    <color name="colorbutton">#FF9800</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorWhiteTrans">#9EFFFFFF</color>
+    <color name="colorTrans">#00FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="grey">#818181</color>
-    <color name="greytrans">#5A818181</color>
-    <color name="greyExtratrans">#3A818181</color>
+    <color name="greytrans">#72818181</color>
+    <color name="greyExtratrans">#38818181</color>
+    <color name="Extratrans">#0F818181</color>
     <color name="border">#f47443</color>
     <color name="submit">#E72408</color>
     <color name="bg">#97F0EDED</color>
     <color name="bgtrans">#65F0EDED</color>
     <color name="colorPrimarytrans">#D678B825</color>
+    <color name="colorgreen">#1DD124</color>
     <color name="greentrans">#6578B825</color>
     <color name="bg_trans">#2234BFA3</color>
     <color name="yellow">#4FE7DC08</color>

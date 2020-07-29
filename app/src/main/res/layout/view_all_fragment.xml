@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         app:fastScrollEnabled="false"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -112,7 +112,7 @@
         android:layout_marginTop="1dp"
         app:fastScrollEnabled="false"
         app:spanCount="2"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
 </RelativeLayout>

@@ -8,7 +8,9 @@ import com.app.features.home.model.Product;
 import com.app.features.login.ModLogin;
 import com.app.features.navmenu.WishList;
 import com.app.features.order.OrderModel;
+import com.app.features.order.ReviewModel;
 import com.app.features.productdetail.ProductDetailModel;
+import com.app.features.profile.ProfileModel;
 import com.google.gson.JsonObject;
 
 import retrofit.Callback;
@@ -31,6 +33,9 @@ public interface ApiInterface {
 
     @POST("/Profile/updateProfile")
     void updateProfile(@Body JsonObject jsonObject, Callback<ModLogin> signUpModelCallback);
+
+    @POST("/Profile/getProfile")
+    void getProfile(@Body JsonObject jsonObject, Callback<ProfileModel> signUpModelCallback);
 
     @POST("/Profile/changePass")
     void changePassword(@Body JsonObject jsonObject, Callback<ModLogin> signUpModelCallback);
@@ -79,6 +84,10 @@ public interface ApiInterface {
     void getDeliveryLocation(@Body JsonObject jsonObject, Callback<AddressModel> signUpModelCallback);
 
 
+    @POST("/Api/getSingleDeliveryLocation")
+    void getSingleDeliveryLocation(@Body JsonObject jsonObject, Callback<AddressModel> signUpModelCallback);
+
+
     @POST("/Api/addToOrderSummery")
     void addToOrderSummery(@Body JsonObject jsonObject, Callback<AddressModel> signUpModelCallback);
 
@@ -96,4 +105,12 @@ public interface ApiInterface {
 
     @POST("/Api/orderCancel")
     void orderCancel(@Body JsonObject jsonObject, Callback<OrderModel> signUpModelCallback);
+
+
+    @POST("/Api/viewAllProduct")
+    void viewAllProduct(@Body JsonObject jsonObject, Callback<Product> signUpModelCallback);
+
+
+    @POST("/Api/addProductReviews")
+    void addProductReviews(@Body JsonObject jsonObject, Callback<ReviewModel> signUpModelCallback);
 }

@@ -74,6 +74,7 @@ public class AddressListFragment extends Fragment implements AddressListLisener 
                 Intent intent = new Intent(getActivity(), AddressActivity.class);
                 intent.putExtra("address", "add");
                 intent.putExtra("deliveryId", "");
+                intent.putExtra("go", "add");
                 startActivity(intent);
                 getActivity().finish();
 //                fragmentManager.beginTransaction().replace(cartContainer, new AddressFragment()).addToBackStack(null).commit();
@@ -120,6 +121,17 @@ public class AddressListFragment extends Fragment implements AddressListLisener 
         Intent intent = new Intent(getActivity(), AddressActivity.class);
         intent.putExtra("address", "checkout");
         intent.putExtra("deliveryId", deliveryId);
+        intent.putExtra("go", "add");
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+    @Override
+    public void EditAddressLisenerClick(String deliveryId) {
+        Intent intent = new Intent(getActivity(), AddressActivity.class);
+        intent.putExtra("address", "add");
+        intent.putExtra("deliveryId", deliveryId);
+        intent.putExtra("go", "edit");
         startActivity(intent);
         getActivity().finish();
     }

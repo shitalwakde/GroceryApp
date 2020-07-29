@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.R;
 import com.app.activities.MainActivity;
 import com.app.features.address.AddressActivity;
-import com.app.features.address.AddressListFragment;
 import com.app.features.address.AddressModel;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
@@ -36,7 +36,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static com.app.features.cart.CartActivity.cartContainer;
 import static com.app.features.cart.CartActivity.tv_toolbar_cart;
 
 public class CheckOutFragment extends Fragment {
@@ -77,6 +76,10 @@ public class CheckOutFragment extends Fragment {
     LinearLayout bottomButton;
     @BindView(R.id.tv_gst)
     TextView tvGst;
+    @BindView(R.id.tv_slot)
+    TextView tvSlot;
+    @BindView(R.id.rl_slot)
+    RelativeLayout rlSlot;
 
     public CheckOutFragment(String deliveryId) {
         this.deliveryId = deliveryId;
@@ -114,13 +117,39 @@ public class CheckOutFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), AddressActivity.class);
                 intent.putExtra("address", "list");
                 intent.putExtra("deliveryId", "");
+                intent.putExtra("go", "");
                 startActivity(intent);
                 getActivity().finish();
 //                fragmentManager.beginTransaction().replace(cartContainer, new AddressListFragment()).addToBackStack(null).commit();
             }
         });
 
+        rlSlot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSlotDialog();
+            }
+        });
+
     }
+
+
+    public void showSlotDialog(){
+        final Dialog dialog1 = new Dialog(getActivity());
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setCancelable(true);
+        dialog1.setContentView(R.layout.dlg_slot);
+        TextView tv_slot = (TextView) dialog1.findViewById(R.id.tv_slot);
+
+        tv_slot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog1.dismiss();
+            }
+        });
+        dialog1.show();
+    }
+
 
     public void showRatingDialog(String orderId) {
         final Dialog dialog1 = new Dialog(getActivity());

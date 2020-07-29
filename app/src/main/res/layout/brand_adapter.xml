@@ -36,7 +36,8 @@
                 android:fontFamily="serif"
                 android:text="product"
                 android:textColor="@color/colorBlack"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
 

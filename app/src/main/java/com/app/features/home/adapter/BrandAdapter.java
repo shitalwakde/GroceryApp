@@ -43,7 +43,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return mdata.size()>=4? 4:(mdata.size()/2)*2;
+        return mdata.size()>=6? 6:(mdata.size()/2)*2;
     }
 
 

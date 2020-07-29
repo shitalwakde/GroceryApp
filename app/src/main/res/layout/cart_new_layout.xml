@@ -18,21 +18,24 @@
         android:id="@+id/actionbar_notifcation_iv"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="10dp"
-        android:src="@mipmap/cart2"
+        android:padding="5dp"
+        android:src="@drawable/ic_cart"
         android:tint="@android:color/white"/>
     <!--app:hacky_preview="true"-->
 
     <TextView
         android:id="@+id/actionbar_notifcation_textview"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="3dp"
+        android:visibility="gone"
         android:background="@drawable/cart_circle"
         android:gravity="center"
         android:text="0"
-        android:textSize="11sp"
+        android:textSize="10sp"
         android:textColor="@android:color/white" />
 
 </RelativeLayout>

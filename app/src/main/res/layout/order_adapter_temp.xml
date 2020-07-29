@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="5dp"
+        app:cardUseCompatPadding="true"
+        app:cardPreventCornerOverlap="true"
+        app:contentPadding="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:id="@+id/lbl_order_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:textStyle="bold"
+                android:text="Order No - "
+                android:textColor="@color/colorBlack"
+                />
+            <TextView
+                android:id="@+id/txt_order_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/lbl_order_id"
+                android:fontFamily="@font/roboto"
+                android:textStyle="bold"
+                android:text="#112233"
+                android:textColor="@color/colorBlack" />
+            <TextView
+                android:id="@+id/txt_date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="Jan 24, 2020"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp"
+                android:layout_below="@+id/lbl_order_id"
+                />
+
+            <ImageView
+                android:id="@+id/iv_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_is_greater_than"
+                android:layout_alignTop="@+id/lbl_order_id"
+                android:layout_alignBottom="@+id/txt_date_time"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"
+                android:textStyle="bold"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="30sp"
+                />
+
+            <TextView
+                android:id="@+id/txtAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_date_time"
+                android:layout_marginTop="12dp"
+                android:maxLines="2"
+                android:fontFamily="@font/roboto_light"
+                android:textSize="13sp"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/ic_address"
+                android:ellipsize="end"
+                android:text="@string/address"/>
+
+            <LinearLayout
+                android:id="@+id/ll_summery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:layout_below="@+id/txtAddress"
+                android:layout_marginTop="12dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Order Status"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_marginTop="5dp"/>
+                    <TextView
+                        android:id="@+id/tv_orderStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pending"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorBlack"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/roboto" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Payment Status"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_marginTop="5dp"/>
+                    <TextView
+                        android:id="@+id/tv_payment_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="15 Products"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorBlack"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/roboto" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Order Amount"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_marginTop="5dp"/>
+                    <TextView
+                        android:id="@+id/tv_orderAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="\u20B9 5,764"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorBlack"
+                        android:fontFamily="@font/roboto"
+                        android:layout_marginTop="5dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

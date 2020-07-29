@@ -17,6 +17,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [onesignal_app_id               : "7d6430d8-db3f-4d30-b1e5-5af39eb15617",
                                 onesignal_google_project_number: "1077523915847"]
+//        vectorDrawables.useSupportLibrary = true
 
     }
 
@@ -44,20 +45,17 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'com.squareup.retrofit:retrofit:1.9.0'
     implementation 'com.squareup.okhttp:okhttp:2.6.0'
-    implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.github.mohan-dev1248:PosterSlider:1.0.2'
     implementation 'com.victor:lib:1.0.4'
-    implementation 'com.daimajia.slider:library:1.1.5@aar'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.squareup.picasso:picasso:2.5.0'
     implementation 'com.alimuzaffar.lib:pinentryedittext:2.0.6'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
-    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.android.gms:play-services-location:15.0.1'
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'
-    implementation 'com.google.android.gms:play-services-places:15.0.1'
+    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
+    implementation 'com.karumi:dexter:6.2.1'
     implementation 'com.onesignal:OneSignal:3.+@aar'
     implementation 'com.github.maayyaannkk:ImagePicker:1.0.5'
     //=====================butterKnife=======================
@@ -66,8 +64,16 @@ dependencies {
     implementation('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.8.7@aar') {
         transitive = true
     }
+    implementation "ch.acra:acra-mail:5.6.1"
+    //===============Location Picker Url====https://github.com/AdevintaSpain/Leku====
+    implementation ('com.schibstedspain.android:leku:7.2.0') {
+        exclude group: 'com.google.android.gms'
+        exclude group: 'androidx.appcompat'
+    }
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation project(path: ':library')
 }

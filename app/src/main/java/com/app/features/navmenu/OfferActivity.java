@@ -1,7 +1,6 @@
 package com.app.features.navmenu;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,11 +18,7 @@ import android.widget.Toast;
 
 import com.app.R;
 import com.app.activities.BaseActivity;
-import com.app.activities.MainActivity;
-import com.app.callback.CategoryListener;
-import com.app.callback.HomeClickLisener;
 import com.app.callback.HomePageListener;
-import com.app.callback.ProductListener;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
 import com.app.features.home.model.Brand;
@@ -31,7 +26,6 @@ import com.app.features.home.model.Category;
 import com.app.features.home.model.HomeModel;
 import com.app.features.home.model.Product;
 import com.app.features.home.model.SubCategory;
-import com.app.features.product.ProductFragment;
 import com.app.features.product.adapter.ViewAllFragment;
 import com.app.features.productdetail.ProductDetailActivity;
 import com.app.util.AppUtils;
@@ -41,8 +35,6 @@ import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import static com.app.activities.MainActivity.appBarContainer;
 
 public class OfferActivity extends BaseActivity implements HomePageListener {
 
@@ -88,6 +80,16 @@ public class OfferActivity extends BaseActivity implements HomePageListener {
     @Override
     public void updateCartCount(String cartCount) {
         setCartCount();
+    }
+
+    @Override
+    public void productImageClickLisener(Product product) {
+
+    }
+
+    @Override
+    public void productVieMoreClickLisener(Product product, String type) {
+
     }
 
     @Override

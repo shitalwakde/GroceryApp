@@ -1,11 +1,13 @@
 package com.app.features.home.adapter;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -20,6 +22,7 @@ import com.app.constant.AppConstant;
 import com.app.controller.AppController;
 import com.app.features.home.model.Product;
 import com.app.features.login.LoginActivity;
+import com.app.features.navmenu.WishListAdapter;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
 import com.google.gson.JsonObject;
@@ -123,44 +126,38 @@ public class BestSellingAdapter extends RecyclerView.Adapter<BestSellingAdapter.
         holder.rl_weight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> weightStrings = new ArrayList<>();
-                for (Product weight : category.getVarientList()) {
-                    weightStrings.add(weight.getQuantity());
-                }
-                final CharSequence[] items = weightStrings.toArray(new CharSequence[weightStrings.size()]);
-
-//                new ContextThemeWrapper(context, R.style.AlertDialogCustom)
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(holder.itemView.getContext());
-                builder.setTitle("Select...");
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        // Do something with the selection
-                        selected = items[item].toString();
-                        category.setWeightSelected(item);
-                        getProductDetailsByWeight(position, selected, category);
-                    }
-                });
-                android.app.AlertDialog alert = builder.create();
-                alert.show();
+                showDialog(category.getVarientList(), holder, category);
             }
         });
 
     }
 
-    private void getProductDetailsByWeight(int position, String weight, Product category) {
-        for (int i=0; i<category.getVarientList().size(); i++){
-            if(weight.equals(category.getVarientList().get(i).getQuantity())){
-                category.setProductVarientId(category.getVarientList().get(i).getProductVarientId());
-                category.setImage(category.getVarientList().get(i).getImage());
-                category.setDiscount(category.getVarientList().get(i).getDiscount());
-                category.setQuantity(category.getVarientList().get(i).getQuantity());
-                category.setFinalAmount(category.getVarientList().get(i).getFinalAmount());
-                category.setGrossAmount(category.getVarientList().get(i).getGrossAmount());
-                notifyDataSetChanged();
-                notifyItemChanged(position);
-            }
+    private void showDialog(ArrayList<Product> items, MyViewHolder holder, Product category) {
+        final Dialog dialog1 = new Dialog(holder.itemView.getContext());
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setCancelable(true);
+        dialog1.setContentView(R.layout.dlg_varient);
+        TextView tv_item_name = (TextView) dialog1.findViewById(R.id.tv_item_name);
+        RecyclerView rv_item = (RecyclerView) dialog1.findViewById(R.id.rv_item);
 
-        }
+        tv_item_name.setText(category.getName());
+
+        WeighAdapter adapter = new WeighAdapter(items, new WishListAdapter.OnWeightItemCLickListener() {
+            @Override
+            public void onWeightClicked(Product product) {
+                dialog1.dismiss();
+                category.setProductVarientId(product.getProductVarientId());
+                category.setImage(product.getImage());
+                category.setDiscount(product.getDiscount());
+                category.setQuantity(product.getQuantity());
+                category.setFinalAmount(product.getFinalAmount());
+                category.setGrossAmount(product.getGrossAmount());
+                notifyItemChanged(holder.getAdapterPosition());
+            }
+        });
+        rv_item.setAdapter(adapter);
+
+        dialog1.show();
     }
 
     @Override

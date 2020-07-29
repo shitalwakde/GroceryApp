@@ -76,7 +76,6 @@ public class NavigationViewFragment extends Fragment {
 
         changeLayout();
 
-
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

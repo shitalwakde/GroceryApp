@@ -172,6 +172,7 @@ public class CartFragment extends Fragment implements CalculateLisener {
                         Intent intent = new Intent(getActivity(), AddressActivity.class);
                         intent.putExtra("address", "checkout");
                         intent.putExtra("deliveryId", "");
+                        intent.putExtra("go", "");
                         startActivity(intent);
                         //fragmentManager.beginTransaction().replace(cartContainer, new CheckOutFragment("")).addToBackStack(null).commit();
                     }
@@ -179,6 +180,7 @@ public class CartFragment extends Fragment implements CalculateLisener {
                     Intent intent = new Intent(getActivity(), AddressActivity.class);
                     intent.putExtra("address", "add");
                     intent.putExtra("deliveryId", "");
+                    intent.putExtra("go", "");
                     startActivity(intent);
                 }
             }

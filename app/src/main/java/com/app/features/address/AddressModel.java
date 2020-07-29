@@ -23,11 +23,20 @@ public class AddressModel {
     private String gst;
     private String totalFinalAmount;
     private String cartCount;
+    private String addressType;
 
     ArrayList<AddressModel> cartList;
     private String orderId;
     ArrayList<AddressModel> deliveryLocationList;
     private String userId;
+
+    public String getAddressType() {
+        return addressType;
+    }
+
+    public void setAddressType(String addressType) {
+        this.addressType = addressType;
+    }
 
     public ArrayList<AddressModel> getCartList() {
         return cartList;

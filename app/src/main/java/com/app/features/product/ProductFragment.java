@@ -37,7 +37,11 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static com.app.activities.MainActivity.iv_edit;
 import static com.app.activities.MainActivity.ll_search;
+import static com.app.activities.MainActivity.tv_location;
+import static com.app.activities.MainActivity.tv_toolbaar;
+
 
 public class ProductFragment extends Fragment {
 
@@ -87,6 +91,10 @@ public class ProductFragment extends Fragment {
         click();
 
         ll_search.setVisibility(View.GONE);
+        iv_edit.setVisibility(View.GONE);
+        tv_location.setVisibility(View.GONE);
+        tv_toolbaar.setText(category.getCategoryName());
+        tv_toolbaar.setTextSize(14);
         //getActivity().setTitle("Products List");
 
         return rootView;

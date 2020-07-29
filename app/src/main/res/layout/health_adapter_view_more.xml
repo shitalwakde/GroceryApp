@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rl_view_more"
+        android:layout_width="160dp"
+        android:layout_height="310dp"
+        android:background="@color/greytrans"
+        android:layout_margin="1dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:text="View More"
+            android:textColor="@color/colorWhite"
+            android:fontFamily="@font/roboto"/>
+    </RelativeLayout>
+

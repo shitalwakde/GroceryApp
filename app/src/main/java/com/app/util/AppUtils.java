@@ -23,6 +23,10 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static com.app.constant.AppConstant.ADDRESS;
+import static com.app.constant.AppConstant.LATITUDE_CONS;
+import static com.app.constant.AppConstant.LONGITUDE_CONS;
+
 
 public class AppUtils {
 
@@ -124,6 +128,32 @@ public class AppUtils {
         return uuid;
     }
 
+    public static String getAddress(){
+        String address = PrefUtil.getInstance(AppController.getInstance()).getPreferences().getString(ADDRESS, null);
+        return address;
+    }
+
+    public static void setAddress(String address){
+        PrefUtil.getInstance(AppController.getInstance()).putData(AppConstant.ADDRESS, address);
+    }
+
+    public static String getLatitude(){
+        String latitude = (PrefUtil.getInstance(AppController.getInstance()).getPreferences().getString(String.valueOf(LATITUDE_CONS), null));
+        return latitude;
+    }
+
+    public static String getLongitude(){
+        String longitude = (PrefUtil.getInstance(AppController.getInstance()).getPreferences().getString(String.valueOf(LONGITUDE_CONS), null));
+        return longitude;
+    }
+
+    public static void setLatitude(String latitude){
+        PrefUtil.getInstance(AppController.getInstance()).putData(String.valueOf(AppConstant.LATITUDE_CONS), latitude);
+    }
+
+    public static void setLongitude(String longitude){
+        PrefUtil.getInstance(AppController.getInstance()).putData(String.valueOf(AppConstant.LONGITUDE_CONS), longitude);
+    }
 
     public static void setCartCount(String cartCount){
         PrefUtil.getInstance(AppController.getInstance()).putData(AppConstant.PREF_CART_COUNT, cartCount);
@@ -131,7 +161,7 @@ public class AppUtils {
 
 
     public static String getCartCount(Context context){
-        String cartCount = PrefUtil.getInstance(context).getPreferences().getString(AppConstant.PREF_CART_COUNT, null);
+        String cartCount = PrefUtil.getInstance(context).getPreferences().getString(AppConstant.PREF_CART_COUNT, "0");
         return cartCount;
     }
 

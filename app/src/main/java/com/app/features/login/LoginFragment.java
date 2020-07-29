@@ -3,6 +3,7 @@ package com.app.features.login;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import static android.view.View.GONE;
+
 public class LoginFragment extends Fragment implements LoginView {
     View rootView;
     ImageView iv_back;
@@ -47,13 +50,15 @@ public class LoginFragment extends Fragment implements LoginView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.login_fragment, container, false);
+        //rootView = inflater.inflate(R.layout.login_fragment, container, false);
+        rootView = inflater.inflate(R.layout.login_temp_layout, container, false);
         init(rootView);
         presenter=new LoginPresenterImp(this);
         click();
 
         return rootView;
     }
+
 
     private void init(View rootView){
         et_username = (EditText)rootView.findViewById(R.id.et_username);
@@ -71,6 +76,8 @@ public class LoginFragment extends Fragment implements LoginView {
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
                 getActivity().finish();
             }
         });
@@ -78,8 +85,21 @@ public class LoginFragment extends Fragment implements LoginView {
         tv_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                presenter.onLoginClicked(et_username.getText().toString(),et_password.getText().toString());
+                String email = et_username.getText().toString();
+                String password = et_password.getText().toString();
+                if(AppUtils.isNullOrEmpty(email)){
+                    progressBar.setVisibility(GONE);
+                    et_username.setError("Please Enter User Name");
+                    et_username.requestFocus();
+                }else
+                if(AppUtils.isNullOrEmpty(password)){
+                    progressBar.setVisibility(GONE);
+                    et_password.setError("Please Enter Password");
+                    et_password.requestFocus();
+                }else{
+                    progressBar.setVisibility(View.VISIBLE);
+                    presenter.onLoginClicked(et_username.getText().toString(),et_password.getText().toString());
+                }
             }
         });
 
@@ -130,22 +150,22 @@ public class LoginFragment extends Fragment implements LoginView {
     @Override
     public void onUsernameEmpty() {
         progressBar.setVisibility(View.GONE);
-        et_username.setError("Please Enter Username");
-        et_username.requestFocus();
+        //tv_username.setError("Please Enter Username");
+        //tv_username.requestFocus();
     }
 
     @Override
     public void onUsernameInvalid() {
         progressBar.setVisibility(View.GONE);
-        tv_username.setError("Please Enter Valid Username");
-        tv_username.requestFocus();
+        //tv_username.setError("Please Enter Valid Username");
+        //tv_username.requestFocus();
     }
 
     @Override
     public void onPasswordInvalid() {
         progressBar.setVisibility(View.GONE);
-        tv_password.setError("Please Enter Password");
-        tv_password.requestFocus();
+        //tv_password.setError("Please Enter Password");
+        //tv_password.requestFocus();
     }
 
     @Override

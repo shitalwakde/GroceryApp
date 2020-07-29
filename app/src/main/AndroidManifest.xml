@@ -3,13 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.app">
 
+    <uses-feature android:name="android.hardware.location.network" android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false"  />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" tools:ignore="ProtectedPermissions"/>
 
 
     <application
@@ -21,14 +24,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".features.address.AddressActivity"></activity>
-
-        <receiver
-            android:name=".controller.NetworkChangeReceiver">
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <activity
+            android:name="com.schibstedspain.leku.LocationPickerActivity"
+            android:label="@string/leku_title_activity_location_picker"
+            android:theme="@style/AppTheme.Map"
+            android:windowSoftInputMode="adjustPan"
+            android:parentActivityName=".activities.MainActivity">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-        </receiver>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/leku_searchable" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+        <activity android:name=".features.address.LocationActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".features.address.AddressActivity"
+            android:screenOrientation="portrait"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCL43mx5EANHEYYPv71t-1SMFgqloqmSCs" />
@@ -43,27 +59,28 @@
             android:name="com.onesignal.BadgeCount"
             android:value="DISABLE" />
 
-        <service
-            android:name=".controller.MyNotificationExtenderService"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE">
-            <intent-filter>
-                <action android:name="com.onesignal.NotificationExtender" />
-            </intent-filter>
-        </service>
-
-        <activity android:name=".features.notification.NotificationActivity" />
-        <activity android:name=".features.wallet.WalletActivity" />
+        <activity android:name=".features.notification.NotificationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".features.wallet.WalletActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".features.profile.ProfileActivity"
-            android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".features.navmenu.OfferActivity" />
-        <activity android:name=".features.login.LoginActivity" />
-        <activity android:name=".features.navmenu.WishListActivity" />
-        <activity android:name=".features.order.OrderActivity" />
-        <activity android:name=".features.cart.CartActivity" />
-        <activity android:name=".activities.BaseActivity" />
-        <activity android:name=".activities.SplashScreenActivity">
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".features.navmenu.OfferActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".features.login.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".features.navmenu.WishListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".features.order.OrderActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".features.cart.CartActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.BaseActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.SplashScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -72,10 +89,11 @@
         </activity>
         <activity
             android:name=".activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".features.productdetail.ProductDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"

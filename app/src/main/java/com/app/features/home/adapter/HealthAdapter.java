@@ -1,11 +1,15 @@
 package com.app.features.home.adapter;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -20,6 +24,7 @@ import com.app.constant.AppConstant;
 import com.app.controller.AppController;
 import com.app.features.home.model.Product;
 import com.app.features.login.LoginActivity;
+import com.app.features.navmenu.WishListAdapter;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
 import com.google.gson.JsonObject;
@@ -35,160 +40,182 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHolder> {
+public class HealthAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int FULL_VIEW =1 ;
+    private static final int HALF_VIEW =2 ;
     List<Product> mdata;
     ProductListener lisener;
+    ProductListener viewLisener;
     boolean flag = false;
     public static final int ADD=1;
     public static final int REMOVE=2;
     public static final int RESET=3;
-    String wishList="", selected="";
+    String wishList="", selected="", type="";
 
-    public HealthAdapter(ProductListener lisener, List<Product> mdata) {
+    public HealthAdapter(ProductListener lisener, List<Product> mdata, ProductListener viewLisener, String type) {
         this.lisener = lisener;
         this.mdata = mdata;
+        this.viewLisener = viewLisener;
+        this.type = type;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if((position+1)==mdata.size())
+            return HALF_VIEW;
+        else
+            return FULL_VIEW;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.health_adapter, parent, false);
-        return new MyViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder viewHolder = null;
+        if(mdata.size()==4){
+            if(viewType==HALF_VIEW) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.health_adapter_view_more, parent, false);
+                viewHolder=new ViewMoreViewHolder(view);
+            }
+            else {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.health_adapter, parent, false);
+                viewHolder=new MyViewHolder(view);
+            }
+        }else{
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.health_adapter, parent, false);
+            viewHolder=new MyViewHolder(view);
+        }
+
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder baseViewHolder, int position) {
         Product category = mdata.get(position);
-        Picasso.with(holder.itemView.getContext()).load(category.getImage()).into(holder.iv_best);
-        holder.tv_pr_name.setText(category.getName());
-        holder.tv_pr_sub_name.setText(category.getBrandName());
-        holder.tv_star.setText("4.5");
-        holder.tv_rating.setText(category.getRate()+" Rating");
-        holder.tv_discount_price.setText("\u20B9 "+category.getGrossAmount());
+        if(baseViewHolder instanceof MyViewHolder) {
+            MyViewHolder holder= (MyViewHolder) baseViewHolder;
 
-        if(category.isLoading()){
-            holder.rl_addCartContainer.setVisibility(View.INVISIBLE);
-            holder.progressBar.setVisibility(View.VISIBLE);
-        }else {
-            holder.rl_addCartContainer.setVisibility(View.VISIBLE);
-            holder.progressBar.setVisibility(View.GONE);
-        }
-
-        if(category.getDiscount().equals("0")){
-            holder.tv_price.setVisibility(View.GONE);
-            holder.rl_discount.setVisibility(View.GONE);
-        }else{
-            holder.tv_price.setVisibility(View.VISIBLE);
-            holder.rl_discount.setVisibility(View.VISIBLE);
-            holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
-                    | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tv_price.setText("\u20B9 "+category.getFinalAmount());
-            holder.txtDiscountOff.setText(category.getDiscount()+"%");
-        }
-
-        if(category.getCartQuantityInteger()<=0){
-            holder.tv_add.setVisibility(View.VISIBLE);
-            holder.ll_quantity.setVisibility(View.GONE);
-        }else{
-            holder.ll_quantity.setVisibility(View.VISIBLE);
-            holder.tv_add.setVisibility(View.GONE);
-            holder.tv_quantity.setText(String.valueOf(category.getCartQuantityInteger()));
-        }
-
-        if(category.getIsInWishList().equalsIgnoreCase("no")){
-            holder.iv_unwish.setImageResource(R.drawable.ic_heart);
-        }else{
-            holder.iv_unwish.setImageResource(R.drawable.ic_heart_red);
-        }
-
-//        if(category.getProductType().equals("Quantity")){
-//            holder.rl_weight.setVisibility(View.GONE);
-//            holder.tvPiece.setVisibility(View.VISIBLE);
-//            holder.tvPiece.setText(category.getQuantity()+" Pc");
-//        }else{
-//            holder.rl_weight.setVisibility(View.VISIBLE);
-//            holder.tvPiece.setVisibility(View.GONE);
-//            holder.tv_peice.setText(category.getQuantity()+" Kg");
-//        }
-
-        if(category.getIsVarient().equals("Yes")){
-            holder.rl_weight.setVisibility(View.VISIBLE);
-            holder.tvPiece.setVisibility(View.GONE);
-            holder.tv_peice.setText(category.getQuantity());
-            /*if(category.getProductType().equals("Quantity")){
-                holder.tv_peice.setText(category.getQuantity()+" Pc");
-            }else{
-            }*/
-        }else{
-            holder.rl_weight.setVisibility(View.GONE);
-            holder.tvPiece.setVisibility(View.VISIBLE);
-            holder.tvPiece.setText(category.getQuantity()+" Pc");
-            /*if(category.getProductType().equals("Quantity")){
-            }else{
-                holder.tvPiece.setText(category.getQuantity()+" Kg");
-            }*/
-        }
-
-        holder.rl_weight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<String> weightStrings = new ArrayList<>();
-                for (Product weight : category.getVarientList()) {
-                    weightStrings.add(weight.getQuantity());
-                }
-                final CharSequence[] items = weightStrings.toArray(new CharSequence[weightStrings.size()]);
-
-//                new ContextThemeWrapper(context, R.style.AlertDialogCustom)
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(holder.itemView.getContext());
-                builder.setTitle("Select...");
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        // Do something with the selection
-                        selected = items[item].toString();
-                        category.setWeightSelected(item);
-                        getProductDetailsByWeight(position, selected, category);
-                    }
-                });
-                android.app.AlertDialog alert = builder.create();
-                alert.show();
+            if(category.getMaxProductQuantity().equals("0")){
+                holder.rl_outOfStock.setVisibility(View.VISIBLE);
+                holder.tv_notify.setVisibility(View.VISIBLE);
+                //holder.rl_view.setVisibility(View.GONE);
+            }else {
+                holder.rl_outOfStock.setVisibility(View.GONE);
+                holder.tv_notify.setVisibility(View.GONE);
+                holder.rl_view.setVisibility(View.VISIBLE);
             }
-        });
 
+            Picasso.with(holder.itemView.getContext()).load(category.getImage()).into(holder.iv_best);
+            holder.tv_pr_name.setText(category.getName());
+            holder.tv_pr_sub_name.setText(category.getBrandName());
+            holder.tv_star.setText("4.5");
+            holder.tv_rating.setText(category.getRate() + " Rating");
+            holder.tv_discount_price.setText("\u20B9 " + category.getFinalAmount());
+
+            if (category.isLoading()) {
+                holder.rl_addCartContainer.setVisibility(View.INVISIBLE);
+                holder.progressBar.setVisibility(View.VISIBLE);
+            } else {
+                holder.rl_addCartContainer.setVisibility(View.VISIBLE);
+                holder.progressBar.setVisibility(View.GONE);
+            }
+
+            if (category.getDiscount().equals("0")) {
+                holder.tv_price.setVisibility(View.GONE);
+                holder.rl_discount.setVisibility(View.GONE);
+            } else {
+                holder.tv_price.setVisibility(View.VISIBLE);
+                holder.rl_discount.setVisibility(View.VISIBLE);
+                holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
+                        | Paint.STRIKE_THRU_TEXT_FLAG);
+                holder.tv_price.setText("\u20B9 " + category.getGrossAmount());
+                holder.txtDiscountOff.setText(category.getDiscount() + "%");
+            }
+
+            if (category.getCartQuantityInteger() <= 0) {
+                holder.tv_add.setVisibility(View.VISIBLE);
+                holder.ll_quantity.setVisibility(View.GONE);
+            } else {
+                holder.ll_quantity.setVisibility(View.VISIBLE);
+                holder.tv_add.setVisibility(View.GONE);
+                holder.tv_quantity.setText(String.valueOf(category.getCartQuantityInteger()));
+            }
+
+            if (category.getIsInWishList().equalsIgnoreCase("no")) {
+                holder.iv_unwish.setImageResource(R.drawable.ic_heart);
+            } else {
+                holder.iv_unwish.setImageResource(R.drawable.ic_heart_red);
+            }
+
+
+            if (category.getIsVarient().equals("Yes")) {
+                holder.rl_weight.setVisibility(View.VISIBLE);
+                holder.tvPiece.setVisibility(View.GONE);
+                holder.tv_peice.setText(category.getQuantity());
+            } else {
+                holder.rl_weight.setVisibility(View.GONE);
+                holder.tvPiece.setVisibility(View.VISIBLE);
+                holder.tvPiece.setText(category.getQuantity());
+            }
+
+            holder.rl_weight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDialog(category.getVarientList(), holder, category);
+                }
+            });
+        }
     }
 
-    private void getProductDetailsByWeight(int position, String weight, Product category) {
-        for (int i=0; i<category.getVarientList().size(); i++){
-            if(weight.equals(category.getVarientList().get(i).getQuantity())){
-                category.setProductVarientId(category.getVarientList().get(i).getProductVarientId());
-                category.setImage(category.getVarientList().get(i).getImage());
-                category.setDiscount(category.getVarientList().get(i).getDiscount());
-                category.setQuantity(category.getVarientList().get(i).getQuantity());
-                category.setFinalAmount(category.getVarientList().get(i).getFinalAmount());
-                category.setGrossAmount(category.getVarientList().get(i).getGrossAmount());
-                notifyDataSetChanged();
-                notifyItemChanged(position);
-            }
+    private void showDialog(ArrayList<Product> items, MyViewHolder holder, Product category) {
+        final Dialog dialog1 = new Dialog(holder.itemView.getContext());
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setCancelable(true);
+        dialog1.setContentView(R.layout.dlg_varient);
+        TextView tv_item_name = (TextView) dialog1.findViewById(R.id.tv_item_name);
+        RecyclerView rv_item = (RecyclerView) dialog1.findViewById(R.id.rv_item);
 
-        }
+        tv_item_name.setText(category.getName());
+
+        WeighAdapter adapter = new WeighAdapter(items, new WishListAdapter.OnWeightItemCLickListener() {
+            @Override
+            public void onWeightClicked(Product product) {
+                dialog1.dismiss();
+                category.setProductVarientId(product.getProductVarientId());
+                category.setImage(product.getImage());
+                category.setDiscount(product.getDiscount());
+                category.setQuantity(product.getQuantity());
+                category.setFinalAmount(product.getFinalAmount());
+                category.setGrossAmount(product.getGrossAmount());
+                category.setMaxProductQuantity(product.getMaxProductQuantity());
+                notifyItemChanged(holder.getAdapterPosition());
+            }
+        });
+        rv_item.setAdapter(adapter);
+
+        dialog1.show();
     }
 
     @Override
     public int getItemCount() {
+        //return mdata.size();
         return mdata.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements OnItemCountChanged {
 
-        ImageView iv_best, iv_unwish;
-        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_minus, tv_quantity, tv_plus, tvPiece, tv_star,tv_rating, txtDiscountOff, tv_peice;
+        ImageView iv_best, iv_unwish, iv_close;
+        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_minus, tv_quantity, tv_plus, tvPiece, tv_star,tv_rating,
+                txtDiscountOff, tv_peice, tv_notify, tv_send_notify;
         LinearLayout ll_quantity;
-        RelativeLayout rl_like, rl_weight, rl_discount, rl_addCartContainer;
+        RelativeLayout rl_like, rl_weight, rl_discount, rl_addCartContainer, rl_view, rl_send_notify, rl_outOfStock;
         ProgressBar progressBar;
+        EditText et_notify_email;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             iv_best = (ImageView)itemView.findViewById(R.id.iv_best);
             iv_unwish = (ImageView)itemView.findViewById(R.id.iv_unwish);
+            iv_close = (ImageView)itemView.findViewById(R.id.iv_close);
             tv_pr_name = (TextView)itemView.findViewById(R.id.tv_pr_name);
             tv_pr_sub_name = (TextView)itemView.findViewById(R.id.tv_pr_sub_name);
             tv_price = (TextView)itemView.findViewById(R.id.tv_price);
@@ -202,18 +229,56 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
             tv_rating = (TextView)itemView.findViewById(R.id.tv_rating);
             tv_peice = (TextView)itemView.findViewById(R.id.tv_peice);
             txtDiscountOff = (TextView)itemView.findViewById(R.id.txtDiscountOff);
+            tv_notify = (TextView)itemView.findViewById(R.id.tv_notify);
+            tv_send_notify = (TextView)itemView.findViewById(R.id.tv_send_notify);
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
             rl_like = (RelativeLayout)itemView.findViewById(R.id.rl_like);
             rl_weight = (RelativeLayout)itemView.findViewById(R.id.rl_weight);
             rl_discount = (RelativeLayout)itemView.findViewById(R.id.rl_discount);
             rl_addCartContainer = (RelativeLayout)itemView.findViewById(R.id.rl_addCartContainer);
+            rl_view = (RelativeLayout)itemView.findViewById(R.id.rl_view);
+            rl_send_notify = (RelativeLayout)itemView.findViewById(R.id.rl_send_notify);
+            rl_outOfStock = (RelativeLayout)itemView.findViewById(R.id.rl_outOfStock);
             progressBar = itemView.findViewById(R.id.progressbar);
+            et_notify_email = (EditText)itemView.findViewById(R.id.et_notify_email);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     lisener.productClickLisener(mdata.get(getAdapterPosition()));
                     lisener.updateCartCount(mdata.get(getAdapterPosition()).getCartCount());
+                }
+            });
+
+
+
+            tv_notify.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rl_send_notify.setVisibility(View.VISIBLE);
+                    tv_notify.setVisibility(View.GONE);
+                }
+            });
+
+
+            tv_send_notify.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(TextUtils.isEmpty(et_notify_email.getText().toString())){
+                        et_notify_email.setError("Please Enter Email");
+                        et_notify_email.requestFocus();
+                    }else{
+                        rl_send_notify.setVisibility(View.GONE);
+                        tv_notify.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
+            iv_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rl_send_notify.setVisibility(View.GONE);
+                    tv_notify.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -281,7 +346,17 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
             }else {
                 qty = 0;
             }
-            AppUtils.addTocart(qty,getAdapterPosition(),mdata,HealthAdapter.this,itemView.getContext(),this);
+            int maxQuantity = Integer.parseInt(mdata.get(getAdapterPosition()).getMaxProductQuantity());
+
+                if(qty <= maxQuantity){
+                    AppUtils.addTocart(qty,getAdapterPosition(),mdata,HealthAdapter.this,itemView.getContext(),this);
+                }else{
+                    Toast.makeText(itemView.getContext(), "You can not add any more quantities for this product!", Toast.LENGTH_SHORT).show();
+                    mdata.get(getAdapterPosition()).setLoading(false);
+                    notifyItemChanged(getAdapterPosition());
+                }
+
+
         }
 
         @Override
@@ -327,4 +402,18 @@ public class HealthAdapter extends RecyclerView.Adapter<HealthAdapter.MyViewHold
     }
 
 
+    private class ViewMoreViewHolder extends RecyclerView.ViewHolder {
+        RelativeLayout rl_view_more;
+        public ViewMoreViewHolder(View view) {
+            super(view);
+            rl_view_more = (RelativeLayout) view.findViewById(R.id.rl_view_more);
+
+            rl_view_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewLisener.productVieMoreClickLisener(mdata.get(getAdapterPosition()), type);
+                }
+            });
+        }
+    }
 }

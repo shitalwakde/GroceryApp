@@ -8,6 +8,14 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="AppTheme.Map" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">#30962f</item>
+        <item name="colorPrimaryDark">#30962f</item>
+        <item name="colorAccent">#669966</item>
+        <item name="colorControlActivated">#268134</item>
+
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

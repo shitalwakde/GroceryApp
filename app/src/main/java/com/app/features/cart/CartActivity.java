@@ -11,10 +11,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.app.R;
-import com.app.activities.BaseActivity;
-import com.app.callback.HomeClickLisener;
 import com.app.callback.ProductListener;
-import com.app.features.home.model.Category;
 import com.app.features.home.model.Product;
 import com.app.features.productdetail.ProductDetailActivity;
 
@@ -62,5 +59,15 @@ public class CartActivity extends AppCompatActivity implements ProductListener {
     @Override
     public void updateCartCount(String cartCount) {
         //((new CartActivity())).setCartCount(Integer.parseInt(cartCount));
+    }
+
+    @Override
+    public void productImageClickLisener(Product product) {
+
+    }
+
+    @Override
+    public void productVieMoreClickLisener(Product product, String type) {
+
     }
 }

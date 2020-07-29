@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.FragmentManager;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,15 +20,18 @@ import android.widget.TextView;
 
 import com.app.R;
 import com.app.constant.AppConstant;
+import com.app.features.address.BottomSheetLocationFragment;
 import com.app.features.cart.CartActivity;
 import com.app.features.cart.CartFragment;
 import com.app.features.login.LoginActivity;
 import com.app.util.AppUtils;
 import com.app.util.PrefUtil;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 public class BaseActivity extends AppCompatActivity {
 
-    public TextView tv;
+    public static TextView tv;
     public ImageView iv;
 
     @Override
@@ -73,15 +77,21 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    public void setCartCount(){
- //            tv.setText(String.valueOf(count));
-            if(AppUtils.getCartCount(this) != null){
-                tv.setText(AppUtils.getCartCount(this));
-                tv.setVisibility(View.VISIBLE);
-            }else{
-                tv.setVisibility(View.GONE);
-                tv.setText(String.valueOf(0));
-            }
+    public void setCartCount() {
+        if (AppUtils.getCartCount(this).equals("0")) {
+            tv.setVisibility(View.GONE);
+        } else {
+            tv.setVisibility(View.VISIBLE);
+            tv.setText(AppUtils.getCartCount(this));
+        }
+    }
+
+    public void checkLocationPermission(MultiplePermissionsListener listener) {
+        Dexter.withContext(this)
+                .withPermissions(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                ).withListener(listener).check();
 
     }
 }

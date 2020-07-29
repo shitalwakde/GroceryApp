@@ -51,6 +51,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static android.content.Context.RECEIVER_VISIBLE_TO_INSTANT_APPS;
 import static com.app.features.cart.CartActivity.cartContainer;
 import static com.app.features.cart.CartActivity.tv_toolbar_cart;
 
@@ -96,8 +97,15 @@ public class AddressFragment extends Fragment {
     LocationManager manager;
     Location location;
     LatLng currentLocation;
+    String deliveryId="", go="";
+
+    public AddressFragment(String deliveryId, String go) {
+        this.deliveryId = deliveryId;
+        this.go = go;
+    }
 
     @Override
+
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -121,12 +129,16 @@ public class AddressFragment extends Fragment {
 
     private void setData() {
         tv_toolbar_cart.setText("Add Address");
-
-        if (AppConstant.isLogin(getActivity())) {
-            etName.setText(AppUtils.getUserDetails(getActivity()).getName());
-            etEmail.setText(AppUtils.getUserDetails(getActivity()).getEmail());
-            etMobile.setText(AppUtils.getUserDetails(getActivity()).getMobile());
+        if(deliveryId.equals("")){
+            if (AppConstant.isLogin(getActivity())) {
+                etName.setText(AppUtils.getUserDetails(getActivity()).getName());
+                etEmail.setText(AppUtils.getUserDetails(getActivity()).getEmail());
+                etMobile.setText(AppUtils.getUserDetails(getActivity()).getMobile());
+            }
+        }else{
+            getAddress();
         }
+
 
         tv_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -343,9 +355,61 @@ public class AddressFragment extends Fragment {
         alert.show();
     }
 
+    private void getAddress(){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("userId", AppUtils.getUserDetails(getActivity()).getLoginId());
+        jsonObject.addProperty("deliveryId", deliveryId);
+
+        new RestClient().getApiService().getSingleDeliveryLocation(jsonObject, new Callback<AddressModel>() {
+            @Override
+            public void success(AddressModel addressModel, Response response) {
+                if(addressModel.getSuccess().equals("1")){
+                    setAddress(addressModel);
+                }else{
+                    Toast.makeText(getActivity(), addressModel.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setAddress(AddressModel addressModel){
+        etName.setText(addressModel.getName());
+        etEmail.setText(addressModel.getEmail());
+        etMobile.setText(addressModel.getMobile());
+        etHouseNo.setText(addressModel.getHouseNo());
+        etArea.setText(addressModel.getArea());
+        etCity.setText(addressModel.getCity());
+        etState.setText(addressModel.getState());
+        etLandmark.setText(addressModel.getLandmark());
+        etPincode.setText(addressModel.getPincode());
+        if(addressModel.getAddressType().equals("home")){
+            rbHome.setChecked(true);
+        }else{
+            rbHome.setChecked(false);
+        }
+
+        if(addressModel.getAddressType().equals("work")){
+            rbWork.setChecked(true);
+        }else{
+            rbWork.setChecked(false);
+        }
+
+        if(addressModel.getIsDefault().equals("Yes")){
+            cbDefault.setChecked(true);
+        }else{
+            cbDefault.setChecked(false);
+        }
+    }
+
     private void addDeliveryLocation() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("userId", AppUtils.getUserDetails(getActivity()).getLoginId());
+        jsonObject.addProperty("deliveryId", deliveryId);
         jsonObject.addProperty("name", etName.getText().toString());
         jsonObject.addProperty("mobile", etMobile.getText().toString());
         jsonObject.addProperty("email", etEmail.getText().toString());
@@ -379,8 +443,10 @@ public class AddressFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), AddressActivity.class);
                     intent.putExtra("address", "checkout");
                     intent.putExtra("deliveryId", addressModel.getDeliveryId());
+                    intent.putExtra("go", "");
                     startActivity(intent);
                     getActivity().finish();
+
                 } else {
                     Toast.makeText(getActivity(), addressModel.getMessage(), Toast.LENGTH_SHORT).show();
                 }

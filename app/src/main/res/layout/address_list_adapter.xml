@@ -47,6 +47,13 @@
                 android:fontFamily="@font/roboto"
                 android:visibility="gone"/>
             <ImageView
+                android:id="@+id/iv_edit"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_toLeftOf="@+id/iv_remove"
+                android:src="@drawable/ic_edit"
+                android:layout_marginRight="10dp"/>
+            <ImageView
                 android:id="@+id/iv_remove"
                 android:layout_width="24dp"
                 android:layout_height="24dp"

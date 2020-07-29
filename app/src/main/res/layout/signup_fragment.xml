@@ -3,38 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorWhite">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@drawable/toolbar_blur_background">
-    </LinearLayout>
+    android:background="@drawable/toolbar_blur_background">
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/ic_arrow"/>
 <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_centerInParent="true">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_arrow"/>
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="5dp"
-            app:cardCornerRadius="5dp"
-            android:layout_marginTop="70dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp">
+            app:cardCornerRadius="5dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
@@ -135,16 +130,13 @@
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/cardView"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone"/>
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>
-
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>
