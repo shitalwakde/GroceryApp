@@ -1,8 +1,12 @@
 package com.app.util;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.callback.OnItemCountChanged;
@@ -18,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -92,85 +97,85 @@ public class AppUtils {
         return false;
     }
 
-    public static void setUserDetails(Context context,ModLogin loginModel) {
-        if(loginModel!=null) {
+    public static void setUserDetails(Context context, ModLogin loginModel) {
+        if (loginModel != null) {
             String userDetail = new Gson().toJson(loginModel);
             PrefUtil.getInstance(context).putData(AppConstant.PREF_USER_DATA, userDetail);
-        }else {
+        } else {
             PrefUtil.getInstance(context).removeKeyData(AppConstant.PREF_USER_DATA);
         }
     }
 
-    public static void updateUserDetails(Context context,ModLogin loginModel) {
-        if(loginModel!=null) {
+    public static void updateUserDetails(Context context, ModLogin loginModel) {
+        if (loginModel != null) {
             String userDetail = new Gson().toJson(loginModel);
             PrefUtil.getInstance(context).putData(AppConstant.PREF_USER_DATA, userDetail);
-        }else {
+        } else {
             PrefUtil.getInstance(context).removeKeyData(AppConstant.PREF_USER_DATA);
         }
     }
 
-    public static ModLogin getUserDetails(Context context){
-        String userDetail=PrefUtil.getInstance(AppController.getInstance()).getPreferences().getString(AppConstant.PREF_USER_DATA,null);
-        ModLogin loginModel=null;
-        if(userDetail!=null)
-            loginModel=new Gson().fromJson(userDetail,ModLogin.class);
+    public static ModLogin getUserDetails(Context context) {
+        String userDetail = PrefUtil.getInstance(AppController.getInstance()).getPreferences().getString(AppConstant.PREF_USER_DATA, null);
+        ModLogin loginModel = null;
+        if (userDetail != null)
+            loginModel = new Gson().fromJson(userDetail, ModLogin.class);
         return loginModel;
     }
 
-    public static String getUniqueId(Context context){
-        String uuid= PrefUtil.getInstance(context).getPreferences().getString(AppConstant.UUID,null);
-        if(TextUtils.isEmpty(uuid)){
-            UUID uniqueId=UUID.randomUUID();
-            uuid=uniqueId.toString();
-            PrefUtil.getInstance(context).putData(AppConstant.UUID,uuid);
+    public static String getUniqueId(Context context) {
+        String uuid = PrefUtil.getInstance(context).getPreferences().getString(AppConstant.UUID, null);
+        if (TextUtils.isEmpty(uuid)) {
+            UUID uniqueId = UUID.randomUUID();
+            uuid = uniqueId.toString();
+            PrefUtil.getInstance(context).putData(AppConstant.UUID, uuid);
         }
         return uuid;
     }
 
-    public static String getAddress(){
+    public static String getAddress() {
         String address = PrefUtil.getInstance(AppController.getInstance()).getPreferences().getString(ADDRESS, null);
         return address;
     }
 
-    public static void setAddress(String address){
+    public static void setAddress(String address) {
         PrefUtil.getInstance(AppController.getInstance()).putData(AppConstant.ADDRESS, address);
     }
 
-    public static String getLatitude(){
+    public static String getLatitude() {
         String latitude = (PrefUtil.getInstance(AppController.getInstance()).getPreferences().getString(String.valueOf(LATITUDE_CONS), null));
         return latitude;
     }
 
-    public static String getLongitude(){
+    public static String getLongitude() {
         String longitude = (PrefUtil.getInstance(AppController.getInstance()).getPreferences().getString(String.valueOf(LONGITUDE_CONS), null));
         return longitude;
     }
 
-    public static void setLatitude(String latitude){
+    public static void setLatitude(String latitude) {
         PrefUtil.getInstance(AppController.getInstance()).putData(String.valueOf(AppConstant.LATITUDE_CONS), latitude);
     }
 
-    public static void setLongitude(String longitude){
+    public static void setLongitude(String longitude) {
         PrefUtil.getInstance(AppController.getInstance()).putData(String.valueOf(AppConstant.LONGITUDE_CONS), longitude);
     }
 
-    public static void setCartCount(String cartCount){
+    public static void setCartCount(String cartCount) {
         PrefUtil.getInstance(AppController.getInstance()).putData(AppConstant.PREF_CART_COUNT, cartCount);
     }
 
 
-    public static String getCartCount(Context context){
+    public static String getCartCount(Context context) {
         String cartCount = PrefUtil.getInstance(context).getPreferences().getString(AppConstant.PREF_CART_COUNT, "0");
         return cartCount;
     }
 
 
-    public static void addTocart(int qty, final int position, List<Product> mdata, RecyclerView.Adapter adapter, Context context, final OnItemCountChanged listener){
+    public static void addTocart(int qty, final int position, List<Product> mdata, RecyclerView.Adapter adapter, Context context, final OnItemCountChanged listener) {
         JsonObject jsonObject = new JsonObject();
-        if(AppConstant.isLogin(null)){
+        if (AppConstant.isLogin(null)) {
             jsonObject.addProperty("userId", AppUtils.getUserDetails(null).getLoginId());
-        }else{
+        } else {
             jsonObject.addProperty("userId", "");
         }
         jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
@@ -182,18 +187,18 @@ public class AppUtils {
             @Override
             public void success(Product product, Response response) {
                 mdata.get(position).setLoading(false);
-                if(product.getSuccess().equals("1")){
-                    if(product.getCartCount()!=null){
+                if (product.getSuccess().equals("1")) {
+                    if (product.getCartCount() != null) {
                         setCartCount(product.getCartCount());
                     }
                     listener.onSuccess();
 //                    if(!product.getQuantity().equals("0")){
-                        mdata.get(position).setCartQuantity(qty);
+                    mdata.get(position).setCartQuantity(qty);
 //                    }
                     adapter.notifyDataSetChanged();
                     adapter.notifyItemChanged(position);
 //                        Toast.makeText(itemView.getContext(), product.getMessage(), Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Toast.makeText(context, product.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -208,24 +213,24 @@ public class AppUtils {
     }
 
 
-    public static void addWishList(String wishList, final int position, List<Product> mdata, RecyclerView.Adapter adapter, Context context){
+    public static void addWishList(String wishList, final int position, List<Product> mdata, RecyclerView.Adapter adapter, Context context) {
         JsonObject jsonObject = new JsonObject();
-        if(AppConstant.isLogin(null)){
+        if (AppConstant.isLogin(null)) {
             jsonObject.addProperty("userId", AppUtils.getUserDetails(null).getLoginId());
-        }else{
+        } else {
             jsonObject.addProperty("userId", "");
         }
         jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
-        jsonObject.addProperty("productId",mdata.get(position).getProductId());
-        jsonObject.addProperty("wishList",wishList);
+        jsonObject.addProperty("productId", mdata.get(position).getProductId());
+        jsonObject.addProperty("wishList", wishList);
 
         new RestClient().getApiService().addWishList(jsonObject, new Callback<Product>() {
             @Override
             public void success(Product product, Response response) {
-                if(product.getSuccess().equals("1")){
+                if (product.getSuccess().equals("1")) {
                     adapter.notifyDataSetChanged();
                     //Toast.makeText(context, product.getMessage(), Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(context, product.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -237,5 +242,22 @@ public class AppUtils {
         });
     }
 
+    public static void changeColor(String color, Toolbar toolbar, View... views) {
+        if (toolbar != null)
+            toolbar.setBackgroundColor(Color.parseColor(color));
+        if (views != null)
+            for (View view :
+                    views) {
+                if(view==null)
+                    continue;
+                if (view instanceof Button)
+                    ((Button) view).setBackgroundColor(Color.parseColor(color));
+                else if (view instanceof TextView)
+                    ((TextView) view).setTextColor(Color.parseColor(color));
+                else
+                    view.setBackgroundColor(Color.parseColor((color)));
+
+            }
+    }
 
 }

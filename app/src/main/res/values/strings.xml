@@ -18,4 +18,7 @@
     <string name="leku_search_hint">Search</string>
     <string name="forgot_your_password">Forgot your password? <font color="blue">Recover </font></string>
     <string name="signup">Don\'t have an account? <font color="blue">Sign Up</font></string>
+    <string name="your_friend">Your Friend earn<font color="blue"> ₹ 100 </font>using your <font color="blue">Referral Code</font></string>
+    <string name="you_earn">You earn<font color="blue"> ₹ 150 </font>for every friend who completes his/her first booking</string>
+    <string name="earn_additional">Earn additional<font color="blue"> ₹ 50 </font>every time (after first booking) your friend makes a booking with us</string>
 </resources>

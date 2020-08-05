@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class OrderModel {
     private String success;
     private String message;
+    private String isReturn;
     ArrayList<OrderList> orderList;
 
     public String getSuccess() {
@@ -29,5 +30,13 @@ public class OrderModel {
 
     public void setOrderList(ArrayList<OrderList> orderList) {
         this.orderList = orderList;
+    }
+
+    public String getIsReturn() {
+        return isReturn;
+    }
+
+    public void setIsReturn(String isReturn) {
+        this.isReturn = isReturn;
     }
 }

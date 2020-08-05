@@ -38,8 +38,7 @@
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:padding="20dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/background_login"/>
+                android:src="@drawable/background_login" />
 
             <RelativeLayout
                 android:id="@+id/rl_discount"
@@ -58,16 +57,17 @@
                         android:layout_height="wrap_content"
                         android:textSize="11sp"
                         android:fontFamily="@font/roboto"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="@color/colorWhite"
+                        android:paddingTop="2dp"
                         android:layout_centerHorizontal="true"
                         android:text="0%"/>
                     <TextView
                         android:layout_below="@+id/txtDiscountOff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/head"
+                        android:textSize="11sp"
                         android:fontFamily="@font/roboto"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="@color/colorWhite"
                         android:layout_centerHorizontal="true"
                         android:text="off"
                         android:layout_marginBottom="5dp"/>
@@ -139,7 +139,7 @@
                     android:id="@+id/rl_star"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/greentrans"
+                    android:background="@color/purpletrans"
                     android:padding="1dp">
 
                     <TextView
@@ -158,6 +158,7 @@
                         android:layout_height="12dp"
                         android:layout_marginRight="2dp"
                         android:layout_toRightOf="@+id/tv_star"
+                        android:tint="@color/colorPrimaryDark"
                         android:paddingTop="3dp"
                         android:src="@drawable/ic_star" />
                 </RelativeLayout>
@@ -217,6 +218,7 @@
                         android:layout_height="24dp"
                         android:layout_toRightOf="@+id/tv_peice"
                         android:src="@drawable/ic_down"
+                        android:tint="@color/colorPrimaryDark"
                         android:visibility="visible"/>
                 </RelativeLayout>
             </RelativeLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardUseCompatPadding="true">
+    <LinearLayout
+        android:id="@+id/ll_rate"
+        android:layout_below="@+id/ll_review_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_rating_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_rating_head">
+
+            <RelativeLayout
+                android:id="@+id/rl_star_list"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/bg_green"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_star_line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="4.5"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_toRightOf="@+id/tv_star_line"
+                    android:src="@drawable/ic_star_white" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/rating_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/rl_star_list"
+                android:fontFamily="@font/roboto"
+                android:text="Just Wow !"
+                android:textColor="@color/colorBlack"
+                android:textSize="13sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_rating_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/rl_rating_list">
+            <TextView
+                android:id="@+id/rating_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="I had a great experiance"
+                android:textSize="12sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_thumb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_rating_comment"
+            android:layout_marginTop="10dp">
+            <ImageView
+                android:id="@+id/iv_thumb"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/thumb"/>
+            <TextView
+                android:id="@+id/tv_reviewLike"
+                android:layout_toRightOf="@+id/iv_thumb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:layout_marginLeft="10dp"
+                android:text="Like"
+                android:textSize="13sp" />
+            <TextView
+                android:id="@+id/tv_reviewCount"
+                android:layout_toRightOf="@+id/tv_reviewLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:layout_marginLeft="10dp"
+                android:text="0"
+                android:textSize="13sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

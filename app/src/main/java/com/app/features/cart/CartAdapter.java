@@ -2,6 +2,7 @@ package com.app.features.cart;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,12 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.R;
+import com.app.activities.MainActivity;
 import com.app.callback.CalculateLisener;
 import com.app.callback.OnItemCountChanged;
 import com.app.callback.ProductListener;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
 import com.app.features.home.model.Product;
+import com.app.features.login.LoginActivity;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
 import com.google.gson.JsonObject;
@@ -124,6 +127,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             holder.tvPiece.setText(category.getProductQuantity());
         }
 
+        /*if(category.getRating() == 0){
+            holder.rl_rating.setVisibility(View.INVISIBLE);
+        }else{
+            holder.rl_rating.setVisibility(View.VISIBLE);
+            holder.tv_star.setText(String.valueOf(category.getRating()));
+        }*/
+        holder.tv_star.setText(String.valueOf(category.getRating()));
+        if(category.getRate() != null){
+            if(category.getRate().equals("")){
+                holder.tv_rating.setVisibility(View.INVISIBLE);
+            }else{
+                holder.tv_rating.setVisibility(View.VISIBLE);
+                holder.tv_rating.setText(category.getRate() + " Ratings");
+            }
+        }else {
+            holder.tv_rating.setVisibility(View.INVISIBLE);
+        }
+
     }
 
 
@@ -135,9 +156,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder implements OnItemCountChanged {
         ImageView iv_best, iv_unwish, iv_close;
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_remove, tv_minus, tv_quantity, tv_plus,
-                txtDiscountOff, tvPiece, tv_peice, tv_notify, tv_send_notify;
+                txtDiscountOff, tvPiece, tv_peice, tv_notify, tv_send_notify, tv_star, tv_rating;
         LinearLayout ll_quantity;
-        RelativeLayout rl_wish, rl_discount, rl_addCartContainer, rl_weight, rl_view, rl_send_notify, rl_outOfStock;
+        RelativeLayout rl_wish, rl_discount, rl_addCartContainer, rl_weight, rl_view, rl_send_notify, rl_outOfStock, rl_rating;
         ProgressBar progressBar;
         EditText et_notify_email;
 
@@ -157,6 +178,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             tv_quantity = (TextView)itemView.findViewById(R.id.tv_quantity);
             tv_plus = (TextView)itemView.findViewById(R.id.tv_plus);
             txtDiscountOff = (TextView)itemView.findViewById(R.id.txtDiscountOff);
+            tv_star = (TextView)itemView.findViewById(R.id.tv_star);
+            tv_rating = (TextView)itemView.findViewById(R.id.tv_rating);
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
             iv_unwish = (ImageView)itemView.findViewById(R.id.iv_unwish);
             rl_wish = (RelativeLayout)itemView.findViewById(R.id.rl_wish);
@@ -169,6 +192,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             rl_view = (RelativeLayout)itemView.findViewById(R.id.rl_view);
             rl_send_notify = (RelativeLayout)itemView.findViewById(R.id.rl_send_notify);
             rl_outOfStock = (RelativeLayout)itemView.findViewById(R.id.rl_outOfStock);
+            rl_rating = (RelativeLayout)itemView.findViewById(R.id.rl_rating);
             et_notify_email = (EditText)itemView.findViewById(R.id.et_notify_email);
 
             tv_remove.setVisibility(View.VISIBLE);
@@ -208,8 +232,28 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             tv_notify.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    rl_send_notify.setVisibility(View.VISIBLE);
-                    tv_notify.setVisibility(View.GONE);
+                    if(AppConstant.isLogin(itemView.getContext())){
+                        notifyMe();
+                    }else{
+                        AlertDialog.Builder builder=new AlertDialog.Builder(itemView.getContext());
+                        builder.setMessage("Please login to continue");
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(itemView.getContext(), LoginActivity.class);
+                                intent.putExtra("type","login");
+                                itemView.getContext().startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
+                    //rl_send_notify.setVisibility(View.VISIBLE);
+                    //tv_notify.setVisibility(View.GONE);
                 }
             });
 
@@ -379,7 +423,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             productListener.updateCartCount(null);
         }
 
+        private void notifyMe(){
+
+        }
     }
+
 
 
 }

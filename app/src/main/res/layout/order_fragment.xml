@@ -4,21 +4,21 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorWhite">
-    <RelativeLayout
-        android:id="@+id/rl_noDataFound"
+  <RelativeLayout
+      android:id="@+id/rl_noDataFound"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="gone">
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/nodatafound"
-            android:layout_centerInParent="true"
-            android:visibility="visible"/>
-    </RelativeLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_order"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:src="@drawable/nodatafound"
+        android:layout_centerInParent="true"
+        android:visibility="visible"/>
+  </RelativeLayout>
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_order"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 </RelativeLayout>

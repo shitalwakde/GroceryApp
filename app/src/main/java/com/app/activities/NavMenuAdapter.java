@@ -17,6 +17,7 @@ import com.app.features.navmenu.OfferActivity;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +47,15 @@ public class NavMenuAdapter extends RecyclerView.Adapter<NavMenuAdapter.MyViewHo
 
         holder.nma_tv_menu.setText(menu.getTitle());
         holder.iv_menu.setImageResource(menu.getIcon());
+
+        if(menu.isHighlight()){
+            menu.setHighlight(false);
+            holder.ll_name.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.colorPrimaryDark));
+            holder.nma_tv_menu.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.colorWhite));
+            holder.iv_menu.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.colorWhite));
+        }else{
+            holder.ll_name.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.color.colorWhite));
+        }
 
         if (menu.getTitle().equals("Shop by Category")) {
             holder.iv_forword_arrow.setVisibility(View.VISIBLE);
@@ -93,7 +103,7 @@ public class NavMenuAdapter extends RecyclerView.Adapter<NavMenuAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-
+        LinearLayout ll_name;
         TextView nma_tv_menu, tvDiscountProduct, tvspecialoffers;
         ImageView iv_menu,iv_forword_arrow, iv_up_arrow, iv_down_arrow;
         View view;
@@ -101,6 +111,7 @@ public class NavMenuAdapter extends RecyclerView.Adapter<NavMenuAdapter.MyViewHo
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            ll_name = (LinearLayout) itemView.findViewById(R.id.nma_ll_content);
             nma_tv_menu = (TextView) itemView.findViewById(R.id.nma_tv_menu);
             tvDiscountProduct = (TextView) itemView.findViewById(R.id.tvDiscountProduct);
             tvspecialoffers = (TextView) itemView.findViewById(R.id.tvspecialoffers);
@@ -117,7 +128,7 @@ public class NavMenuAdapter extends RecyclerView.Adapter<NavMenuAdapter.MyViewHo
                 @Override
                 public void onClick(View v) {
                     lisener.drawerItemClickLisener(navMenus.get(getAdapterPosition()));
-
+                    navMenus.get(getAdapterPosition()).setHighlight(true);
                     if(navMenus.get(getAdapterPosition()).getTitle().equals("Offers")){
                         if(llBelowMenu.getVisibility()==View.VISIBLE){
                             llBelowMenu.setVisibility(View.GONE);

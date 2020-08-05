@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment implements SearchLisener, ProductList
     ArrayList<SearchModel> searchKeyList;
     NestedScrollView nestedScrollView;
     RelativeLayout rl_network;
-    ImageView iv_offer, iv_discount;
+    ImageView iv_offer, iv_discount, iv_pastOrder, iv_recentlyView, iv_bestSelling;
     LinearLayout ll_brands, ll_bestSelling, ll_recently, ll_pastOrder, ll_categories;
 
     boolean isInternetPresent = false;
@@ -142,6 +142,9 @@ public class HomeFragment extends Fragment implements SearchLisener, ProductList
         tv_view_past = (TextView) rootView.findViewById(R.id.tv_view_past);
         iv_offer = (ImageView)rootView.findViewById(R.id.iv_offer);
         iv_discount = (ImageView)rootView.findViewById(R.id.iv_discount);
+        iv_pastOrder = (ImageView)rootView.findViewById(R.id.iv_pastOrder);
+        iv_bestSelling = (ImageView)rootView.findViewById(R.id.iv_bestSelling);
+        iv_recentlyView = (ImageView)rootView.findViewById(R.id.iv_recentlyView);
         ll_brands = (LinearLayout)rootView.findViewById(R.id.ll_brands);
         ll_bestSelling = (LinearLayout)rootView.findViewById(R.id.ll_bestSelling);
         ll_recently = (LinearLayout)rootView.findViewById(R.id.ll_recently);
@@ -259,9 +262,13 @@ public class HomeFragment extends Fragment implements SearchLisener, ProductList
         arrangePastOrderAdpt(modCategory.getProduct());
         arrangeRecentlyViewAdpt(modCategory.getRecentViewProduct());
         arrangeBestSellingAdpt(modCategory.getBestSellingProduct());
+        arrangeAdvertise(modCategory.getAdvertisement());
         arrangeBrands(modCategory.getBrand());
         arrangeBanner(modCategory);
-        arrangeAdvertise(modCategory.getAdvertisement());
+        Picasso.with(getActivity()).load(modCategory.getPastOrderBgImage()).into(iv_pastOrder);
+        //Picasso.with(getActivity()).load(modCategory.getPastOrderBgImage()).into(iv_pastOrder_layout);
+        Picasso.with(getActivity()).load(modCategory.getRecentlyViewBgImage()).into(iv_recentlyView);
+        Picasso.with(getActivity()).load(modCategory.getBestSellingProductBgImage()).into(iv_bestSelling);
         if (modCategory.getCount_cart() != null) {
             PrefUtil.getInstance(getContext()).putData(AppConstant.PREF_CART_COUNT, modCategory.getCount_cart());
             AppUtils.setCartCount(modCategory.getCount_cart());

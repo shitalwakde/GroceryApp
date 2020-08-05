@@ -2,6 +2,7 @@ package com.app.features.order;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -51,6 +53,13 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         holder.tv_pr_name.setText(category.getProductName());
         holder.tv_pr_sub_name.setText(category.getProductName());
         holder.tv_discount_price.setText("\u20B9 " + category.getProductFinalAmount());
+        //holder.tv_star.setText(String.valueOf(category.getRating()));
+        if(category.getProductRate().equals("")){
+            holder.tv_rating.setVisibility(View.INVISIBLE);
+        }else{
+            holder.tv_rating.setVisibility(View.VISIBLE);
+            holder.tv_rating.setText(category.getProductRate()+" Reviews");
+        }
 
         if (category.getProductType().equals("Quantity")) {
             holder.tvPc.setText(category.getProductQuantity());
@@ -79,8 +88,9 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_best;
-        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_rate_product, tvPrdQuantity, tv_peice, tvPc, txtDiscountOff;
-        RelativeLayout rl_discount, rl_weight;
+        TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_rate_product, tvPrdQuantity, tv_peice, tvPc, txtDiscountOff,
+                tv_rating, tv_star, tv_return;
+        RelativeLayout rl_discount, rl_weight, rl_cancel;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,8 +104,12 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             tv_peice = (TextView) itemView.findViewById(R.id.tv_peice);
             tvPc = (TextView) itemView.findViewById(R.id.tvPiece);
             txtDiscountOff = (TextView) itemView.findViewById(R.id.txtDiscountOff);
+            tv_rating = (TextView) itemView.findViewById(R.id.tv_rating);
+            tv_star = (TextView) itemView.findViewById(R.id.tv_star);
+            tv_return = (TextView) itemView.findViewById(R.id.tv_return);
             rl_discount = (RelativeLayout) itemView.findViewById(R.id.rl_discount);
             rl_weight = (RelativeLayout) itemView.findViewById(R.id.rl_weight);
+            rl_cancel = (RelativeLayout) itemView.findViewById(R.id.rl_cancel);
 
             rl_weight.setVisibility(View.GONE);
             tvPc.setVisibility(View.VISIBLE);
@@ -107,7 +121,29 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
                 }
             });
 
+            rl_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder=new AlertDialog.Builder(itemView.getContext());
+                    builder.setMessage("Are you sure want to remove this product ?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            removeProduct();
+                            //mdata.remove(getAdapterPosition());
+                            dialog.dismiss();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+                }
+            });
         }
+
+
 
         public void showRatingDialog() {
             final Dialog dialog1 = new Dialog(itemView.getContext());
@@ -118,11 +154,12 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             TextView tv_submit = (TextView) dialog1.findViewById(R.id.tv_submit);
             final RatingBar ratingBar = (RatingBar) dialog1.findViewById(R.id.ratingBar);
             final EditText et_review = (EditText) dialog1.findViewById(R.id.et_review);
+            final EditText etRateTitle = (EditText) dialog1.findViewById(R.id.etRateTitle);
 
             tv_submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    addProductReviews(et_review.getText().toString(), ratingBar.toString(), dialog1);
+                    addProductReviews(etRateTitle.getText().toString(), et_review.getText().toString(), ratingBar.getRating(), dialog1);
                 }
             });
 
@@ -135,15 +172,16 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             dialog1.show();
         }
 
-        private void addProductReviews(String comment, String rating, Dialog dialog1) {
+
+        private void addProductReviews(String rateTitle, String comment, float ratingBar, Dialog dialog1) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("userId", AppUtils.getUserDetails(itemView.getContext()).getLoginId());
             jsonObject.addProperty("productId", mdata.get(getAdapterPosition()).getProductId());
             jsonObject.addProperty("orderId", mdata.get(getAdapterPosition()).getOrderId());
             jsonObject.addProperty("orderDetailId", mdata.get(getAdapterPosition()).getOrderDetailId());
             jsonObject.addProperty("comment", comment);
-            jsonObject.addProperty("rating", "");
-            jsonObject.addProperty("ratingComment", rating);
+            jsonObject.addProperty("rating", ratingBar);
+            jsonObject.addProperty("ratingComment", rateTitle);
             jsonObject.addProperty("reviewId", reviewId);
 
             new RestClient().getApiService().addProductReviews(jsonObject, new Callback<ReviewModel>() {
@@ -155,6 +193,36 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
                         reviewId = reviewModel.getProductReviewId();
                     } else {
                         Toast.makeText(itemView.getContext(), reviewModel.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Toast.makeText(itemView.getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        private void removeProduct(){
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("userId", AppUtils.getUserDetails(itemView.getContext()).getLoginId());
+            jsonObject.addProperty("productId", mdata.get(getAdapterPosition()).getProductId());
+            jsonObject.addProperty("orderId", mdata.get(getAdapterPosition()).getOrderId());
+            jsonObject.addProperty("orderDetailId", mdata.get(getAdapterPosition()).getOrderDetailId());
+
+            new RestClient().getApiService().productCancel(jsonObject, new Callback<OrderModel>() {
+                @Override
+                public void success(OrderModel orderModel, Response response) {
+                    if(orderModel.getSuccess().equals("1")){
+                        if(orderModel.getIsReturn().equals("Yes")){
+                            tv_return.setVisibility(View.VISIBLE);
+                        }else{
+                            tv_return.setVisibility(View.GONE);
+                        }
+                        notifyItemChanged(getAdapterPosition());
+                        notifyDataSetChanged();
+                    }else{
+                        Toast.makeText(itemView.getContext(), orderModel.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
 

@@ -2,12 +2,18 @@ package com.app.features.address;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +24,7 @@ import android.widget.Toast;
 import com.app.R;
 import com.app.activities.BaseActivity;
 import com.app.activities.MainActivity;
+import com.app.callback.LocationLisener;
 import com.app.constant.AppConstant;
 import com.app.features.login.LoginActivity;
 import com.app.util.AppUtils;
@@ -27,12 +34,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -40,7 +50,9 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.schibstedspain.leku.LocationPickerActivity;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,6 +65,11 @@ public class BottomSheetLocationFragment extends BottomSheetDialogFragment imple
     View rootView;
     TextView tv_choose_location, tvLogin;
     private static final int MY_PERMISSIONS = 65;
+    public static double latitudePickUp = 0.0;
+    public static double longitudePickUp = 0.0;
+    LocationManager manager;
+    Location location;
+    LatLng currentLocation;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,10 +143,46 @@ public class BottomSheetLocationFragment extends BottomSheetDialogFragment imple
         }
     }
 
-    public void getCurrentLocation(){
+    public void getLocation() {
+        manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            Log.w("TAG", "inside location != null");
+                            latitudePickUp = location.getLatitude();
+                            longitudePickUp = location.getLongitude();
+                            getcustLocation(latitudePickUp, longitudePickUp);
+                        }else{
+                            Log.w("TAG", "waiting for location");
+                            //Toast.makeText(getActivity(), "waiting for location", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }
+
+
+    public void getcustLocation(double latitudePickUp, double longitudePickUp){
         dismiss();
         Intent locationPickerIntent = new  LocationPickerActivity.Builder()
-                .withLocation(21.1458, 79.0882)
+                //.withLocation(21.1458, 79.0882)
+                .withLocation(latitudePickUp, longitudePickUp)
                 .withGeolocApiKey("AIzaSyCL43mx5EANHEYYPv71t-1SMFgqloqmSCs")
                 .withSearchZone("in")
                 //.withSearchZone(SearchZoneRect(LatLng(26.525467, -18.910366), LatLng(43.906271, 5.394197)))
@@ -144,7 +197,7 @@ public class BottomSheetLocationFragment extends BottomSheetDialogFragment imple
                 .withVoiceSearchHidden()
                 .withUnnamedRoadHidden()
                 .build(getActivity());
-       // locationPickerIntent.putExtra(LocationPickerActivity.ENABLE_LOCATION_PERMISSION_REQUEST, false)
+        // locationPickerIntent.putExtra(LocationPickerActivity.ENABLE_LOCATION_PERMISSION_REQUEST, false)
 
         ((MainActivity)getContext()).startActivityForResult(locationPickerIntent,
                 MainActivity.MAP_BUTTON_REQUEST_CODE);
@@ -154,11 +207,11 @@ public class BottomSheetLocationFragment extends BottomSheetDialogFragment imple
 
     @Override
     public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-       if( multiplePermissionsReport.areAllPermissionsGranted()) {
-           EnableGPSAutoMatically();
-       }else{
-           AppUtils.setAddress("Laxminagar, Nagpur - 440022");
-       }
+        if( multiplePermissionsReport.areAllPermissionsGranted()) {
+            EnableGPSAutoMatically();
+        }else{
+            AppUtils.setAddress("Laxminagar, Nagpur - 440022");
+        }
 
     }
 
@@ -195,7 +248,8 @@ public class BottomSheetLocationFragment extends BottomSheetDialogFragment imple
                             .getLocationSettingsStates();
                     switch (status.getStatusCode()) {
                         case LocationSettingsStatusCodes.SUCCESS:
-                            getCurrentLocation();
+                            getLocation();
+                            //getCurrentLocation();
                             break;
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                             try {
@@ -203,7 +257,7 @@ public class BottomSheetLocationFragment extends BottomSheetDialogFragment imple
                                 // startResolutionForResult(),
                                 // and check the result in onActivityResult().
                                 status.startResolutionForResult(getActivity(), 1000);
-
+                                getLocation();
                             } catch (IntentSender.SendIntentException e) {
                                 // Ignore the error.
                             }
@@ -226,20 +280,19 @@ public class BottomSheetLocationFragment extends BottomSheetDialogFragment imple
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK) {
                 String result = data.getStringExtra("result");
-                getCurrentLocation();
+                getLocation();
+                //getCurrentLocation();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 if (Build.VERSION.SDK_INT >= 23) {
                     takePermissionsForMarsh();
                 }
                 AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-                builder.setMessage("Products and offers are location specific");
+                builder.setMessage("Products and offers are location specific, Please turn on location to continue");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (Build.VERSION.SDK_INT >= 23) {
-                            takePermissionsForMarsh();
-                        }
+                        EnableGPSAutoMatically();
                         dialog.dismiss();
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {

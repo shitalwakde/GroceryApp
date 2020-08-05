@@ -34,105 +34,479 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:descendantFocusability="blocksDescendants">
-            <RelativeLayout
-                android:id="@+id/rl_slot"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_border"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp">
-                <TextView
-                    android:id="@+id/tv_available_slot"
-                    android:layout_width="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/rl_slot"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:drawablePadding="10dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="Your next available slot"
-                    android:textColor="@color/colorBlack"
-                    android:drawableRight="@drawable/ic_outline"
-                    android:paddingTop="10dp"
-                    android:paddingLeft="10dp"/>
+                    android:background="@drawable/bg_border"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp">
+                    <TextView
+                        android:id="@+id/tv_available_slot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:drawablePadding="10dp"
+                        android:fontFamily="@font/roboto"
+                        android:text="Your next available slot"
+                        android:textColor="@color/colorBlack"
+                        android:drawableRight="@drawable/ic_outline"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="10dp"/>
 
-                <TextView
-                    android:id="@+id/tv_slot"
-                    android:layout_below="@+id/tv_available_slot"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/tv_slot"
+                        android:layout_below="@+id/tv_available_slot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:drawableLeft="@drawable/ic_airport"
+                        android:drawablePadding="10dp"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/roboto"
+                        android:text="STANDRAD : 22 Jul, Wed 6:30 AM - 8:30 AM"
+                        android:padding="10dp"/>
+                </RelativeLayout>
+                <com.asura.library.views.PosterSlider
+                    android:id="@+id/poster_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    app:defaultIndicator="circle"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:fitsSystemWindows="true"
+                    app:hideIndicators="false"
+                    app:imageSlideInterval="5000"
+                    app:loopSlides="true"
+                    android:background="@drawable/background_login"
+                    android:visibility="gone"/>
+                <com.daimajia.slider.library.Indicators.PagerIndicator
+                    android:id="@+id/custom_indicator2"
+                    style="@style/AndroidImageSlider_Corner_Oval_Orange"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="0dp" />
+
+                <com.daimajia.slider.library.SliderLayout
+                    android:id="@+id/fh_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="10dp"
+                    custom:auto_cycle="true"
+                    custom:pager_animation="Accordion"
+                    custom:pager_animation_span="1100"
+                    android:visibility="visible"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_categories"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:drawableLeft="@drawable/ic_airport"
-                    android:drawablePadding="10dp"
-                    android:textSize="13sp"
-                    android:fontFamily="@font/roboto"
-                    android:text="STANDRAD : 22 Jul, Wed 6:30 AM - 8:30 AM"
-                    android:padding="10dp"/>
-            </RelativeLayout>
-            <com.asura.library.views.PosterSlider
-                android:id="@+id/poster_slider"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                app:defaultIndicator="circle"
-                app:layout_constraintTop_toTopOf="parent"
-                android:fitsSystemWindows="true"
-                app:hideIndicators="false"
-                app:imageSlideInterval="5000"
-                app:loopSlides="true"
-                android:background="@drawable/background_login"
-                android:visibility="gone"/>
-            <com.daimajia.slider.library.Indicators.PagerIndicator
-                android:id="@+id/custom_indicator2"
-                style="@style/AndroidImageSlider_Corner_Oval_Orange"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="0dp" />
+                    android:visibility="visible"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorWhite">
+                        <RelativeLayout
+                            android:id="@id/rl_category"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:orientation="horizontal"
+                            android:background="@drawable/category">
+                            <TextView
+                                android:id="@+id/tv_category"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:fontFamily="serif"
+                                android:text="Shop By Category"
+                                android:gravity="center"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="13sp"/>
+                        </RelativeLayout>
 
-            <com.daimajia.slider.library.SliderLayout
-                android:id="@+id/fh_slider"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_marginTop="10dp"
-                custom:auto_cycle="true"
-                custom:pager_animation="Accordion"
-                custom:pager_animation_span="1100"
-                android:visibility="visible"/>
+                        <TextView
+                            android:id="@+id/tv_view_category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorWhite"
+                            android:paddingRight="10dp"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:gravity="center"
+                            android:paddingLeft="10dp"
+                            android:layout_margin="10dp"
+                            android:text="View All"
+                            android:fontFamily="@font/roboto"
+                            android:background="@drawable/button_red"
+                            android:layout_alignParentRight="true"
+                            android:textSize="@dimen/text_size"
+                            android:visibility="gone"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_category"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:fastScrollEnabled="false"
+                            app:spanCount="2"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_below="@+id/rl_category"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+                <com.daimajia.slider.library.SliderLayout
+                    android:id="@+id/ad_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="10dp"
+                    custom:auto_cycle="true"
+                    custom:pager_animation="Accordion"
+                    custom:pager_animation_span="1100"
+                    android:visibility="visible"/>
+            </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_categories"
+                android:id="@+id/ll_pastOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/iv_pastOrder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/rl_pastOrder"
+                        android:layout_alignTop="@+id/rl_pastOrder"
+                        android:background="@color/colorWhite"/>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_past"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/category"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="From Your Past Orders"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="serif"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="13sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_view_past"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorWhite"
+                            android:paddingRight="10dp"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="10dp"
+                            android:layout_margin="10dp"
+                            android:text="View All"
+                            android:fontFamily="@font/roboto"
+                            android:background="@drawable/button_red"
+                            android:layout_alignParentRight="true"
+                            android:textSize="@dimen/text_size"
+                            android:visibility="gone"/>
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rl_pastOrder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <RelativeLayout
+                                android:layout_width="130dp"
+                                android:layout_height="300dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="13dp">
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:elevation="10dp"
+                                    android:layout_margin="5dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="200dp"
+                                        android:gravity="center"
+                                        android:text="From Your Past Orders"
+                                        android:fontFamily="serif"
+                                        android:textColor="@color/colorBlack"
+                                        android:padding="20dp" />
+                                </androidx.cardview.widget.CardView>
+                            </RelativeLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_past"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="7dp"
+                            android:paddingBottom="7dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    </RelativeLayout>
+                </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_discount"
+                android:layout_width="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/background_login"
+                android:layout_marginTop="5dp"
+                android:layout_height="160dp"/>
+
+            <LinearLayout
+                android:id="@+id/ll_recently"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/iv_recentlyView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/rl_recently"
+                        android:layout_alignTop="@+id/rl_recently"
+                        android:background="@color/colorWhite"/>
+                    <RelativeLayout
+                        android:id="@+id/ll_new_arrival"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/category"
+                        android:visibility="gone">
+                        <TextView
+                            android:id="@+id/tv_recently"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_centerHorizontal="true"
+                            android:text="Recently Viewed"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="serif"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="13sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_view_recently_product"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorWhite"
+                            android:paddingRight="10dp"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="10dp"
+                            android:layout_margin="10dp"
+                            android:text="View All"
+                            android:fontFamily="@font/roboto"
+                            android:background="@drawable/button_red"
+                            android:layout_alignParentRight="true"
+                            android:textSize="@dimen/text_size"
+                            android:visibility="gone"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rl_recently"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:layout_width="130dp"
+                            android:layout_height="300dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="13dp">
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:elevation="10dp"
+                                android:layout_margin="5dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="200dp"
+                                    android:gravity="center"
+                                    android:text="Recently Viewed"
+                                    android:fontFamily="serif"
+                                    android:textColor="@color/colorBlack"
+                                    android:padding="20dp" />
+                            </androidx.cardview.widget.CardView>
+                        </RelativeLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_top_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="7dp"
+                            android:paddingBottom="7dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:orientation="horizontal"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_offer"
+                android:layout_width="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/background_login"
+                android:layout_marginTop="5dp"
+                android:layout_height="160dp"/>
+            <LinearLayout
+                android:id="@+id/ll_bestSelling"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/iv_bestSelling"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/rl_best_selling"
+                        android:layout_alignTop="@+id/rl_best_selling"
+                        android:background="@color/colorWhite"/>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_best"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/category"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_centerHorizontal="true"
+                            android:text="Best Selling Products"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="serif"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="13sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_view_best"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorWhite"
+                            android:paddingRight="10dp"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="10dp"
+                            android:layout_margin="10dp"
+                            android:text="View All"
+                            android:fontFamily="@font/roboto"
+                            android:background="@drawable/button_red"
+                            android:layout_alignParentRight="true"
+                            android:textSize="@dimen/text_size"
+                            android:visibility="gone"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_best_selling"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:layout_width="130dp"
+                            android:layout_height="300dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="13dp">
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:elevation="10dp"
+                                android:layout_margin="5dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="200dp"
+                                    android:gravity="center"
+                                    android:text="Best Selling Products"
+                                    android:fontFamily="serif"
+                                    android:textColor="@color/colorBlack"
+                                    android:padding="20dp" />
+                            </androidx.cardview.widget.CardView>
+                        </RelativeLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_health"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="7dp"
+                            android:paddingBottom="7dp"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_brands"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="visible"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
-                    android:background="@drawable/category1">
+                    android:background="@color/colorWhite">
+                    <RelativeLayout
+                        android:id="@+id/rl_brand"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/category">
+                        <TextView
+                            android:id="@+id/tv_brand"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:fontFamily="serif"
+                            android:text="Shop By Brands"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="13sp"/>
+                    </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/tv_category"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_margin="10dp"
-                        android:fontFamily="serif"
-                        android:text="Shop By Category"
-                        android:gravity="center"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="13sp"/>
-
-                    <TextView
-                        android:id="@+id/tv_view_category"
+                        android:id="@+id/tv_view_brand"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorWhite"
@@ -150,284 +524,20 @@
                         android:visibility="gone"/>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_category"
+                        android:id="@+id/rv_brand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:fastScrollEnabled="false"
-                        app:spanCount="2"
+                        app:spanCount="3"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:layout_below="@+id/tv_category"
+                        android:layout_below="@+id/rl_brand"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
                 </RelativeLayout>
 
             </LinearLayout>
-            <com.daimajia.slider.library.SliderLayout
-                android:id="@+id/ad_slider"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_marginTop="10dp"
-                custom:auto_cycle="true"
-                custom:pager_animation="Accordion"
-                custom:pager_animation_span="1100"
-                android:visibility="visible"/>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_pastOrder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/purple"
-                android:paddingBottom="10dp">
-
-                <RelativeLayout
-                    android:id="@+id/rl_past"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="From Your Past Orders"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:fontFamily="serif"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="13sp"/>
-
-                    <TextView
-                        android:id="@+id/tv_view_past"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorWhite"
-                        android:paddingRight="10dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:paddingLeft="10dp"
-                        android:layout_margin="10dp"
-                        android:text="View All"
-                        android:fontFamily="@font/roboto"
-                        android:background="@drawable/button_red"
-                        android:layout_alignParentRight="true"
-                        android:textSize="@dimen/text_size"
-                        android:visibility="gone"/>
-
-                </RelativeLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_past"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl_past"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/iv_discount"
-            android:layout_width="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/background_login"
-            android:layout_marginTop="5dp"
-            android:layout_height="160dp"/>
-        <LinearLayout
-            android:id="@+id/ll_recently"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical"
-            android:visibility="visible">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/orange"
-                android:paddingBottom="10dp">
-
-                <RelativeLayout
-                    android:id="@+id/ll_new_arrival"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/tv_recently"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_centerHorizontal="true"
-                        android:text="Recently Viewed"
-                        android:layout_centerVertical="true"
-                        android:fontFamily="serif"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="13sp"/>
-
-                    <TextView
-                        android:id="@+id/tv_view_recently_product"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorWhite"
-                        android:paddingRight="10dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:paddingLeft="10dp"
-                        android:layout_margin="10dp"
-                        android:text="View All"
-                        android:fontFamily="@font/roboto"
-                        android:background="@drawable/button_red"
-                        android:layout_alignParentRight="true"
-                        android:textSize="@dimen/text_size"
-                        android:visibility="gone"/>
-                </RelativeLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_top_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ll_new_arrival"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="horizontal"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/iv_offer"
-            android:layout_width="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/background_login"
-            android:layout_marginTop="5dp"
-            android:layout_height="160dp"/>
-        <LinearLayout
-            android:id="@+id/ll_bestSelling"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/skyblue"
-                android:paddingBottom="10dp">
-
-                <RelativeLayout
-                    android:id="@+id/rl_best"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_centerHorizontal="true"
-                        android:text="Best Selling Products"
-                        android:layout_centerVertical="true"
-                        android:fontFamily="serif"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="13sp"/>
-
-                    <TextView
-                        android:id="@+id/tv_view_best"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorWhite"
-                        android:paddingRight="10dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:paddingLeft="10dp"
-                        android:layout_margin="10dp"
-                        android:text="View All"
-                        android:fontFamily="@font/roboto"
-                        android:background="@drawable/button_red"
-                        android:layout_alignParentRight="true"
-                        android:textSize="@dimen/text_size"
-                        android:visibility="gone"/>
-
-                </RelativeLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_health"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl_best"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ll_brands"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:visibility="visible"
-            android:orientation="vertical">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:background="@drawable/category1">
-
-                <TextView
-                    android:id="@+id/tv_brand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:fontFamily="serif"
-                    android:text="Shop By Brands"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="13sp"/>
-
-                <TextView
-                    android:id="@+id/tv_view_brand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:paddingRight="10dp"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:layout_margin="10dp"
-                    android:text="View All"
-                    android:fontFamily="@font/roboto"
-                    android:background="@drawable/button_red"
-                    android:layout_alignParentRight="true"
-                    android:textSize="@dimen/text_size"
-                    android:visibility="gone"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_brand"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:fastScrollEnabled="false"
-                    app:spanCount="3"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_below="@+id/tv_brand"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-    </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     <ProgressBar
         android:id="@+id/progressBar"

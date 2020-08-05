@@ -49,7 +49,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     @Override
     public int getItemCount() {
         if(source== AppConstant.FROM_HOME_CATEGORY_PRODUCT)
-                return  6;
+            return  mdata.size();
         else
             return mdata.size();
     }

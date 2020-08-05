@@ -10,10 +10,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.app.R;
-import com.app.features.cart.CartFragment;
-import com.app.features.checkout.CheckOutFragment;
-
-import static com.app.features.cart.CartActivity.cartContainer;
 
 public class AddressActivity extends AppCompatActivity {
 

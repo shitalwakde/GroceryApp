@@ -4,12 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,14 +19,20 @@ import retrofit.client.Response;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +51,7 @@ import com.app.constant.AppConstant;
 import com.app.controller.AppController;
 import com.app.databinding.ActivityMainBinding;
 import com.app.features.address.BottomSheetLocationFragment;
+import com.app.features.home.HomeFragment;
 import com.app.features.home.model.Brand;
 import com.app.features.home.model.Product;
 import com.app.features.home.model.SubCategory;
@@ -55,9 +62,9 @@ import com.app.features.notification.NotificationActivity;
 import com.app.features.product.BrandFragment;
 import com.app.features.productdetail.ProductDetailActivity;
 import com.app.features.home.model.Category;
-import com.app.features.home.HomeFragment;
 import com.app.features.product.ProductFragment;
 import com.app.features.profile.ProfileActivity;
+import com.app.features.refer.ReferFriendActivity;
 import com.app.features.wallet.WalletActivity;
 import com.app.util.AppUtils;
 import com.app.util.PrefUtil;
@@ -67,12 +74,17 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.JsonObject;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -81,10 +93,12 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.schibstedspain.leku.LocationPickerActivity;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import static android.provider.ContactsContract.CommonDataKinds.Email.ADDRESS;
 import static com.schibstedspain.leku.LocationPickerActivityKt.LATITUDE;
@@ -96,7 +110,8 @@ import static com.schibstedspain.leku.LocationPickerActivityKt.TRANSITION_BUNDLE
 import static com.schibstedspain.leku.LocationPickerActivityKt.ZIPCODE;
 
 
-public class MainActivity extends BaseActivity implements DrawerItemClickLisener, HomePageListener, MultiplePermissionsListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends BaseActivity implements DrawerItemClickLisener, HomePageListener, MultiplePermissionsListener,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG_DRAWER_FRAGMENT = "drawerFragment";
     public static TextView tv;
     private ActivityMainBinding mView;
@@ -112,7 +127,15 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
     public static final int MAP_POIS_BUTTON_REQUEST_CODE = 2;
     BottomSheetLocationFragment bottomSheetLocationFragment;
     private static final int MY_PERMISSIONS = 65;
-
+    public static double latitudePickUp = 0.0;
+    public static double longitudePickUp = 0.0;
+    LocationManager manager;
+    Location location;
+    LatLng currentLocation;
+    FusedLocationProviderClient fusedLocationClient;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    NavMenu navMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +146,30 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
         setSupportActionBar(mView.included.toolbar);
         NavCategoryFragment.categories = new ArrayList<>();
         NavCategoryFragment.categorySubcat = new HashMap<>();
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(20 * 1000);
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                //for (Location location : locationResult.getLocations()) {
+                    if (locationResult.getLocations()!=null && locationResult.getLocations().size()>0) {
+                        location=locationResult.getLocations().get(0);
+                        latitudePickUp = location.getLatitude();
+                        longitudePickUp = location.getLongitude();
+                        editLocation(latitudePickUp, longitudePickUp);
+                        fusedLocationClient.removeLocationUpdates(locationCallback);
+
+
+                    }
+               // }
+            }
+        };
         getCategorySubCategory();
 
         containNav = R.id.container_nav;
@@ -191,6 +238,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                checkLocationPermission(MainActivity.this);
             }
         });
+       // AppUtils.changeColor("#FF0000",mView.included.toolbar,null,null,ll_search);
 
     }
 
@@ -212,10 +260,48 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
 
     }
 
+    public void getLocation() {
+        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            Log.w("TAG", "inside location != null");
+                            latitudePickUp = location.getLatitude();
+                            longitudePickUp = location.getLongitude();
+                            editLocation(latitudePickUp, longitudePickUp);
+                        } else {
+//                            Log.w("TAG", "waiting for location");
+ //                           Toast.makeText(MainActivity.this, "waiting for location", Toast.LENGTH_SHORT).show();
+                            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
 
-    private void editLocation(){
+                        }
+                    }
+                });
+
+    }
+
+
+    private void editLocation(double latitudePickUp, double longitudePickUp){
+        if(bottomSheetLocationFragment != null){
+            bottomSheetLocationFragment.dismiss();
+        }
         Intent locationPickerIntent = new  LocationPickerActivity.Builder()
-                .withLocation(21.1458, 79.0882)
+                .withLocation(latitudePickUp, longitudePickUp)
                 .withGeolocApiKey("AIzaSyCL43mx5EANHEYYPv71t-1SMFgqloqmSCs")
                 .withSearchZone("in")
                 //.withSearchZone(SearchZoneRect(LatLng(26.525467, -18.910366), LatLng(43.906271, 5.394197)))
@@ -233,6 +319,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
 
         startActivityForResult(locationPickerIntent,
                 MainActivity.MAP_BUTTON_REQUEST_CODE);
+
     }
 
     @Override
@@ -276,9 +363,13 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                 break;
             case FAQs:
                 break;
-            case HelpCenter:
+            case Wallet:
                 Intent intent2 = new Intent(MainActivity.this, WalletActivity.class);
                 startActivity(intent2);
+                break;
+            case ReferFriend:
+                Intent intent4 = new Intent(MainActivity.this, ReferFriendActivity.class);
+                startActivity(intent4);
                 break;
             case Logout:
                 AlertDialog.Builder builder=new AlertDialog.Builder(this);
@@ -329,7 +420,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                         startActivity(intent1);
                     }else{
                         AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage("Please login to see my orders");
+                        builder.setMessage("Please login to continue");
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -352,7 +443,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                         startActivity(intent2);
                     }else{
                         AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage("Please login to see my profile");
+                        builder.setMessage("Please login to continue");
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -377,7 +468,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                         startActivity(intent3);
                     }else{
                         AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage("Please login to see my wallet");
+                        builder.setMessage("Please login to continue");
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -550,20 +641,19 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK) {
                 String result = data.getStringExtra("result");
-                editLocation();
+                //editLocation();
+                getLocation();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 if (Build.VERSION.SDK_INT >= 23) {
                     takePermissionsForMarsh();
                 }
                 AlertDialog.Builder builder=new AlertDialog.Builder(this);
-                builder.setMessage("Products and offers are location specific");
+                builder.setMessage("Products and offers are location specific, Please turn on your location to continue");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (Build.VERSION.SDK_INT >= 23) {
-                            takePermissionsForMarsh();
-                        }
+                        EnableGPSAutoMatically();
                         dialog.dismiss();
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -582,7 +672,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
         if( multiplePermissionsReport.areAllPermissionsGranted()) {
             EnableGPSAutoMatically();
         }else{
-            //proAppUtils.setAddress("Laxminagar, Nagpur - 440022");
+            //AppUtils.setAddress("Laxminagar, Nagpur - 440022");
         }
     }
 
@@ -619,7 +709,8 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                             .getLocationSettingsStates();
                     switch (status.getStatusCode()) {
                         case LocationSettingsStatusCodes.SUCCESS:
-                            editLocation();
+                            //editLocation();
+                            getLocation();
                             break;
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                             try {

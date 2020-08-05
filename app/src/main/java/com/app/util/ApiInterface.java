@@ -7,6 +7,7 @@ import com.app.features.home.model.HomeModel;
 import com.app.features.home.model.Product;
 import com.app.features.login.ModLogin;
 import com.app.features.navmenu.WishList;
+import com.app.features.order.OrderList;
 import com.app.features.order.OrderModel;
 import com.app.features.order.ReviewModel;
 import com.app.features.productdetail.ProductDetailModel;
@@ -60,6 +61,10 @@ public interface ApiInterface {
     void getProductDetail(@Body JsonObject jsonObject, Callback<Product> signUpModelCallback);
 
 
+    @POST("/Api/addLikeDislike")
+    void addLikeDislike(@Body JsonObject jsonObject, Callback<Product> signUpModelCallback);
+
+
     @POST("/Api/addToCart")
     void addToCart(@Body JsonObject jsonObject, Callback<Product> signUpModelCallback);
 
@@ -105,6 +110,9 @@ public interface ApiInterface {
 
     @POST("/Api/orderCancel")
     void orderCancel(@Body JsonObject jsonObject, Callback<OrderModel> signUpModelCallback);
+
+    @POST("/Api/productCancel")
+    void productCancel(@Body JsonObject jsonObject, Callback<OrderModel> signUpModelCallback);
 
 
     @POST("/Api/viewAllProduct")

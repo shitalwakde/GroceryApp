@@ -3,40 +3,49 @@ package com.app.activities;
 import com.app.constant.MenuType;
 
 public class NavMenu {
-    private MenuType menu;
-    private String title;
-    private int icon;
+  private MenuType menu;
+  private String title;
+  private int icon;
+  boolean highlight =false;
 
-    public NavMenu() {
-    }
+  public NavMenu() {
+  }
 
-    public NavMenu(MenuType menu, String title, int icon) {
-        this.menu = menu;
-        this.title = title;
-        this.icon = icon;
-    }
+  public NavMenu(MenuType menu, String title, int icon) {
+    this.menu = menu;
+    this.title = title;
+    this.icon = icon;
+  }
 
-    public MenuType getMenu() {
-        return menu;
-    }
+  public boolean isHighlight() {
+    return highlight;
+  }
 
-    public void setMenu(MenuType menu) {
-        this.menu = menu;
-    }
+  public void setHighlight(boolean highlight) {
+    this.highlight = highlight;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public MenuType getMenu() {
+    return menu;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  public void setMenu(MenuType menu) {
+    this.menu = menu;
+  }
 
-    public int getIcon() {
-        return icon;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public void setIcon(int icon) {
-        this.icon = icon;
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public int getIcon() {
+    return icon;
+  }
+
+  public void setIcon(int icon) {
+    this.icon = icon;
+  }
 }

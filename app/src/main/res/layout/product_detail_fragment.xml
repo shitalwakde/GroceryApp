@@ -131,13 +131,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/tv_pr_sub_name"
-                                android:layout_marginTop="5dp">
+                                android:layout_marginTop="5dp"
+                                android:visibility="gone">
 
                                 <RelativeLayout
                                     android:id="@+id/rl_star"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:background="@color/greentrans"
+                                    android:background="@color/purpletrans"
                                     android:padding="4dp">
 
                                     <TextView
@@ -156,6 +157,7 @@
                                         android:layout_height="18dp"
                                         android:layout_marginRight="2dp"
                                         android:layout_toRightOf="@+id/tv_star"
+                                        android:tint="@color/colorPrimaryDark"
                                         android:src="@drawable/ic_star" />
                                 </RelativeLayout>
 
@@ -471,210 +473,260 @@
                 </RelativeLayout>
 
             </LinearLayout>
-
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/rl_review"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/colorWhite"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <RelativeLayout
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/ll_review_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_rate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto"
-                        android:text="Ratings &amp; Reviews"
-                        android:textColor="@color/colorBlack" />
-
-                    <TextView
-                        android:id="@+id/tv_rate_product"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:background="@color/colorPrimaryDark"
-                        android:fontFamily="@font/roboto"
-                        android:padding="5dp"
-                        android:text="Rate Product"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="13sp"
-                        android:visibility="gone" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <RelativeLayout
-                        android:id="@+id/rl_rating_head"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_rate"
-                        android:layout_marginTop="10dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto"
+                            android:text="Ratings &amp; Reviews"
+                            android:textColor="@color/colorBlack" />
+
+                        <TextView
+                            android:id="@+id/tv_rate_product"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/colorPrimaryDark"
+                            android:fontFamily="@font/roboto"
+                            android:padding="5dp"
+                            android:text="Rate Product"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="13sp"
+                            android:visibility="gone" />
 
                         <RelativeLayout
-                            android:id="@+id/rl_star_rate"
-                            android:layout_width="70dp"
+                            android:id="@+id/rl_rating_head"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_rate"
+                            android:layout_marginTop="10dp">
+
+                            <RelativeLayout
+                                android:id="@+id/rl_star_rate"
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:background="@drawable/bg_green"
+                                android:padding="5dp">
+
+                                <TextView
+                                    android:id="@+id/tv_star1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="5dp"
+                                    android:fontFamily="@font/roboto"
+                                    android:text="4.5"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="15dp" />
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_toRightOf="@+id/tv_star1"
+                                    android:src="@drawable/ic_star_white" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/tv_total_rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_toRightOf="@+id/rl_star_rate"
+                                android:fontFamily="@font/roboto"
+                                android:text="18 reviews"
+                                android:textSize="13sp" />
+                        </RelativeLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_rating"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/rl_rating_head"
+                            android:orientation="vertical"
+                            android:visibility="gone"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_rate"
+                    android:layout_below="@+id/ll_review_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_rating_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rl_rating_head">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_star_list"
+                            android:layout_width="40dp"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="5dp"
                             android:background="@drawable/bg_green"
                             android:padding="5dp">
 
                             <TextView
-                                android:id="@+id/tv_star1"
+                                android:id="@+id/tv_star_line"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="5dp"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginRight="1dp"
                                 android:fontFamily="@font/roboto"
                                 android:text="4.5"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="15dp" />
+                                android:textSize="12dp" />
 
                             <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_toRightOf="@+id/tv_star1"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_toRightOf="@+id/tv_star_line"
                                 android:src="@drawable/ic_star_white" />
                         </RelativeLayout>
 
                         <TextView
-                            android:id="@+id/tv_total_rating"
+                            android:id="@+id/rating_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_toRightOf="@+id/rl_star_rate"
+                            android:layout_toRightOf="@+id/rl_star_list"
                             android:fontFamily="@font/roboto"
-                            android:text="113 ratings and 18 reviews"
+                            android:text="Just Wow !"
+                            android:textColor="@color/colorBlack"
                             android:textSize="13sp" />
                     </RelativeLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_rating"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/rl_rating_head"
-                        android:orientation="vertical"
-                        android:visibility="gone"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_rate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <RelativeLayout
-                    android:id="@+id/rl_rating_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl_rating_head">
-
                     <RelativeLayout
-                        android:id="@+id/rl_star_list"
-                        android:layout_width="40dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/bg_green"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:id="@+id/tv_star_line"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="2dp"
-                            android:layout_marginRight="1dp"
-                            android:fontFamily="@font/roboto"
-                            android:text="4.5"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="12dp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_toRightOf="@+id/tv_star_line"
-                            android:src="@drawable/ic_star_white" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/rating_title"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/rl_rating_comment"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_toRightOf="@+id/rl_star_list"
-                        android:fontFamily="@font/roboto"
-                        android:text="Just Wow !"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="13sp" />
-                </RelativeLayout>
+                        android:layout_below="@+id/rl_rating_list">
+                        <TextView
+                            android:id="@+id/rating_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto"
+                            android:text="I had a great experiance"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/rl_rating_comment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl_rating_list">
-
-                    <TextView
-                        android:id="@+id/rating_comment"
+                    <RelativeLayout
+                        android:id="@+id/rl_thumb"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto"
-                        android:text="I had a great experiance"
-                        android:textSize="12sp" />
-                </RelativeLayout>
+                        android:layout_below="@+id/rl_rating_comment"
+                        android:layout_marginTop="10dp">
+                        <ImageView
+                            android:id="@+id/iv_thumb"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/thumb"/>
+                        <TextView
+                            android:id="@+id/tv_reviewLike"
+                            android:layout_toRightOf="@+id/iv_thumb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto"
+                            android:layout_marginLeft="10dp"
+                            android:text="Like"
+                            android:textSize="13sp" />
+                        <TextView
+                            android:id="@+id/tv_reviewCount"
+                            android:layout_toRightOf="@+id/tv_reviewLike"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto"
+                            android:layout_marginLeft="10dp"
+                            android:text="0"
+                            android:textSize="13sp" />
+                    </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/rl_view_all_rating"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/rv_rating"
-                    android:layout_marginTop="10dp"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/tv_view_all"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_view_all_rating"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/roboto"
-                        android:text="All 7 reviewes"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="12sp" />
+                        android:layout_below="@+id/rv_rating"
+                        android:padding="10dp">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/ic_arrow_right" />
-                </RelativeLayout>
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_view_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="@font/roboto"
+                            android:text="All 7 reviewes"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:src="@drawable/ic_arrow_right" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:id="@+id/ll_similar_product"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/purple"
-                android:orientation="vertical"
-                android:padding="10dp">
-
+                android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/iv_similarProduct"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/rl_similar_product"
+                        android:layout_alignTop="@+id/rl_similar_product"
+                        android:background="@color/colorWhite"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_similar"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/category"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
                         android:fontFamily="@font/roboto"
                         android:text="Similar Products"
-                        android:textColor="@color/colorWhite" />
+                        android:textColor="@color/colorBlack" />
 
                     <TextView
                         android:id="@+id/tv_view_similar_product"
@@ -688,19 +740,47 @@
                         android:paddingRight="10dp"
                         android:paddingBottom="4dp"
                         android:text="View All"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="@color/colorBlack"
                         android:textSize="@dimen/text_size"
                         android:textStyle="bold"
                         android:visibility="gone" />
                 </RelativeLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_related_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                <RelativeLayout
+                        android:id="@+id/rl_similar_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:layout_width="130dp"
+                        android:layout_height="300dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="13dp">
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="10dp"
+                            android:layout_margin="5dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="200dp"
+                                android:gravity="center"
+                                android:text="Similar Products"
+                                android:fontFamily="serif"
+                                android:textColor="@color/colorBlack"
+                                android:padding="20dp" />
+                        </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_related_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="7dp"
+                        android:paddingBottom="7dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    </RelativeLayout>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -708,18 +788,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/orange"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/iv_recentlyProduct"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/rl_recent_product"
+                        android:layout_alignTop="@+id/rl_recent_product"
+                        android:background="@color/colorWhite"/>
 
+                <RelativeLayout
+                    android:id="@+id/rl_recent"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/category"
+                    android:visibility="gone">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
                         android:fontFamily="@font/roboto"
                         android:text="Recenly Viewed"
                         android:textColor="@color/colorBlack" />
@@ -741,16 +834,43 @@
                         android:textStyle="bold"
                         android:visibility="gone" />
                 </RelativeLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_related_img1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    <RelativeLayout
+                        android:id="@+id/rl_recent_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:layout_width="130dp"
+                            android:layout_height="300dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="13dp">
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:elevation="10dp"
+                                android:layout_margin="5dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="200dp"
+                                    android:gravity="center"
+                                    android:text="Recenly Viewed"
+                                    android:fontFamily="serif"
+                                    android:textColor="@color/colorBlack"
+                                    android:padding="20dp" />
+                            </androidx.cardview.widget.CardView>
+                        </RelativeLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_related_img1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="7dp"
+                            android:paddingBottom="7dp"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    </RelativeLayout>
+                </RelativeLayout>
             </LinearLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

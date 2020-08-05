@@ -1,4 +1,4 @@
-package com.app.features.checkout;
+package com.app.features.address;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -15,8 +16,6 @@ import android.widget.Toast;
 
 import com.app.R;
 import com.app.activities.MainActivity;
-import com.app.features.address.AddressActivity;
-import com.app.features.address.AddressModel;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
 import com.google.gson.Gson;
@@ -44,6 +43,7 @@ public class CheckOutFragment extends Fragment {
     TextView tv_order, tv_change;
     FragmentManager fragmentManager;
     ArrayList<String> cartStringList = new ArrayList<>();
+    String isWallet="";
 
     String deliveryId;
     @BindView(R.id.tv_name)
@@ -80,6 +80,12 @@ public class CheckOutFragment extends Fragment {
     TextView tvSlot;
     @BindView(R.id.rl_slot)
     RelativeLayout rlSlot;
+    @BindView(R.id.cbWallet)
+    CheckBox cbWallet;
+    @BindView(R.id.tv_wallet)
+    TextView tvWallet;
+    @BindView(R.id.ll_wallet)
+    LinearLayout llWallet;
 
     public CheckOutFragment(String deliveryId) {
         this.deliveryId = deliveryId;
@@ -134,7 +140,7 @@ public class CheckOutFragment extends Fragment {
     }
 
 
-    public void showSlotDialog(){
+    public void showSlotDialog() {
         final Dialog dialog1 = new Dialog(getActivity());
         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog1.setCancelable(true);
@@ -225,7 +231,7 @@ public class CheckOutFragment extends Fragment {
         }
 
         if (addressModel.getGst().equals("0")) {
-            tvGst.setText("NONE");
+            tvGst.setText("-  ");
         } else {
             tvGst.setText("\u20B9 " + addressModel.getGst());
         }
@@ -246,7 +252,11 @@ public class CheckOutFragment extends Fragment {
         jsonObject.addProperty("deliveryId", addressModel.getDeliveryId());
         jsonObject.addProperty("totalFinalAmount", addressModel.getTotalFinalAmount());
         jsonObject.addProperty("paymentType", "COD");
-
+        if(cbWallet.isChecked()){
+            isWallet = "Yes";
+        }else{
+            isWallet = "No";
+        }
         Gson gsonAssignee = new GsonBuilder().create();
         JsonArray catList = gsonAssignee.toJsonTree(cartStringList).getAsJsonArray();
         jsonObject.add("cardIds", catList);

@@ -35,6 +35,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -54,7 +55,10 @@ public class HealthAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public HealthAdapter(ProductListener lisener, List<Product> mdata, ProductListener viewLisener, String type) {
         this.lisener = lisener;
-        this.mdata = mdata;
+        this.mdata = new ArrayList<>();
+        this.mdata.add(null);
+        this.mdata.addAll(mdata);
+        //this.mdata = mdata;
         this.viewLisener = viewLisener;
         this.type = type;
     }
@@ -71,7 +75,7 @@ public class HealthAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder = null;
-        if(mdata.size()==4){
+        if(mdata.size()==5){
             if(viewType==HALF_VIEW) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.health_adapter_view_more, parent, false);
                 viewHolder=new ViewMoreViewHolder(view);
@@ -94,75 +98,95 @@ public class HealthAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if(baseViewHolder instanceof MyViewHolder) {
             MyViewHolder holder= (MyViewHolder) baseViewHolder;
 
-            if(category.getMaxProductQuantity().equals("0")){
-                holder.rl_outOfStock.setVisibility(View.VISIBLE);
-                holder.tv_notify.setVisibility(View.VISIBLE);
-                //holder.rl_view.setVisibility(View.GONE);
-            }else {
-                holder.rl_outOfStock.setVisibility(View.GONE);
-                holder.tv_notify.setVisibility(View.GONE);
-                holder.rl_view.setVisibility(View.VISIBLE);
-            }
-
-            Picasso.with(holder.itemView.getContext()).load(category.getImage()).into(holder.iv_best);
-            holder.tv_pr_name.setText(category.getName());
-            holder.tv_pr_sub_name.setText(category.getBrandName());
-            holder.tv_star.setText("4.5");
-            holder.tv_rating.setText(category.getRate() + " Rating");
-            holder.tv_discount_price.setText("\u20B9 " + category.getFinalAmount());
-
-            if (category.isLoading()) {
-                holder.rl_addCartContainer.setVisibility(View.INVISIBLE);
-                holder.progressBar.setVisibility(View.VISIBLE);
-            } else {
-                holder.rl_addCartContainer.setVisibility(View.VISIBLE);
-                holder.progressBar.setVisibility(View.GONE);
-            }
-
-            if (category.getDiscount().equals("0")) {
-                holder.tv_price.setVisibility(View.GONE);
-                holder.rl_discount.setVisibility(View.GONE);
-            } else {
-                holder.tv_price.setVisibility(View.VISIBLE);
-                holder.rl_discount.setVisibility(View.VISIBLE);
-                holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
-                        | Paint.STRIKE_THRU_TEXT_FLAG);
-                holder.tv_price.setText("\u20B9 " + category.getGrossAmount());
-                holder.txtDiscountOff.setText(category.getDiscount() + "%");
-            }
-
-            if (category.getCartQuantityInteger() <= 0) {
-                holder.tv_add.setVisibility(View.VISIBLE);
-                holder.ll_quantity.setVisibility(View.GONE);
-            } else {
-                holder.ll_quantity.setVisibility(View.VISIBLE);
-                holder.tv_add.setVisibility(View.GONE);
-                holder.tv_quantity.setText(String.valueOf(category.getCartQuantityInteger()));
-            }
-
-            if (category.getIsInWishList().equalsIgnoreCase("no")) {
-                holder.iv_unwish.setImageResource(R.drawable.ic_heart);
-            } else {
-                holder.iv_unwish.setImageResource(R.drawable.ic_heart_red);
-            }
-
-
-            if (category.getIsVarient().equals("Yes")) {
-                holder.rl_weight.setVisibility(View.VISIBLE);
-                holder.tvPiece.setVisibility(View.GONE);
-                holder.tv_peice.setText(category.getQuantity());
-            } else {
-                holder.rl_weight.setVisibility(View.GONE);
-                holder.tvPiece.setVisibility(View.VISIBLE);
-                holder.tvPiece.setText(category.getQuantity());
-            }
-
-            holder.rl_weight.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDialog(category.getVarientList(), holder, category);
+            if(category == null){
+                holder.cardView.setVisibility(View.INVISIBLE);
+            }else{
+                holder.cardView.setVisibility(View.VISIBLE);
+                if(category.getMaxProductQuantity().equals("0")){
+                    holder.rl_outOfStock.setVisibility(View.VISIBLE);
+                    holder.tv_notify.setVisibility(View.VISIBLE);
+                    //holder.rl_view.setVisibility(View.GONE);
+                }else {
+                    holder.rl_outOfStock.setVisibility(View.GONE);
+                    holder.tv_notify.setVisibility(View.GONE);
+                    holder.rl_view.setVisibility(View.VISIBLE);
                 }
-            });
+
+                Picasso.with(holder.itemView.getContext()).load(category.getImage()).into(holder.iv_best);
+                holder.tv_pr_name.setText(category.getName());
+                holder.tv_pr_sub_name.setText(category.getBrandName());
+                if(category.getRate().equals("")){
+                    holder.tv_rating.setVisibility(View.INVISIBLE);
+                }else{
+                    holder.tv_rating.setVisibility(View.VISIBLE);
+                    holder.tv_rating.setText(category.getRate() + " Ratings");
+                }
+
+                holder.tv_discount_price.setText("\u20B9 " + category.getFinalAmount());
+
+                if (category.isLoading()) {
+                    holder.rl_addCartContainer.setVisibility(View.INVISIBLE);
+                    holder.progressBar.setVisibility(View.VISIBLE);
+                } else {
+                    holder.rl_addCartContainer.setVisibility(View.VISIBLE);
+                    holder.progressBar.setVisibility(View.GONE);
+                }
+
+                if (category.getDiscount().equals("0")) {
+                    holder.tv_price.setVisibility(View.GONE);
+                    holder.rl_discount.setVisibility(View.GONE);
+                } else {
+                    holder.tv_price.setVisibility(View.VISIBLE);
+                    holder.rl_discount.setVisibility(View.VISIBLE);
+                    holder.tv_price.setPaintFlags(holder.tv_price.getPaintFlags()
+                            | Paint.STRIKE_THRU_TEXT_FLAG);
+                    holder.tv_price.setText("\u20B9 " + category.getGrossAmount());
+                    holder.txtDiscountOff.setText(category.getDiscount() + "%");
+                }
+
+            /*if(category.getRating() == 0){
+                holder.rl_rating.setVisibility(View.INVISIBLE);
+            }else{
+                holder.rl_rating.setVisibility(View.VISIBLE);
+                holder.tv_star.setText(String.valueOf(category.getRating()));
+            }*/
+                holder.tv_star.setText(String.valueOf(category.getRating()));
+
+                if (category.getCartQuantityInteger() <= 0) {
+                    holder.tv_add.setVisibility(View.VISIBLE);
+                    holder.ll_quantity.setVisibility(View.GONE);
+                } else {
+                    holder.ll_quantity.setVisibility(View.VISIBLE);
+                    holder.tv_add.setVisibility(View.GONE);
+                    holder.tv_quantity.setText(String.valueOf(category.getCartQuantityInteger()));
+                }
+
+                if (category.getIsInWishList().equalsIgnoreCase("no")) {
+                    holder.iv_unwish.setImageResource(R.drawable.ic_heart);
+                } else {
+                    holder.iv_unwish.setImageResource(R.drawable.ic_heart_red);
+                }
+
+
+                if (category.getIsVarient().equals("Yes")) {
+                    holder.rl_weight.setVisibility(View.VISIBLE);
+                    holder.tvPiece.setVisibility(View.GONE);
+                    holder.tv_peice.setText(category.getQuantity());
+                } else {
+                    holder.rl_weight.setVisibility(View.GONE);
+                    holder.tvPiece.setVisibility(View.VISIBLE);
+                    holder.tvPiece.setText(category.getQuantity());
+                }
+
+                holder.rl_weight.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDialog(category.getVarientList(), holder, category);
+                    }
+                });
+            }
+
+
         }
     }
 
@@ -207,9 +231,10 @@ public class HealthAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_minus, tv_quantity, tv_plus, tvPiece, tv_star,tv_rating,
                 txtDiscountOff, tv_peice, tv_notify, tv_send_notify;
         LinearLayout ll_quantity;
-        RelativeLayout rl_like, rl_weight, rl_discount, rl_addCartContainer, rl_view, rl_send_notify, rl_outOfStock;
+        RelativeLayout rl_like, rl_weight, rl_discount, rl_addCartContainer, rl_view, rl_send_notify, rl_outOfStock, rl_rating;
         ProgressBar progressBar;
         EditText et_notify_email;
+        CardView cardView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -239,8 +264,10 @@ public class HealthAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             rl_view = (RelativeLayout)itemView.findViewById(R.id.rl_view);
             rl_send_notify = (RelativeLayout)itemView.findViewById(R.id.rl_send_notify);
             rl_outOfStock = (RelativeLayout)itemView.findViewById(R.id.rl_outOfStock);
+            rl_rating = (RelativeLayout)itemView.findViewById(R.id.rl_rating);
             progressBar = itemView.findViewById(R.id.progressbar);
             et_notify_email = (EditText)itemView.findViewById(R.id.et_notify_email);
+            cardView = (CardView)itemView.findViewById(R.id.cardView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -251,12 +278,31 @@ public class HealthAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
 
 
-
             tv_notify.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    rl_send_notify.setVisibility(View.VISIBLE);
-                    tv_notify.setVisibility(View.GONE);
+                    if(AppConstant.isLogin(itemView.getContext())){
+                        notifyMe();
+                    }else{
+                        AlertDialog.Builder builder=new AlertDialog.Builder(itemView.getContext());
+                        builder.setMessage("Please login to continue");
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(itemView.getContext(), LoginActivity.class);
+                                intent.putExtra("type","login");
+                                itemView.getContext().startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
+                    //rl_send_notify.setVisibility(View.VISIBLE);
+                    //tv_notify.setVisibility(View.GONE);
                 }
             });
 
@@ -332,6 +378,10 @@ public class HealthAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     changeQty(getAdapterPosition(),REMOVE);
                 }
             });
+
+        }
+
+        private void notifyMe() {
 
         }
 

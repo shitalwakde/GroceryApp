@@ -15,28 +15,30 @@
 <!--    yellow-->
 <!--    <color name="colorPrimary">#FFEB3B</color>-->
 <!--    <color name="colorPrimaryDark">#FFC107</color>-->
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#000000</color>
 
     <color name="colorbutton">#FF9800</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorWhiteTrans">#9EFFFFFF</color>
     <color name="colorTrans">#00FFFFFF</color>
     <color name="colorBlack">#000000</color>
-    <color name="grey">#818181</color>
+    <color name="grey">#D5818181</color>
     <color name="greytrans">#72818181</color>
     <color name="greyExtratrans">#38818181</color>
     <color name="Extratrans">#0F818181</color>
     <color name="border">#f47443</color>
-    <color name="submit">#E72408</color>
+    <color name="submit">#D1D8240A</color>
     <color name="bg">#97F0EDED</color>
     <color name="bgtrans">#65F0EDED</color>
     <color name="colorPrimarytrans">#D678B825</color>
     <color name="colorgreen">#1DD124</color>
     <color name="greentrans">#6578B825</color>
+    <color name="purpletrans">#6F9248B5</color>
     <color name="bg_trans">#2234BFA3</color>
     <color name="yellow">#4FE7DC08</color>
     <color name="orangetrans">#5FE76108</color>
     <color name="darkorange">#F8A204</color>
     <color name="blue">#2196F3</color>
     <color name="transparent">#00f1f1f1</color>
+    <color name="whatsapp_color">#17c65d</color>
 </resources>

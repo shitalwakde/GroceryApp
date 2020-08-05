@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -146,10 +147,16 @@ public class AdpCategorySubCategory extends AbstractExpandableItemAdapter<AdpCat
         final SubCategory subcategory = CategoryDocuments.get(data.get(groupPosition)).get(childPosition);
 
         holder.tvParticulars.setText(subcategory.getName());
-
+        if(subcategory.isHighlight()){
+            subcategory.setHighlight(false);
+            holder.llName.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.bg_highlight));
+        }else{
+            holder.llName.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.color.colorWhite));
+        }
         holder.llName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CategoryDocuments.get(data.get(groupPosition)).get(childPosition).setHighlight(true);
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START);
                 }

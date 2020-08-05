@@ -3,6 +3,7 @@ package com.app.features.navmenu;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.app.constant.AppConstant;
 import com.app.controller.AppController;
 import com.app.features.home.adapter.WeighAdapter;
 import com.app.features.home.model.Product;
+import com.app.features.login.LoginActivity;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
 import com.google.gson.JsonObject;
@@ -124,6 +126,20 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             holder.tvPiece.setText(category.getQuantity());
         }
 
+        /*if(category.getRating() == 0){
+            holder.rl_rating.setVisibility(View.INVISIBLE);
+        }else{
+            holder.rl_rating.setVisibility(View.VISIBLE);
+            holder.tv_star.setText(String.valueOf(category.getRating()));
+        }*/
+        holder.tv_star.setText(String.valueOf(category.getRating()));
+        if(category.getRate().equals("")){
+            holder.tv_rating.setVisibility(View.INVISIBLE);
+        }else{
+            holder.tv_rating.setVisibility(View.VISIBLE);
+            holder.tv_rating.setText(category.getRate() + " Ratings");
+        }
+
         holder.rl_weight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,9 +187,9 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
 
         ImageView iv_best, iv_unwish, iv_close;
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_remove, tv_minus, tv_quantity, tv_plus,
-                txtDiscountOff, tvPiece, tv_peice, tv_notify, tv_send_notify;
+                txtDiscountOff, tvPiece, tv_peice, tv_notify, tv_send_notify, tv_star, tv_rating;
         LinearLayout ll_quantity;
-        RelativeLayout rl_wish, rl_discount, rl_addCartContainer, rl_weight, rl_view, rl_send_notify, rl_outOfStock;
+        RelativeLayout rl_wish, rl_discount, rl_addCartContainer, rl_weight, rl_view, rl_send_notify, rl_outOfStock, rl_rating;
         ProgressBar progressBar;
         EditText et_notify_email;
 
@@ -195,6 +211,8 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             tv_quantity = (TextView)itemView.findViewById(R.id.tv_quantity);
             tv_plus = (TextView)itemView.findViewById(R.id.tv_plus);
             txtDiscountOff = (TextView)itemView.findViewById(R.id.txtDiscountOff);
+            tv_star = (TextView)itemView.findViewById(R.id.tv_star);
+            tv_rating = (TextView)itemView.findViewById(R.id.tv_rating);
             ll_quantity = (LinearLayout)itemView.findViewById(R.id.ll_quantity);
             rl_wish = (RelativeLayout)itemView.findViewById(R.id.rl_wish);
             rl_discount = (RelativeLayout)itemView.findViewById(R.id.rl_discount);
@@ -206,6 +224,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             rl_view = (RelativeLayout)itemView.findViewById(R.id.rl_view);
             rl_send_notify = (RelativeLayout)itemView.findViewById(R.id.rl_send_notify);
             rl_outOfStock = (RelativeLayout)itemView.findViewById(R.id.rl_outOfStock);
+            rl_rating = (RelativeLayout)itemView.findViewById(R.id.rl_rating);
             et_notify_email = (EditText)itemView.findViewById(R.id.et_notify_email);
 
             tv_remove.setVisibility(View.VISIBLE);
@@ -243,8 +262,28 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
             tv_notify.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    rl_send_notify.setVisibility(View.VISIBLE);
-                    tv_notify.setVisibility(View.GONE);
+                    //rl_send_notify.setVisibility(View.VISIBLE);
+                    //tv_notify.setVisibility(View.GONE);
+                    if(AppConstant.isLogin(itemView.getContext())){
+                        notifyMe();
+                    }else{
+                        AlertDialog.Builder builder=new AlertDialog.Builder(itemView.getContext());
+                        builder.setMessage("Please login to continue");
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(itemView.getContext(), LoginActivity.class);
+                                intent.putExtra("type","login");
+                                itemView.getContext().startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
                 }
             });
 
@@ -290,6 +329,9 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
 
                 }
             });
+        }
+
+        private void notifyMe() {
         }
 
         private void changeQty(int adapterPosition,int type) {

@@ -3,9 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/rl_view_more"
         android:layout_width="160dp"
-        android:layout_height="310dp"
-        android:background="@color/greytrans"
-        android:layout_margin="1dp">
+        android:layout_height="300dp"
+        android:background="@drawable/bg_viewmore"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -26,9 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.R;
-import com.app.activities.MainActivity;
 import com.app.constant.AppConstant;
-import com.app.features.checkout.CheckOutFragment;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
 import com.google.android.gms.maps.model.LatLng;
@@ -51,8 +49,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static android.content.Context.RECEIVER_VISIBLE_TO_INSTANT_APPS;
-import static com.app.features.cart.CartActivity.cartContainer;
 import static com.app.features.cart.CartActivity.tv_toolbar_cart;
 
 public class AddressFragment extends Fragment {
@@ -204,6 +200,64 @@ public class AddressFragment extends Fragment {
 
     }
 
+
+    public void showRatingDialog(String addressLine, String pincode, String area) {
+        final Dialog dialog1 = new Dialog(getActivity());
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setCancelable(true);
+        dialog1.setContentView(R.layout.dlg_address);
+        TextView tv_submit = (TextView) dialog1.findViewById(R.id.tv_submit);
+        TextView tv_cancel = (TextView) dialog1.findViewById(R.id.tv_cancel);
+        TextView tv_location_address = (TextView) dialog1.findViewById(R.id.tv_location_address);
+
+        tv_location_address.setText(addressLine);
+
+        tv_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setAddresLocationData(addressLine, pincode, area);
+                dialog1.dismiss();
+            }
+        });
+
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog1.dismiss();
+            }
+        });
+
+        dialog1.show();
+    }
+
+    private void setAddresLocationData(String addressLine, String pincode, String area){
+        etPincode.setText(pincode);
+        //etCity.setText(addressLine);
+        //etState.setText(addressLine);
+        etArea.setText(addressLine);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    Log.w("TAG", "goToLogin from onRequestPermissionsResult");
+                    Log.w("TAG", "GRANT RESULT " + grantResults.toString());
+
+                } else {
+
+                }
+                return;
+            }
+
+        }
+    }
+
     public void getLocation() {
         manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(getActivity(),
@@ -269,64 +323,6 @@ public class AddressFragment extends Fragment {
                 //Snackbar.make(v, "Pick location will take sometime.", Snackbar.LENGTH_LONG).show();
                 Log.w("TAG", "waiting for location");
                 Toast.makeText(getActivity(), "waiting for location", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    }
-
-
-    public void showRatingDialog(String addressLine, String pincode, String area) {
-        final Dialog dialog1 = new Dialog(getActivity());
-        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog1.setCancelable(true);
-        dialog1.setContentView(R.layout.dlg_address);
-        TextView tv_submit = (TextView) dialog1.findViewById(R.id.tv_submit);
-        TextView tv_cancel = (TextView) dialog1.findViewById(R.id.tv_cancel);
-        TextView tv_location_address = (TextView) dialog1.findViewById(R.id.tv_location_address);
-
-        tv_location_address.setText(addressLine);
-
-        tv_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setAddresLocationData(addressLine, pincode, area);
-                dialog1.dismiss();
-            }
-        });
-
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog1.dismiss();
-            }
-        });
-
-        dialog1.show();
-    }
-
-    private void setAddresLocationData(String addressLine, String pincode, String area){
-        etPincode.setText(pincode);
-        //etCity.setText(addressLine);
-        //etState.setText(addressLine);
-        etArea.setText(addressLine);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    Log.w("TAG", "goToLogin from onRequestPermissionsResult");
-                    Log.w("TAG", "GRANT RESULT " + grantResults.toString());
-
-                } else {
-
-                }
-                return;
             }
 
         }

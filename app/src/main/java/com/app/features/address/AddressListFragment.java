@@ -12,7 +12,6 @@ import com.app.R;
 import com.app.callback.AddressListLisener;
 import com.app.constant.AppConstant;
 import com.app.controller.AppController;
-import com.app.features.checkout.CheckOutFragment;
 import com.app.util.AppUtils;
 import com.app.util.RestClient;
 import com.google.gson.JsonObject;
@@ -34,107 +33,107 @@ import static com.app.features.cart.CartActivity.tv_toolbar_cart;
 
 public class AddressListFragment extends Fragment implements AddressListLisener {
 
-    View rootView;
-    TextView tv_deliver;
-    CardView card_new_addr;
-    RecyclerView rv_addressList;
-    FragmentManager fragmentManager;
+  View rootView;
+  TextView tv_deliver;
+  CardView card_new_addr;
+  RecyclerView rv_addressList;
+  FragmentManager fragmentManager;
 
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.address_list_fragment, container, false);
-        init(rootView);
-        click();
-        return rootView;
-    }
-
-
-    private void init(View rootView){
-        fragmentManager = getActivity().getSupportFragmentManager();
-        tv_deliver = (TextView)rootView.findViewById(R.id.tv_deliver);
-        card_new_addr = (CardView)rootView.findViewById(R.id.card_new_addr);
-        rv_addressList = (RecyclerView)rootView.findViewById(R.id.rv_addressList);
-    }
-
-    private void click(){
-        tv_toolbar_cart.setText("Address List");
-        getDeliveryLocation();
-
-        card_new_addr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddressActivity.class);
-                intent.putExtra("address", "add");
-                intent.putExtra("deliveryId", "");
-                intent.putExtra("go", "add");
-                startActivity(intent);
-                getActivity().finish();
-//                fragmentManager.beginTransaction().replace(cartContainer, new AddressFragment()).addToBackStack(null).commit();
-            }
-        });
-
-    }
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                           @Nullable Bundle savedInstanceState) {
+    rootView = inflater.inflate(R.layout.address_list_fragment, container, false);
+    init(rootView);
+    click();
+    return rootView;
+  }
 
 
-    private void getDeliveryLocation(){
-        JsonObject jsonObject = new JsonObject();
-        if(AppConstant.isLogin(getContext())){
-            jsonObject.addProperty("userId", AppUtils.getUserDetails(getContext()).getLoginId());
-        }else{
-            jsonObject.addProperty("userId", "");
-        }
-        jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
+  private void init(View rootView){
+    fragmentManager = getActivity().getSupportFragmentManager();
+    tv_deliver = (TextView)rootView.findViewById(R.id.tv_deliver);
+    card_new_addr = (CardView)rootView.findViewById(R.id.card_new_addr);
+    rv_addressList = (RecyclerView)rootView.findViewById(R.id.rv_addressList);
+  }
 
-        new RestClient().getApiService().getDeliveryLocation(jsonObject, new Callback<AddressModel>() {
-            @Override
-            public void success(AddressModel addressModel, Response response) {
-                if(addressModel.getSuccess().equals("1")){
-                    arrangaddress(addressModel.getDeliveryLocationList());
-                }else{
-                    Toast.makeText(getActivity(), addressModel.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
+  private void click(){
+    tv_toolbar_cart.setText("Address List");
+    getDeliveryLocation();
 
-            @Override
-            public void failure(RetrofitError error) {
-                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void arrangaddress(ArrayList<AddressModel> deliveryLocationList){
-        AddressListAdapter adapter = new AddressListAdapter(deliveryLocationList, this);
-        rv_addressList.setAdapter(adapter);
-    }
-
-    @Override
-    public void AddressListLisenerClick(String deliveryId) {
-        //fragmentManager.beginTransaction().replace(R.id.address_container, new CheckOutFragment(deliveryId)).commit();
+    card_new_addr.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
         Intent intent = new Intent(getActivity(), AddressActivity.class);
-        intent.putExtra("address", "checkout");
-        intent.putExtra("deliveryId", deliveryId);
+        intent.putExtra("address", "add");
+        intent.putExtra("deliveryId", "");
         intent.putExtra("go", "add");
         startActivity(intent);
         getActivity().finish();
-    }
+//                fragmentManager.beginTransaction().replace(cartContainer, new AddressFragment()).addToBackStack(null).commit();
+      }
+    });
 
-    @Override
-    public void EditAddressLisenerClick(String deliveryId) {
-        Intent intent = new Intent(getActivity(), AddressActivity.class);
-        intent.putExtra("address", "add");
-        intent.putExtra("deliveryId", deliveryId);
-        intent.putExtra("go", "edit");
-        startActivity(intent);
-        getActivity().finish();
+  }
+
+
+  private void getDeliveryLocation(){
+    JsonObject jsonObject = new JsonObject();
+    if(AppConstant.isLogin(getContext())){
+      jsonObject.addProperty("userId", AppUtils.getUserDetails(getContext()).getLoginId());
+    }else{
+      jsonObject.addProperty("userId", "");
     }
+    jsonObject.addProperty("tempUserId", AppController.getInstance().getUniqueID());
+
+    new RestClient().getApiService().getDeliveryLocation(jsonObject, new Callback<AddressModel>() {
+      @Override
+      public void success(AddressModel addressModel, Response response) {
+        if(addressModel.getSuccess().equals("1")){
+          arrangaddress(addressModel.getDeliveryLocationList());
+        }else{
+          Toast.makeText(getActivity(), addressModel.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+      }
+
+      @Override
+      public void failure(RetrofitError error) {
+        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+    });
+  }
+
+  private void arrangaddress(ArrayList<AddressModel> deliveryLocationList){
+    AddressListAdapter adapter = new AddressListAdapter(deliveryLocationList, this);
+    rv_addressList.setAdapter(adapter);
+  }
+
+  @Override
+  public void AddressListLisenerClick(String deliveryId) {
+    //fragmentManager.beginTransaction().replace(R.id.address_container, new CheckOutFragment(deliveryId)).commit();
+    Intent intent = new Intent(getActivity(), AddressActivity.class);
+    intent.putExtra("address", "checkout");
+    intent.putExtra("deliveryId", deliveryId);
+    intent.putExtra("go", "add");
+    startActivity(intent);
+    getActivity().finish();
+  }
+
+  @Override
+  public void EditAddressLisenerClick(String deliveryId) {
+    Intent intent = new Intent(getActivity(), AddressActivity.class);
+    intent.putExtra("address", "add");
+    intent.putExtra("deliveryId", deliveryId);
+    intent.putExtra("go", "edit");
+    startActivity(intent);
+    getActivity().finish();
+  }
 
 
 }

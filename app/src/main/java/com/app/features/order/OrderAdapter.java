@@ -95,9 +95,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             //tv_reorder = (TextView)itemView.findViewById(R.id.tv_reorder);
             txtAddress = (TextView)itemView.findViewById(R.id.txtAddress);
 
-            //tv_cancel = (TextView)itemView.findViewById(R.id.tv_cancel);
-            //iv_cancel = (ImageView)itemView.findViewById(R.id.iv_cancel);
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

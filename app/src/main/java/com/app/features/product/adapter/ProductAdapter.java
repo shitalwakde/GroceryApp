@@ -71,8 +71,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         Picasso.with(holder.itemView.getContext()).load(category.getImage()).into(holder.iv_best);
         holder.tv_pr_name.setText(category.getName());
         holder.tv_pr_sub_name.setText(category.getBrandName());
-        holder.tv_star.setText("4.5");
-        holder.tv_rating.setText(category.getRate()+" Rating");
+        if(category.getRate().equals("")){
+            holder.tv_rating.setVisibility(View.INVISIBLE);
+        }else{
+            holder.tv_rating.setVisibility(View.VISIBLE);
+            holder.tv_rating.setText(category.getRate() + " Ratings");
+        }
         holder.tv_discount_price.setText("\u20B9 "+category.getFinalAmount());
 
         if(category.getMaxProductQuantity().equals("0")){
@@ -121,6 +125,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             holder.iv_unwish.setImageResource(R.drawable.ic_heart_red);
         }
 
+        /*if(category.getRating() == 0){
+            holder.rl_rating.setVisibility(View.INVISIBLE);
+        }else{
+            holder.rl_rating.setVisibility(View.VISIBLE);
+            holder.tv_star.setText(String.valueOf(category.getRating()));
+        }*/
+        holder.tv_star.setText(String.valueOf(category.getRating()));
 
         if(category.getIsVarient().equals("Yes")){
             holder.rl_weight.setVisibility(View.VISIBLE);
@@ -180,7 +191,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_add, tv_minus, tv_quantity, tv_plus, tvPiece, tv_star,tv_rating,
                 txtDiscountOff, tv_peice, tv_notify, tv_send_notify;
         LinearLayout ll_quantity;
-        RelativeLayout rl_wish, rl_weight, rl_discount, rl_addCartContainer, rl_view, rl_send_notify, rl_outOfStock;
+        RelativeLayout rl_wish, rl_weight, rl_discount, rl_addCartContainer, rl_view, rl_send_notify, rl_outOfStock, rl_rating;
         ProgressBar progressBar;
         EditText et_notify_email;
 
@@ -214,6 +225,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             rl_view = (RelativeLayout)itemView.findViewById(R.id.rl_view);
             rl_send_notify = (RelativeLayout)itemView.findViewById(R.id.rl_send_notify);
             rl_outOfStock = (RelativeLayout)itemView.findViewById(R.id.rl_outOfStock);
+            rl_rating = (RelativeLayout)itemView.findViewById(R.id.rl_rating);
             et_notify_email = (EditText)itemView.findViewById(R.id.et_notify_email);
 
 
@@ -234,8 +246,28 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             tv_notify.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    rl_send_notify.setVisibility(View.VISIBLE);
-                    tv_notify.setVisibility(View.GONE);
+                    if(AppConstant.isLogin(itemView.getContext())){
+                        notifyMe();
+                    }else{
+                        AlertDialog.Builder builder=new AlertDialog.Builder(itemView.getContext());
+                        builder.setMessage("Please login to continue");
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(itemView.getContext(), LoginActivity.class);
+                                intent.putExtra("type","login");
+                                itemView.getContext().startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
+                    //rl_send_notify.setVisibility(View.VISIBLE);
+                    //tv_notify.setVisibility(View.GONE);
                 }
             });
 
@@ -310,6 +342,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                     changeQty(getAdapterPosition(),REMOVE);
                 }
             });
+        }
+
+        private void notifyMe() {
+
         }
 
         private void changeQty(int adapterPosition,int type) {

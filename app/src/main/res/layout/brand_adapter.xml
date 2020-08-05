@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1dp"
+    app:cardCornerRadius="5dp"
+    app:cardPreventCornerOverlap="true"
+    android:elevation="5dp"
+    app:cardUseCompatPadding="true"
     android:background="@color/colorWhite">
 
     <LinearLayout
@@ -41,4 +44,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
+</androidx.cardview.widget.CardView>

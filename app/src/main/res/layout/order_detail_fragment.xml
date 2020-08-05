@@ -245,7 +245,29 @@
                             android:id="@+id/tv_gst"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="-   "
+                            android:text="-  "
+                            android:gravity="right"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/roboto_light"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Wallet used"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/roboto_light"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/tv_wallet"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="\u20B9 0"
                             android:gravity="right"
                             android:textSize="12sp"
                             android:fontFamily="@font/roboto_light"

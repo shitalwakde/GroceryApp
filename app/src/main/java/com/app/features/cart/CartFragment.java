@@ -23,7 +23,7 @@ import com.app.features.address.AddressActivity;
 import com.app.features.address.AddressFragment;
 import com.app.features.address.AddressListFragment;
 import com.app.features.address.AddressModel;
-import com.app.features.checkout.CheckOutFragment;
+
 import com.app.features.home.model.Product;
 import com.app.features.login.LoginActivity;
 import com.app.util.AppUtils;

@@ -26,11 +26,26 @@ public class Product implements Serializable {
     private String status;
     private String image;
     private String brandName;
-    //private String isInCard;
+    private float rating;
     private String cartQuantity;
     private String isInWishList;
     private String isVarient;
     private String maxProductQuantity;
+    private String likeDisLike ="Dislike";
+    private String productReviewId;
+    private String likeCount;
+    private String similarProductBgImage;
+    private String recentlyViewBgImage;
+
+    ArrayList<Product> productsReview;
+    private String reviewId;
+    private String orderId;
+    private String orderDetailId;
+    private String comment;
+    private String reviewDate;
+    private String like;
+    private String disLike;
+    private String ratingComment;
 
     ArrayList<Product> recentViewProduct;
     ArrayList<Product> similarProductList;
@@ -72,6 +87,127 @@ public class Product implements Serializable {
     private String productVarientId;
     private int weightSelected;
     boolean highlight =false;
+
+    public String getSimilarProductBgImage() {
+        return similarProductBgImage;
+    }
+
+    public void setSimilarProductBgImage(String similarProductBgImage) {
+        this.similarProductBgImage = similarProductBgImage;
+    }
+
+    public String getRecentlyViewBgImage() {
+        return recentlyViewBgImage;
+    }
+
+    public void setRecentlyViewBgImage(String recentlyViewBgImage) {
+        this.recentlyViewBgImage = recentlyViewBgImage;
+    }
+
+    public ArrayList<Product> getProductsReview() {
+        return productsReview;
+    }
+
+    public void setProductsReview(ArrayList<Product> productsReview) {
+        this.productsReview = productsReview;
+    }
+
+    public String getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(String likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public String getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(String reviewId) {
+        this.reviewId = reviewId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getOrderDetailId() {
+        return orderDetailId;
+    }
+
+    public void setOrderDetailId(String orderDetailId) {
+        this.orderDetailId = orderDetailId;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(String reviewDate) {
+        this.reviewDate = reviewDate;
+    }
+
+    public String getLike() {
+        return like;
+    }
+
+    public void setLike(String like) {
+        this.like = like;
+    }
+
+    public String getDisLike() {
+        return disLike;
+    }
+
+    public void setDisLike(String disLike) {
+        this.disLike = disLike;
+    }
+
+    public String getRatingComment() {
+        return ratingComment;
+    }
+
+    public void setRatingComment(String ratingComment) {
+        this.ratingComment = ratingComment;
+    }
+
+
+    public String getProductReviewId() {
+        return productReviewId;
+    }
+
+    public void setProductReviewId(String productReviewId) {
+        this.productReviewId = productReviewId;
+    }
+
+    public String getLikeDisLike() {
+        return likeDisLike;
+    }
+
+    public void setLikeDisLike(String likeDisLike) {
+        this.likeDisLike = likeDisLike;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
 
     public ArrayList<Product> getProductList() {
         return ProductList;

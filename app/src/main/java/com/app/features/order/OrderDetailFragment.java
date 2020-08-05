@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,10 +90,12 @@ public class OrderDetailFragment extends Fragment {
         rv_order_view = (RecyclerView) rootView.findViewById(R.id.rv_order_view);
     }
 
+
     private void setDetail() {
         tv_toolbar_order.setText("My Order Detail");
 
         tvOrderAmount.setText("\u20B9 " + orderList.getOrderAmount());
+        Log.w("TAG", "order amount in orderList : "+orderList.getOrderAmount());
         tvDeliveryDate.setText(orderList.getOrderDate());
         tvDeliveryDateTop.setText(orderList.getOrderDate());
         if (orderList.getOrderStatus().equals("Pending")) {
@@ -106,7 +109,7 @@ public class OrderDetailFragment extends Fragment {
         if (orderList.getDeliveryName().equals("")) {
             tvDelivery.setVisibility(View.GONE);
             tvAddress.setVisibility(View.GONE);
-        } else {
+        } else{
             tvDelivery.setVisibility(View.VISIBLE);
             tvAddress.setVisibility(View.VISIBLE);
             tvAddress.setText(orderList.getDeliveryName()+ ", " + orderList.getDeliveryHouseNo() + ", " +
@@ -122,7 +125,7 @@ public class OrderDetailFragment extends Fragment {
         }
 
         if (orderList.getDeliveryCharges().equals("0")) {
-            tvGst.setText("NONE");
+            tvGst.setText("-  ");
         } else {
             tvGst.setText("\u20B9 " + orderList.getDeliveryCharges());
         }

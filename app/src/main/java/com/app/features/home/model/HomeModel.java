@@ -11,6 +11,9 @@ public class HomeModel {
     private String whatsapp_mobile;
     private String offerImage;
     private String dicountImage;
+    private String pastOrderBgImage;
+    private String recentlyViewBgImage;
+    private String BestSellingProductBgImage;
     private String count_cart;
 
     ArrayList<Banner> banner;
@@ -140,5 +143,29 @@ public class HomeModel {
 
     public void setBestSellingProduct(ArrayList<Product> bestSellingProduct) {
         BestSellingProduct = bestSellingProduct;
+    }
+
+    public String getPastOrderBgImage() {
+        return pastOrderBgImage;
+    }
+
+    public void setPastOrderBgImage(String pastOrderBgImage) {
+        this.pastOrderBgImage = pastOrderBgImage;
+    }
+
+    public String getRecentlyViewBgImage() {
+        return recentlyViewBgImage;
+    }
+
+    public void setRecentlyViewBgImage(String recentlyViewBgImage) {
+        this.recentlyViewBgImage = recentlyViewBgImage;
+    }
+
+    public String getBestSellingProductBgImage() {
+        return BestSellingProductBgImage;
+    }
+
+    public void setBestSellingProductBgImage(String bestSellingProductBgImage) {
+        BestSellingProductBgImage = bestSellingProductBgImage;
     }
 }
