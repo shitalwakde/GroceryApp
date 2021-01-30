@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.MenuItem;
@@ -79,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
     @BindView(R.id.sc_view)
     ScrollView scView;
     private final int CAMERA_PIC_REQUEST = 2, REQUEST_CAMERA = 301, REQUEST_WRITE_STORAGE = 112, SELECT_PHOTO = 1;
-    String captureImg = "", filePath = "";
+    String captureImg = "", imgString = "";
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
@@ -162,14 +163,15 @@ public class ProfileActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1213 && resultCode == Activity.RESULT_OK) {
-            filePath = data.getStringExtra(ImageSelectActivity.RESULT_FILE_PATH);
+            String filePath = data.getStringExtra(ImageSelectActivity.RESULT_FILE_PATH);
             Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
             imgProfile.setImageBitmap(selectedImage);
-            //Bitmap bitmap=((BitmapDrawable)imgProfile.getDrawable()).getBitmap();
+
+            Bitmap bitmap=((BitmapDrawable)imgProfile.getDrawable()).getBitmap();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            selectedImage.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 60, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
-            captureImg = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            imgString=Base64.encodeToString(byteArray,Base64.NO_WRAP);
         }
 
     }
@@ -183,7 +185,7 @@ public class ProfileActivity extends AppCompatActivity {
         jsonObject.addProperty("email", email);
         jsonObject.addProperty("mobile", mobile);
         jsonObject.addProperty("address", etAddress.getText().toString());
-        jsonObject.addProperty("image", captureImg);
+        jsonObject.addProperty("image", imgString);
         //jsonObject.addProperty("image", "");
 
         new RestClient().getApiService().updateProfile(jsonObject, new Callback<ModLogin>() {
@@ -191,8 +193,9 @@ public class ProfileActivity extends AppCompatActivity {
             public void success(ModLogin modLogin, Response response) {
                 progressBar.setVisibility(View.GONE);
                 if (modLogin.getSuccess().equals("1")) {
-                    modLogin.setLoginId(AppUtils.getUserDetails(ProfileActivity.this).getLoginId());
-                    AppUtils.updateUserDetails(ProfileActivity.this, modLogin);
+                    /*modLogin.setLoginId(AppUtils.getUserDetails(ProfileActivity.this).getLoginId());
+                    AppUtils.updateUserDetails(ProfileActivity.this, modLogin);*/
+                    setUpdateDetail(modLogin);
                     Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
                     startActivity(intent);
                     finishAffinity();
@@ -208,6 +211,13 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setUpdateDetail(ModLogin modLogin) {
+        etName.setText(modLogin.getName());
+        etEmail.setText(modLogin.getEmail());
+        etMobile.setText(modLogin.getMobile());
+        Picasso.with(ProfileActivity.this).load(modLogin.getImage()).into(imgProfile);
     }
 
 

@@ -93,6 +93,7 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:layout_gravity="center"
                     android:drawableLeft="@drawable/ic_location"
+                    android:drawableTint="@color/colorPrimaryDark"
                     android:drawablePadding="10dp"/>
             </androidx.cardview.widget.CardView>
 
@@ -132,7 +133,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/etArea"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

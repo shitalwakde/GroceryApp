@@ -1,5 +1,5 @@
 package com.app.callback;
 
 public interface LocationLisener {
-    void locationClickLisener();
+    void locationClickLisener(double latitudePickUp, double longitudePickUp);
 }

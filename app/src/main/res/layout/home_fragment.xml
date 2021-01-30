@@ -236,7 +236,8 @@
                     <RelativeLayout
                         android:id="@+id/rl_pastOrder"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@color/purpleExtratrans">
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -339,7 +340,8 @@
                     <RelativeLayout
                         android:id="@+id/rl_recently"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@color/purpleExtratrans">
                         <RelativeLayout
                             android:layout_width="130dp"
                             android:layout_height="300dp"
@@ -437,7 +439,8 @@
                     <RelativeLayout
                         android:id="@+id/rl_best_selling"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@color/purpleExtratrans">
                         <RelativeLayout
                             android:layout_width="130dp"
                             android:layout_height="300dp"

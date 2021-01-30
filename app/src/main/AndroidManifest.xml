@@ -75,6 +75,15 @@
             android:name="com.onesignal.BadgeCount"
             android:value="DISABLE" />
 
+        <service
+            android:name="com.app.controller.MyNotificationExtenderService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE">
+            <intent-filter>
+                <action android:name="com.onesignal.NotificationExtender" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".features.notification.NotificationActivity"
             android:screenOrientation="portrait" />

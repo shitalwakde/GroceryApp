@@ -118,7 +118,7 @@ public class CartFragment extends Fragment implements CalculateLisener {
                                     getDeliveryLocation();
                                 }else {
                                     AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
-                                    builder.setMessage("Please login to place order");
+                                    builder.setMessage("Please login to continue");
                                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -167,7 +167,11 @@ public class CartFragment extends Fragment implements CalculateLisener {
             public void success(AddressModel addressModel, Response response) {
                 if(addressModel.getSuccess().equals("1")){
                     if(addressModel.getDeliveryLocationList().size() == 0){
-                        //fragmentManager.beginTransaction().replace(cartContainer, new AddressFragment()).addToBackStack(null).commit();
+                        Intent intent = new Intent(getActivity(), AddressActivity.class);
+                        intent.putExtra("address", "add");
+                        intent.putExtra("deliveryId", "");
+                        intent.putExtra("go", "");
+                        startActivity(intent);
                     }else{
                         Intent intent = new Intent(getActivity(), AddressActivity.class);
                         intent.putExtra("address", "checkout");

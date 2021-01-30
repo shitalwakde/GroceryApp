@@ -1,7 +1,7 @@
 package com.app.features.login;
 
 public class ModLogin {
-    private String loginId, name, email, mobile, success, msg, message, address;
+    private String loginId, name, email, mobile, success, msg, message, address, image;
 
     public String getLoginId() {
         return loginId;
@@ -65,5 +65,13 @@ public class ModLogin {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

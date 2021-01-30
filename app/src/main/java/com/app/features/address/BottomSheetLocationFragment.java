@@ -60,7 +60,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-public class BottomSheetLocationFragment extends BottomSheetDialogFragment implements MultiplePermissionsListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class BottomSheetLocationFragment extends BottomSheetDialogFragment
+        implements MultiplePermissionsListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     View rootView;
     TextView tv_choose_location, tvLogin;
@@ -257,7 +258,7 @@ public class BottomSheetLocationFragment extends BottomSheetDialogFragment imple
                                 // startResolutionForResult(),
                                 // and check the result in onActivityResult().
                                 status.startResolutionForResult(getActivity(), 1000);
-                                getLocation();
+
                             } catch (IntentSender.SendIntentException e) {
                                 // Ignore the error.
                             }

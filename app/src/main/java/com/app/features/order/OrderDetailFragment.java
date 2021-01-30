@@ -98,6 +98,7 @@ public class OrderDetailFragment extends Fragment {
         Log.w("TAG", "order amount in orderList : "+orderList.getOrderAmount());
         tvDeliveryDate.setText(orderList.getOrderDate());
         tvDeliveryDateTop.setText(orderList.getOrderDate());
+        tvOrderDate.setText(orderList.getOrderDate());
         if (orderList.getOrderStatus().equals("Pending")) {
             tvOrderStatus.setTextColor(Color.parseColor("#f47443"));
         } else if (orderList.getOrderStatus().equals("Cancelled")) {
@@ -114,7 +115,6 @@ public class OrderDetailFragment extends Fragment {
             tvAddress.setVisibility(View.VISIBLE);
             tvAddress.setText(orderList.getDeliveryName()+ ", " + orderList.getDeliveryHouseNo() + ", " +
                     orderList.getDeliveryArea() + ", " + orderList.getDeliveryState() + ", " + orderList.getDeliveryCity() + ", " + orderList.getDeliveryPincode());
-            tvOrderDate.setText(orderList.getOrderDate());
         }
         tvPurchaseAmount.setText("\u20B9 " + orderList.getOrderAmount());
 

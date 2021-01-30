@@ -135,7 +135,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
     FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
-    NavMenu navMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +164,6 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
                         longitudePickUp = location.getLongitude();
                         editLocation(latitudePickUp, longitudePickUp);
                         fusedLocationClient.removeLocationUpdates(locationCallback);
-
 
                     }
                // }
@@ -244,7 +243,7 @@ public class MainActivity extends BaseActivity implements DrawerItemClickLisener
 
 
     public void setTitleData() {
-        iv_edit.setVisibility(View.VISIBLE);
+        //iv_edit.setVisibility(View.VISIBLE);
         tv_location.setVisibility(View.VISIBLE);
         if(AppUtils.getAddress()!= null){
             tv_toolbaar.setText(AppUtils.getAddress());

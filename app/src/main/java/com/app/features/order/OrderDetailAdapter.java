@@ -58,7 +58,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             holder.tv_rating.setVisibility(View.INVISIBLE);
         }else{
             holder.tv_rating.setVisibility(View.VISIBLE);
-            holder.tv_rating.setText(category.getProductRate()+" Reviews");
+            holder.tv_rating.setText(category.getProductRate()+" Ratings");
         }
 
         if (category.getProductType().equals("Quantity")) {
@@ -70,7 +70,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             holder.rl_discount.setVisibility(View.GONE);
             holder.tv_price.setVisibility(View.GONE);
         } else {
-            holder.rl_discount.setVisibility(View.VISIBLE);
+            holder.rl_discount.setVisibility(View.GONE);
             holder.tv_price.setVisibility(View.VISIBLE);
             holder.txtDiscountOff.setText(category.getProductDiscount() + "%");
             holder.tv_price.setText("\u20B9 " + category.getProductGrossAmount());
@@ -89,8 +89,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_best;
         TextView tv_pr_name, tv_pr_sub_name, tv_price, tv_discount_price, tv_rate_product, tvPrdQuantity, tv_peice, tvPc, txtDiscountOff,
-                tv_rating, tv_star, tv_return;
-        RelativeLayout rl_discount, rl_weight, rl_cancel;
+                tv_rating, tv_star;
+        RelativeLayout rl_discount, rl_weight, rl_cancel, rl_return;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,10 +106,10 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             txtDiscountOff = (TextView) itemView.findViewById(R.id.txtDiscountOff);
             tv_rating = (TextView) itemView.findViewById(R.id.tv_rating);
             tv_star = (TextView) itemView.findViewById(R.id.tv_star);
-            tv_return = (TextView) itemView.findViewById(R.id.tv_return);
             rl_discount = (RelativeLayout) itemView.findViewById(R.id.rl_discount);
             rl_weight = (RelativeLayout) itemView.findViewById(R.id.rl_weight);
             rl_cancel = (RelativeLayout) itemView.findViewById(R.id.rl_cancel);
+            rl_return = (RelativeLayout) itemView.findViewById(R.id.rl_return);
 
             rl_weight.setVisibility(View.GONE);
             tvPc.setVisibility(View.VISIBLE);
@@ -215,9 +215,9 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
                 public void success(OrderModel orderModel, Response response) {
                     if(orderModel.getSuccess().equals("1")){
                         if(orderModel.getIsReturn().equals("Yes")){
-                            tv_return.setVisibility(View.VISIBLE);
+                            rl_return.setVisibility(View.VISIBLE);
                         }else{
-                            tv_return.setVisibility(View.GONE);
+                            rl_return.setVisibility(View.GONE);
                         }
                         notifyItemChanged(getAdapterPosition());
                         notifyDataSetChanged();

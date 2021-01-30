@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class OrderModel {
     private String success;
     private String message;
-    private String isReturn;
+    private String isReturn = "No";
     ArrayList<OrderList> orderList;
 
     public String getSuccess() {

@@ -34,6 +34,7 @@
     <color name="colorgreen">#1DD124</color>
     <color name="greentrans">#6578B825</color>
     <color name="purpletrans">#6F9248B5</color>
+    <color name="purpleExtratrans">#329248B5</color>
     <color name="bg_trans">#2234BFA3</color>
     <color name="yellow">#4FE7DC08</color>
     <color name="orangetrans">#5FE76108</color>
